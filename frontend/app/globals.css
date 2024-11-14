@@ -5,11 +5,11 @@
 @layer base {
     :root {
         --background: 240 10% 3.9%;
-        --background-light: #191919;
-        --background-lighter: #323232;
-        --background-lightest: #989898;
+        --background-light: 0 0% 10%;
+        --background-lighter: 0 0% 20%;
+        --background-lightest: 0 0% 60%;
         --foreground: 0 0% 98%;
-        --foreground-dark: #e4e4e4;
+        --foreground-dark: 0 0% 89%;
         --card: 240 10% 3.9%;
         --card-foreground: 0 0% 98%;
         --color: 336 97% 25%;

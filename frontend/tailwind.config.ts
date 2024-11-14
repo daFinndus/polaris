@@ -18,9 +18,9 @@ export default {
             colors: {
                 background: {
                     DEFAULT: 'hsl(var(--background))',
-                    light: 'var(--background-light)',
-                    lighter: 'var(--background-lighter)',
-                    lightest: 'var(--background-lightest)',
+                    light: 'hsl(var(--background-light))',
+                    lighter: 'hsl(var(--background-lighter))',
+                    lightest: 'hsl(var(--background-lightest))',
                 },
                 primary: {
                     DEFAULT: 'hsl(var(--primary))',

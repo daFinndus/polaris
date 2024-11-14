@@ -1,5 +1,10 @@
 'use client';
 
+import "@/app/styles/carousel-fade.css";
+
+import Image from "next/image";
+import AutoScroll from "embla-carousel-auto-scroll";
+
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {Badge} from "@/components/ui/badge"
 import {Button} from "@/components/ui/button";
@@ -17,8 +22,7 @@ import {RiNextjsFill, RiTailwindCssFill} from "react-icons/ri";
 import {FaCodepen, FaLink, FaNodeJs} from "react-icons/fa6";
 import {BiLogoReact} from "react-icons/bi";
 import {DiDocker, DiGit, DiLinux, DiMongodb, DiMysql, DiPython, DiWindows} from "react-icons/di";
-import Image from "next/image";
-import Autoplay from "embla-carousel-autoplay";
+import {GrCubes} from "react-icons/gr";
 
 function Tag({Icon, name}: { Icon: IconType, name: string }) {
     return (
@@ -49,7 +53,7 @@ function About() {
                 </div>
             </div>
             <div
-                className={"mt-4 flex h-auto flex-col space-y-2 rounded-lg border-2 border-background-light bg-neutral-950 px-4 py-3"}>
+                className={"mt-4 flex h-auto flex-col space-y-2 rounded-lg border-none bg-background px-4 py-3"}>
                 <div className={"flex flex-row"}>
                     <Tag Icon={IoLanguage} name={"German & English"}></Tag>
                     <Tag Icon={LuCake} name={"22 years old"}></Tag>
@@ -65,7 +69,7 @@ function About() {
             <div className={"mt-4 flex flex-row justify-center space-x-2"}>
                 <Button asChild variant={"color"}>
                     <Link href={"mailto:finnlucajensen555@gmail.com"}>
-                        <SiGmail/>Contact me!
+                        <SiGmail className={"text-color-lighter"}/>Contact me!
                     </Link>
                 </Button>
                 <Button asChild variant={"secondary"}>
@@ -125,36 +129,31 @@ function Stack() {
                 <Technology Icon={DiMongodb} name={"MongoDB"} version={""} href={"https://mongodb.com"}/>
                 <Technology Icon={DiMysql} name={"MySQL"} version={"v8+"} href={"https://mysql.com"}/>
                 <Technology Icon={DiPython} name={"Python"} version={"v3.9+"} href={"https://python.org"}/>
-                <Technology Icon={DiGit} name={"Git"} version={"v2.33+"} href={"https://git-scm.com"}/>
+                <Technology Icon={DiGit} name={"Git"} version={"v2.47+"} href={"https://git-scm.com"}/>
                 <Technology Icon={DiDocker} name={"Docker"} version={"v20+"} href={"https://docker.com"}/>
+                <Technology Icon={SiCyberdefenders} name={"Cybersecurity"}
+                            version={"Nmap, Hashcat, etc."} href={"https://hackthebox.com"}/>
                 <Technology Icon={DiLinux} name={"Linux"} version={"Ubuntu, Debian, etc."} href={"https://linux.com"}/>
                 <Technology Icon={DiWindows} name={"Windows"} version={"Windows 10 and 11"}
                             href={"https://microsoft.com"}/>
-                <Technology Icon={SiCyberdefenders} name={"Cybersecurity"}
-                            version={"Nmap, Hashcat, etc."} href={"https://hackthebox.com"}/>
+
             </div>
         </div>
     );
 }
 
-function Project({src, alt, width, height, name}: {
+function Project({src, alt, width, height}: {
     src: string,
     alt: string,
     width: number,
     height: number
-    name: string
 }) {
     return (
-        <CarouselItem className={"flex justify-center"}>
-            <div className={"relative mt-5 w-1/3"}>
-                <Image className={"rounded-lg"} src={src} alt={alt} width={width} height={height}/>
-                <div
-                    className={"absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-bold text-background"}>{name}</div>
-            </div>
+        <CarouselItem className={"basis-1/3"}>
+            <Image className={"m-0 h-24 w-[170px] rounded-lg p-0"} src={src} alt={alt} width={width} height={height}/>
         </CarouselItem>
     );
 }
-
 
 function Projects() {
     return (
@@ -164,32 +163,36 @@ function Projects() {
                 <FaCodepen className={"size-6 text-color-light"}/>
                 <p className={"ml-3 text-xl font-bold"}>My Projects</p>
             </div>
-            <p className={"mb-4 mt-1 text-sm text-background-lightest"}>
+            <p className={"mt-1 text-sm text-background-lightest"}>
                 These are some of the projects I&#39;ve been working on.
             </p>
-            <div className={"justify-items-center"}>
-                <Carousel
-                    opts={{
-                        align: "start",
-                        loop: true,
-                    }}
-                    plugins={[
-                        Autoplay({
-                            delay: 5000,
-                        })
-                    ]}
-                >
-                    <CarouselContent>
-                        <Project src={"/images/me.png"} alt={"Project 1"} width={1600} height={1200}
-                                 name={"Project 1"}/>
-                        <Project src={"/images/me.png"} alt={"Project 2"} width={1600} height={1200}
-                                 name={"Project 2"}/>
-                        <Project src={"/images/me.png"} alt={"Project 3"} width={1600} height={1200}
-                                 name={"Project 3"}/>
-                        <Project src={"/images/me.png"} alt={"Project 4"} width={1600} height={1200}
-                                 name={"Project 4"}/>
-                    </CarouselContent>
-                </Carousel>
+            <div className={"flex flex-col items-center"}>
+                <div className={"flex flex-row items-center justify-center"}>
+                    <Carousel
+                        opts={{
+                            align: "center",
+                            loop: true,
+                        }}
+                        plugins={[
+                            AutoScroll({
+                                speed: .5,
+                            }),
+                        ]}
+                        className={"carousel-fade-overlay my-4 h-fit w-5/6"}>
+                        <CarouselContent className={""}>
+                            <Project src={"/images/beerpong.jpg"} alt={"Beerpong"} width={630} height={594}/>
+                            <Project src={"/images/key_guardian.png"} alt={"Key Guardian"} width={795} height={623}/>
+                            <Project src={"/images/portfolio.png"} alt={"My Portfolio"} width={1908} height={819}/>
+                            <Project src={"/images/voice_assistant.jpg"} alt={"Jarvis"} width={450} height={450}/>
+                        </CarouselContent>
+                    </Carousel>
+                </div>
+                <Button asChild variant={"color"} className={"w-56"}>
+                    <Link href={"/projects"}>
+                        <GrCubes className={"text-color-lighter"}/>
+                        View all my projects
+                    </Link>
+                </Button>
             </div>
         </div>
     );
