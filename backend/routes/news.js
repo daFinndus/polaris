@@ -37,7 +37,7 @@ const fetchArticles = async () => {
             await cacheArticles();
         }
 
-        console.log("Currently at cache length:", cache.length);
+        console.log("Currently", cache.length, "articles in the cache.");
     } catch (err) {
         console.error("Error fetching articles:", err.message);
     }

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const uri = `http://localhost:8000/articles`;
+const uri = `${process.env.NEXT_PUBLIC_RENDER_BACKEND}/articles`;
 
 /**
  * This function fetches news from the backend.

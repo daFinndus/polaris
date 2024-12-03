@@ -55,8 +55,6 @@ const pull = async (page, limit) => {
         const mongoose = await connect();
 
         if (page && limit) {
-            console.log("Skip is", (page - 1) * limit, "basically", page, "minus 1 times", limit);
-
             articles = await mongoose.connection.db.collection('articles')
                 .find({})
                 .sort({_id: -1})
@@ -84,6 +82,8 @@ const pull = async (page, limit) => {
  * @returns {Promise<void>} A promise that resolves when the duplicates are removed.
  */
 const dupes = async () => {
+    console.log("Going to check for duplicates in the database.");
+
     try {
         const mongoose = await connect();
         const collection = mongoose.connection.db.collection('articles');
