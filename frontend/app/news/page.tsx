@@ -1,11 +1,14 @@
 "use client";
 
+import React from "react";
+
 import Link from "next/link";
 
 import {Button} from "@/components/ui/button";
 
 import {useWindowSize} from "@/app/hooks/useWindowSize";
-import React from "react";
+import {fetchNews} from "@/app/news/fetch";
+
 
 function Unsupported() {
     return (
@@ -18,7 +21,7 @@ function Unsupported() {
 function Supported() {
     return (
         <div className={"font-sans relative h-screen w-screen justify-center flex items-center"}>
-            Will be developed soon..
+            <Button variant={"secondary"} onClick={() => fetchNews(1, 18)}>Start fetchin'</Button>
             <Link href={"/"} className={"absolute top-4 left-4"}>
                 <Button variant={"secondary"}>
                     Back to homepage
