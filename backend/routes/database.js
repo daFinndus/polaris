@@ -8,9 +8,9 @@ const options = {serverApi: {version: '1', strict: true, deprecationErrors: true
 let connection;
 
 /**
- * This function connects to the database.
- * It serves as a singleton to avoid multiple connections.
- * @returns {Promise<Mongoose>} A promise that resolves with the connection to the database.
+ * Connects to the database.
+ * Serves as a singleton to avoid multiple connections.
+ * @returns {Promise<mongoose.Mongoose>} A promise that resolves with the connection to the database.
  */
 const connect = async () => {
     if (!connection) {
@@ -26,49 +26,37 @@ const connect = async () => {
 };
 
 /**
- * This function pushes articles to the database.
- * @param articles An array of articles to push to the
- * @returns {Promise<void>} A promise that resolves when the articles are pushed.
+ * Connects to the database.
+ * Serves as a singleton to avoid multiple connections.
+ * @returns {Promise<mongoose.Mongoose>} A promise that resolves with the connection to the database.
  */
 const push = async (articles) => {
     try {
         const mongoose = await connect();
         await mongoose.connection.db.collection('articles').insertMany(articles);
 
-        console.log("Successfully pushed", articles.length, "articles to the database.");
+        console.log("Pushed", articles.length, "articles to the database.");
     } catch (err) {
         console.error("Error pushing articles:", err.message);
     }
 };
 
 /**
- * This function pulls articles from the database.
+ * Pulls articles from the database.
  * If there are given params, it will pull a paginated list of articles.
- * @param page The page to pull from the database.
- * @param limit The amount of articles to pull.
- * @returns {Promise<Array>} A promise that resolves with an array of articles.
+ * @param {number} [page] - The page to pull from the database.
+ * @param {number} [limit] - The number of articles to pull.
+ * @returns {Promise<Array<Object>>} A promise that resolves with an array of articles.
  */
 const pull = async (page, limit) => {
     let articles;
 
     try {
         const mongoose = await connect();
+        const query = mongoose.connection.db.collection('articles').find({}).sort({_id: -1});
+        const articles = page && limit ? await query.skip((page - 1) * limit).limit(limit).toArray() : await query.toArray();
 
-        if (page && limit) {
-            articles = await mongoose.connection.db.collection('articles')
-                .find({})
-                .sort({_id: -1})
-                .skip((page - 1) * limit)
-                .limit(limit)
-                .toArray();
-        } else {
-            articles = await mongoose.connection.db.collection('articles')
-                .find({})
-                .sort({_id: -1})
-                .toArray();
-        }
-
-        console.log("Successfully pulled", articles.length, "articles from the database.");
+        console.log("Pulled", articles.length, "articles from the database.");
         return articles;
     } catch (err) {
         console.error("Error fetching articles:", err.message);
@@ -76,10 +64,10 @@ const pull = async (page, limit) => {
 };
 
 /**
- * This function removes duplicates from the database.
- * It does that by grouping the articles by title and counting the number of duplicates.
- * After that, it removes all duplicates except the first one.
- * @returns {Promise<void>} A promise that resolves when the duplicates are removed.
+ * Removes duplicates from the database.
+ * Groups the articles by title and counts the number of duplicates.
+ * Removes all duplicates except the first one.
+ * @returns {Promise<number>} A promise that resolves with the number of duplicates removed.
  */
 const dupes = async () => {
     console.log("Going to check for duplicates in the database.");
@@ -94,13 +82,16 @@ const dupes = async () => {
             {$match: {count: {$gt: 1}}}
         ]).toArray();
 
-        const ids = duplicates.flatMap(group => group.docs.slice(1)); // Behalte jeweils das erste Dokument
+        const ids = duplicates.flatMap(group => group.docs.slice(1));
 
         if (ids.length > 0) {
             const deleted = await collection.deleteMany({_id: {$in: ids}});
             console.log("Successfully removed", deleted.deletedCount, "duplicates from the database.");
+
+            return deleted.deletedCount;
         } else {
             console.log("No duplicates found.");
+            return 0;
         }
     } catch (err) {
         console.error("Error removing duplicates:", err.message);

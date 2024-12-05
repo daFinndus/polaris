@@ -1,7 +1,14 @@
-module.exports = {
-    extends: [
-        "next/core-web-vitals",
-        "next/typescript",
-        "plugin:tailwindcss/recommended"
-    ],
-};
+import eslint from "@eslint/js";
+import next from "@next/eslint-plugin-next";
+
+export default [
+    eslint.configs.recommended,
+    {
+        plugins: {
+            "@next/next": next,
+        },
+        rules: {
+            ...next.configs.recommended.rules,
+        },
+    },
+];

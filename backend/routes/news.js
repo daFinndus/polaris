@@ -1,24 +1,21 @@
 const axios = require("axios");
 
-const {push, pull, dupes} = require('./database');
+const {push, pull} = require('./database');
 
 let cache = [];
 let cacheLastUpdate = 0;
 
 /**
- * This function fetches articles from the NewsAPI.
- * After fetching the articles, it pushes them to the database and updates the cache.
+ * Fetches articles from the NewsAPI, pushes them to the database, and updates the cache.
  * @returns {Promise<void>} A promise that resolves when the articles are fetched and pushed.
  */
 const fetchArticles = async () => {
     const uri = "https://newsapi.org/v2/top-headlines";
 
     try {
-        let response = await axios.get(uri, {
-            params: {
-                category: "technology", apiKey: process.env.NEWS_API_KEY
-            }
-        })
+        const response = await axios.get(uri, {
+            params: {category: "technology", apiKey: process.env.NEWS_API_KEY}
+        });
 
         await cacheArticles();
 
@@ -44,8 +41,7 @@ const fetchArticles = async () => {
 };
 
 /**
- * This function caches the articles in the cache variable.
- * It also updates the cacheLastUpdate variable with the current time.
+ * Caches the articles in the cache variable and updates the cacheLastUpdate variable with the current time.
  * @returns {Promise<void>} A promise that resolves when the cache is updated.
  */
 const cacheArticles = async () => {
@@ -60,13 +56,12 @@ const cacheArticles = async () => {
 };
 
 /**
- * This function returns the cache.
- * This is superior to the pull function as it does not need to wait for the database to respond.
- * @param page The page number to start the cache from.
- * @param limit The amount of articles to return.
- * @returns {Promise<*[]>} A promise that resolves with the cache.
+ * Returns the cached articles. If the cache is empty, fetches articles from the database.
+ * @param {number} [page=1] - The page number to start the cache from.
+ * @param {number} [limit=18] - The number of articles to return.
+ * @returns {Promise<Object[]>} A promise that resolves with the cached articles.
  */
-const getCachedArticles = async ({page = 1, limit = 18}) => {
+const getCachedArticles = async (page = 1, limit = 18) => {
     if (cache.length === 0) {
         console.log("Cache is empty, fetching articles from the database.");
 

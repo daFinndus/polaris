@@ -1,8 +1,8 @@
 import {RiNextjsFill, RiTailwindCssFill} from "react-icons/ri";
 import {DiMongodb, DiPython} from "react-icons/di";
+import {TbBrandCSharp} from "react-icons/tb";
 import {BiLogoReact} from "react-icons/bi";
 import {FaNodeJs} from "react-icons/fa6";
-import {SiCsharp} from "react-icons/si";
 
 const technologies = [
     {
@@ -48,7 +48,7 @@ const technologies = [
         href: "https://python.org"
     },
     {
-        Icon: SiCsharp,
+        Icon: TbBrandCSharp,
         name: "C#",
         content: "C# is my main language for windows desktop applications and game development using Unity.",
         version: "v9+",

@@ -1,32 +1,60 @@
+const cors = require('cors');
 const axios = require('axios');
 const express = require('express');
-const cors = require('cors');
 
+const {dupes} = require("./routes/database");
 const {fetchArticles, getCachedArticles} = require("./routes/news");
-const backend = require("./routes/backend");
 
 require('dotenv').config({path: __dirname + '/.env'});
 
 const app = express();
 const port = process.env.PORT;
 
-const whitelist = [process.env.LOCAL_IP, process.env.PUBLIC_IP, process.env.VERCEL_URL];
+/**
+ * Middleware to enable CORS with specified origins and methods.
+ */
+app.use(cors({
+    origin: [process.env.LOCAL_IP, process.env.PUBLIC_IP, process.env.VERCEL_URL],
+    methods: ["GET"],
+}));
 
-app.use(cors());
+/**
+ * Route handler for the root path.
+ * Responds with a 404 status and a message indicating the page does not exist.
+ */
+app.get('/', (_, res) => res.status(404).send('Sorry, this page does not exist!'));
 
-app.use("/", backend);
-app.get("/", (req, res) => {
-    res.status(404).send("Sorry, this page does not exist!");
+/**
+ * Route handler for the /backend path.
+ * Responds with a message indicating the backend is running.
+ */
+app.get('/backend', (_, res) => res.send('Hello from backend!'));
+
+/**
+ * Route handler for fetching duplicate articles from the database.
+ * Responds with the number of duplicates found or an error message.
+ */
+app.get("/database/dupes", async (_, res) => {
+    try {
+        const duplicates = await dupes();
+        res.status(200).json({success: true, duplicates: duplicates});
+    } catch (err) {
+        res.status(500).send("Failed to fetch duplicates.");
+        console.log("Error fetching duplicates:", err.message);
+    }
 });
 
-app.get('/articles', async (req, res) => {
+/**
+ * Route handler for fetching articles with pagination.
+ * Responds with the articles and pagination information or an error message.
+ */
+app.get('/api/articles', async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 18;
 
     try {
-        const articles = await getCachedArticles({page, limit});
-
-        console.log("Successfully fetched", articles.length, "articles from the cache.");
+        const articles = await getCachedArticles(page, limit);
+        console.log("Successfully gave", articles.length, "articles to the client.");
         res.status(200).json({
             success: true,
             total: articles.length,
@@ -39,13 +67,16 @@ app.get('/articles', async (req, res) => {
     }
 });
 
+/**
+ * Checks if the port is defined in the environment variables.
+ * If not, logs an error and exits the process.
+ * Otherwise, starts the server on the specified port.
+ */
 if (!port) {
-    console.error("No port in environment variables found.");
+    console.error('No port in environment variables found.');
     process.exit(1);
 } else {
-    app.listen(port, () => {
-        console.log(`Server running from port: ${port}\n`);
-    });
+    app.listen(port, () => console.log(`Server running from port: ${port}\n`));
 }
 
 /**
@@ -57,15 +88,11 @@ const reload = () => {
     const url = process.env.RENDER_URL;
     console.log("Reloading website on:", url);
 
-    axios
-        .get(url + "/backend")
-        .then((response) => {
-            console.log(`Reloaded at ${new Date().toISOString()}: Status ${response.status}`);
-        })
-        .catch((error) => {
-            console.error(`Error reloading at ${new Date().toISOString()}:`, error.message);
-        });
+    axios.get(url + '/backend')
+        .then(response => console.log(`Reloaded at ${new Date().toISOString()}: Status ${response.status}`))
+        .catch(error => console.error(`Error reloading at ${new Date().toISOString()}:`, error.message));
 };
 
+// Set intervals for reloading the backend and fetching articles
 setInterval(reload, 1000 * 60 * 5);
 setInterval(fetchArticles, 1000 * 60 * 60 * 4);
