@@ -81,6 +81,4 @@ const getCachedArticles = async ({page = 1, limit = 18}) => {
     return cache.slice((page - 1) * limit, page * limit);
 };
 
-setInterval(fetchArticles, 1000 * 60 * 60 * 4);
-
-module.exports = {cacheArticles, getCachedArticles};
+module.exports = {fetchArticles, cacheArticles, getCachedArticles};

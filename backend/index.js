@@ -2,9 +2,8 @@ const axios = require('axios');
 const express = require('express');
 const cors = require('cors');
 
-const {getCachedArticles} = require("./routes/news");
+const {fetchArticles, getCachedArticles} = require("./routes/news");
 const backend = require("./routes/backend");
-const {dupes} = require("./routes/database");
 
 require('dotenv').config({path: __dirname + '/.env'});
 
@@ -69,3 +68,4 @@ const reload = () => {
 };
 
 setInterval(reload, 1000 * 60 * 5);
+setInterval(fetchArticles, 1000 * 60 * 60 * 4);
