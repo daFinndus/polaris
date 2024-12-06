@@ -1,11 +1,13 @@
 "use client";
 
+import React, {useEffect} from "react";
+
 import Link from "next/link";
 
 import {Button} from "@/components/ui/button";
 
 import {useWindowSize} from "@/app/hooks/useWindowSize";
-import React from "react";
+import {getColorMode} from "@/app/hooks/getColorMode";
 
 function Unsupported() {
     return (
@@ -16,6 +18,10 @@ function Unsupported() {
 }
 
 function Supported() {
+    useEffect(() => {
+        getColorMode();
+    }, []);
+
     return (
         <div className={"font-sans relative h-screen w-screen justify-center flex items-center"}>
             No projects yet..

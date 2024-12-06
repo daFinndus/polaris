@@ -1,14 +1,14 @@
 "use client";
 
-import React from "react";
+import React, {useEffect} from "react";
 
 import Link from "next/link";
 
 import {Button} from "@/components/ui/button";
 
 import {useWindowSize} from "@/app/hooks/useWindowSize";
-import {fetchNews} from "@/app/news/fetch";
-
+import {getColorMode} from "@/app/hooks/getColorMode";
+import Articles from "@/app/news/articles";
 
 function Unsupported() {
     return (
@@ -19,9 +19,15 @@ function Unsupported() {
 }
 
 function Supported() {
+    useEffect(() => {
+        getColorMode();
+    }, []);
+
     return (
         <div className={"font-sans relative h-screen w-screen justify-center flex items-center"}>
-            <Button variant={"secondary"} onClick={() => fetchNews(1, 18)}>Start fetchin'</Button>
+            <div className={"h-5/6"}>
+                <Articles/>
+            </div>
             <Link href={"/"} className={"absolute top-4 left-4"}>
                 <Button variant={"secondary"}>
                     Back to homepage

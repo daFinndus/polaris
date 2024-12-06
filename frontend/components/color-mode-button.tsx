@@ -4,10 +4,11 @@ import {useEffect, useState} from "react";
 
 import {Button} from "@/components/ui/button";
 
-import {getCookie, setCookie} from 'cookies-next/client';
+import {setCookie} from 'cookies-next/client';
+import {deleteCookie} from "cookies-next";
 
 import {MdDarkMode, MdLightMode} from "react-icons/md";
-import {deleteCookie} from "cookies-next";
+import {getColorMode} from "@/app/hooks/getColorMode";
 
 /**
  * This is a custom button that changes the color mode of the website.
@@ -18,14 +19,8 @@ import {deleteCookie} from "cookies-next";
 export default function ColorModeButton() {
     const [dark, setDark] = useState(false);
 
-    // Initialize dark mode state on the client
     useEffect(() => {
-        const isDark = getCookie("dark") === "Your website is currently in dark mode.";
-        setDark(isDark);
-
-        if (isDark) {
-            document.documentElement.classList.add("dark");
-        }
+        setDark(getColorMode());
     }, []);
 
     const changeMode = () => {

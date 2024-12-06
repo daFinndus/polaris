@@ -49,8 +49,6 @@ const push = async (articles) => {
  * @returns {Promise<Array<Object>>} A promise that resolves with an array of articles.
  */
 const pull = async (page, limit) => {
-    let articles;
-
     try {
         const mongoose = await connect();
         const query = mongoose.connection.db.collection('articles').find({}).sort({_id: -1});
