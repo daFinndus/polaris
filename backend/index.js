@@ -3,7 +3,7 @@ const axios = require('axios');
 const express = require('express');
 
 const {dupes} = require("./routes/database");
-const {fetchArticles, getCachedArticles} = require("./routes/news");
+const {fetchArticles, getCachedArticles, getTotalArticles} = require("./routes/news");
 
 require('dotenv').config({path: __dirname + '/.env'});
 
@@ -51,14 +51,21 @@ app.get("/database/dupes", async (_, res) => {
 app.get('/api/articles', async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 18;
+    const query = req.query.query || "";
+
+    console.log("Received parameters: page is", page, "and limit is", limit, "and query is", query);
 
     try {
-        const articles = await getCachedArticles(page, limit);
+        const articles = await getCachedArticles(page, limit, query);
+        const total = getTotalArticles();
+
         console.log("Successfully gave", articles.length, "articles to the client.");
+
         res.status(200).json({
             success: true,
-            total: articles.length,
+            total: total,
             articles: articles,
+            query: query,
             pagination: {page: page, limit: limit}
         });
     } catch (err) {
@@ -94,7 +101,7 @@ const reload = () => {
 };
 
 // Set intervals for reloading the backend and fetching articles
-setInterval(reload, 1000 * 60 * 5);
+// setInterval(reload, 1000 * 60 * 5);
 setInterval(fetchArticles, 1000 * 60 * 60 * 4);
 
 // Call fetch articles on startup to populate the cache

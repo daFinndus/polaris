@@ -15,6 +15,7 @@
     "@next/eslint-plugin-next": "^15.0.3",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-hover-card": "^1.1.2",
+    "@radix-ui/react-select": "^2.1.2",
     "@radix-ui/react-slot": "^1.1.0",
     "@typescript-eslint/eslint-plugin": "^8.17.0",
     "@vercel/analytics": "^1.4.1",
