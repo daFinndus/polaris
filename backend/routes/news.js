@@ -3,33 +3,28 @@ const axios = require("axios");
 const {push, pull} = require('./database');
 
 let cache = [];
-let cacheLastUpdate = 0;
+const uri = "https://newsapi.org/v2/top-headlines";
 
 /**
  * Fetches articles from the NewsAPI, pushes them to the database, and updates the cache.
  * @returns {Promise<void>} A promise that resolves when the articles are fetched and pushed.
  */
 const fetchArticles = async () => {
-    const uri = "https://newsapi.org/v2/top-headlines";
-
     try {
         const response = await axios.get(uri, {
             params: {category: "technology", apiKey: process.env.NEWS_API_KEY}
         });
 
-        await cacheArticles();
+        // If the cache is empty, fetch articles from the database
+        // That is necessary to remove duplicates from the cache
+        if (cache.length === 0) await cacheArticles();
+        const ids = new Set(cache.map(article => article._id).filter(Boolean));
 
         let articles = response.data.articles;
-        console.log("Fetched", articles.length, "articles from the NewsAPI.");
+        articles = filterDuplicates(articles, ids);
+        console.log("Fetched", articles.length, "articles from the NewsAPI and filtered out", response.data.articles.length - articles.length, "duplicate articles.");
 
-        // This snippet is used to remove duplicates from the cache
-        if (articles.length > 0) {
-            const titles = new Set(cache.map(article => article.title).filter(Boolean));
-            articles = articles.filter(article => article.title && !titles.has(article.title));
-            console.log("Filtered out", response.data.articles.length - articles.length, "duplicate articles.");
-        }
-
-        if (articles.length > 0) {
+        if (articles.length) {
             await push(articles);
             await cacheArticles();
         }
@@ -41,17 +36,24 @@ const fetchArticles = async () => {
 };
 
 /**
- * Caches the articles in the cache variable and updates the cacheLastUpdate variable with the current time.
+ * Caches the articles from the database in the cache variable.
  * @returns {Promise<void>} A promise that resolves when the cache is updated.
  */
 const cacheArticles = async () => {
-    try {
-        cache = await pull(undefined, undefined);
-        cacheLastUpdate = Date.now();
+    const cachedIds = new Set(cache.map(article => article._id));
 
-        console.log("Cache updated at", new Date(cacheLastUpdate).toISOString());
+    try {
+        const databaseArticles = await pull(undefined, undefined);
+        const newDatabaseArticles = filterDuplicates(databaseArticles, cachedIds);
+
+        console.log("Going to trim titles for", newDatabaseArticles.length, "articles.");
+        cache = [...cache, ...newDatabaseArticles.map(article => ({
+            ...article,
+            title: sliceTitle(article.title)
+        }))];
+
     } catch (err) {
-        console.error("Error caching articles:", err.message);
+        console.error("Error pulling articles from the database:", err.message);
     }
 };
 
@@ -59,21 +61,57 @@ const cacheArticles = async () => {
  * Returns the cached articles. If the cache is empty, fetches articles from the database.
  * @param {number} [page=1] - The page number to start the cache from.
  * @param {number} [limit=18] - The number of articles to return.
+ * @param {string} [query=""] - The query to filter the cached articles by.
  * @returns {Promise<Object[]>} A promise that resolves with the cached articles.
  */
-const getCachedArticles = async (page = 1, limit = 18) => {
-    if (cache.length === 0) {
-        console.log("Cache is empty, fetching articles from the database.");
+const getCachedArticles = async (page = 1, limit = 18, query = "") => {
+    let queried = cache;
 
-        cache = await pull(page, limit);
+    if (query) {
+        try {
+            queried = cache.filter(article => {
+                const title = article.title?.toLowerCase() || "";
+                const description = article.description?.toLowerCase() || "";
+                const sourceName = article.source?.name?.toLowerCase() || "";
 
-        // Fetch articles asynchronously without blocking the response
-        fetchArticles().catch(err => console.error("Error fetching articles:", err.message));
-
-        return cache;
+                return (
+                    title.includes(query.toLowerCase()) ||
+                    sourceName.includes(query.toLowerCase()) ||
+                    description.includes(query.toLowerCase())
+                );
+            });
+        } catch (err) {
+            console.error("Error executing query:", err.message);
+        }
     }
 
-    return cache.slice((page - 1) * limit, page * limit);
+    return queried.slice((page - 1) * limit, page * limit);
 };
 
-module.exports = {fetchArticles, cacheArticles, getCachedArticles};
+/**
+ * Returns the total number of articles in the cache.
+ * @returns {number} The total number of articles in the cache.
+ */
+const getTotalArticles = () => cache.length;
+
+/**
+ * Filters out duplicate articles from the fetched articles.
+ * @param articles - The articles to filter.
+ * @param ids - The existing article IDs to filter out.
+ * @returns {*} The filtered articles.
+ */
+const filterDuplicates = (articles, ids) => {
+    return articles.filter(article => article._id && !ids.has(article._id));
+};
+
+/**
+ * Trims the title by removing everything after and including the dash.
+ * @param {string} title - The title to be trimmed.
+ * @returns {string} The trimmed title.
+ */
+const sliceTitle = (title) => {
+    const dashIndex = title.lastIndexOf('-');
+    return dashIndex !== -1 ? title.substring(0, dashIndex).trim() : title;
+};
+
+module.exports = {fetchArticles, cacheArticles, getCachedArticles, getTotalArticles};
