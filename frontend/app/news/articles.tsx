@@ -18,8 +18,7 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card"
 import {Skeleton} from "@/components/ui/skeleton";
 
-// const uri = `${process.env.NEXT_PUBLIC_RENDER_BACKEND}/api/articles`;
-const uri = "http://localhost:8000/api/articles";
+const uri = `${process.env.NEXT_PUBLIC_RENDER_BACKEND}/api/articles`;
 
 export default function Articles() {
     const [page, setPage] = useState(1);
