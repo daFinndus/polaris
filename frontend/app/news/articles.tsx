@@ -94,10 +94,9 @@ export default function Articles() {
      * @param key - The key that was pressed.
      * @param keyword - The keyword that the user searched for.
      */
-    const searchQuery = async ({key, keyword}: { key: string, keyword: string }) => {
-        if (key === "Enter" && keyword !== "") {
-            console.log("Searching for", keyword);
-            setQuery(keyword);
+    const searchQuery = async ({key}: { key: string }) => {
+        if (key === "Enter") {
+            console.log("Searching for", query);
             await fetchNews();
         }
     };
@@ -106,7 +105,7 @@ export default function Articles() {
         <div className={"flex flex-col w-full px-8 py-4 justify-center items-center"}>
             <div
                 className={"flex flex-col tablet:flex-row gap-y-2 tablet:gap-y-0 tablet:gap-x-4 w-full mt-4 mb-8 items-center justify-center"}>
-                <ArticleSearchbar searchQuery={searchQuery}/>
+                <ArticleSearchbar searchQuery={searchQuery} setQuery={setQuery}/>
                 <SelectLimit updateLimit={updateLimit}/>
             </div>
             <div className={"grid tablet:grid-cols-2 laptop:grid-cols-3 gap-4 mb-4"}>
@@ -151,7 +150,7 @@ const ArticleCard = ({article}: { article: Article }) => {
                 <CardDescription>{article.description}</CardDescription>
             </div>
             <CardFooter className={"flex justify-center"}>
-                <Link href={article.url}>
+                <Link className={"mt-4"} href={article.url}>
                     <Button variant={"secondary"}>Read more</Button>
                 </Link>
             </CardFooter>
@@ -190,11 +189,13 @@ const LazyImage = ({src, alt}: { src: string; alt: string }) => {
 };
 
 
-const ArticleSearchbar = ({searchQuery}: { searchQuery: Function }) => {
+const ArticleSearchbar = ({searchQuery, setQuery}: { searchQuery: Function, setQuery: Function }) => {
     return (
-        <Input onKeyDown={(event) => {
-            searchQuery({key: event.key, keyword: event.currentTarget.value})
-        }} placeholder={"Search for an article..."}/>
+        <Input
+            onChange={(event) => setQuery(event.currentTarget.value)}
+            onKeyDown={(event) => searchQuery({key: event.key, keyword: event.currentTarget.value})}
+            placeholder={"Search for an article..."}
+        />
     );
 }
 
