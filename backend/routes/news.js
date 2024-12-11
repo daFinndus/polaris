@@ -22,7 +22,7 @@ const fetchArticles = async () => {
 
         let articles = response.data.articles;
         articles = filterDuplicates(articles, ids);
-        console.log("Fetched", articles.length, "articles from the NewsAPI and filtered out", response.data.articles.length - articles.length, "duplicate articles.");
+        console.log("Fetched", response.data.articles.length, "articles from the NewsAPI and filtered out", response.data.articles.length - articles.length, "duplicate articles.");
 
         if (articles.length) {
             await push(articles);
