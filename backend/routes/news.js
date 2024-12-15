@@ -21,6 +21,7 @@ const fetchArticles = async () => {
         const ids = new Set(cache.map(article => article._id).filter(Boolean));
 
         let articles = response.data.articles;
+        console.log(articles);
         articles = filterDuplicates(articles, ids);
         console.log("Fetched", response.data.articles.length, "articles from the NewsAPI and filtered out", response.data.articles.length - articles.length, "duplicate articles.");
 

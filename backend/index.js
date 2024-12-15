@@ -102,7 +102,7 @@ const reload = () => {
 
 // Set intervals for reloading the backend and fetching articles
 setInterval(reload, 1000 * 60 * 5);
-setInterval(fetchArticles, 1000 * 60 * 60 * 4);
+setInterval(fetchArticles, 1000 * 60 * 5);
 
 // Call fetch articles on startup to populate the cache
 // noinspection JSIgnoredPromiseFromCall
