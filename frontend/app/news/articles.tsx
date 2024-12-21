@@ -99,6 +99,7 @@ export default function Articles() {
     const searchQuery = async ({key}: { key: string }) => {
         if (key === "Enter") {
             console.log("Searching for", query);
+            setPage(1);
             await fetchNews();
         }
     };
