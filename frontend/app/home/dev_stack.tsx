@@ -1,5 +1,5 @@
 import {IconType} from "react-icons";
-import {BsStack} from "react-icons/bs";
+import {FaConnectdevelop} from "react-icons/fa6";
 
 import dev_techs from "@/app/data/dev_techs";
 
@@ -51,7 +51,7 @@ export default function DevStack() {
             }
         >
             <div className={"flex flex-row"}>
-                <BsStack className={"size-6 text-color-light"}/>
+                <FaConnectdevelop className={"size-6 text-color-light"}/>
                 <p className={"ml-3 text-xl font-bold"}>My Development Stack</p>
             </div>
             <p className={"mb-4 mt-1 text-sm text-primary-darker"}>

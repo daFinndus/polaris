@@ -1,11 +1,10 @@
 import {IconType} from "react-icons";
-import {BsStack} from "react-icons/bs";
+import {MdSecurity} from "react-icons/md";
 
 import security_techs from "@/app/data/security_techs";
 
 import {Badge} from "@/components/ui/badge";
 import {HoverCard, HoverCardContent, HoverCardTrigger,} from "@/components/ui/hover-card"
-
 
 function Technology({
                         Icon,
@@ -52,7 +51,7 @@ export default function SecurityStack() {
             }
         >
             <div className={"flex flex-row"}>
-                <BsStack className={"size-6 text-color-light"}/>
+                <MdSecurity className={"size-6 text-color-light"}/>
                 <p className={"ml-3 text-xl font-bold"}>My Cybersecurity Stack</p>
             </div>
             <p className={"mb-4 mt-1 text-sm text-primary-darker"}>
