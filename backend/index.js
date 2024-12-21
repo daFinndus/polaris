@@ -14,9 +14,18 @@ const port = process.env.PORT;
  * Middleware to enable CORS with specified origins and methods.
  */
 app.use(cors({
-    origin: [process.env.LOCAL_IP, process.env.PUBLIC_IP, process.env.VERCEL_URL],
+    origin: ["http://localhost:3000", process.env.LOCAL_IP, process.env.PUBLIC_IP, process.env.VERCEL_URL],
     methods: ["GET"],
 }));
+
+/**
+ * Middleware to log the origin of the request.
+ */
+app.use((req, res, next) => {
+    const originDomain = req.get('host');
+    console.log('Request came from:', originDomain || 'Unknown host');
+    next();
+})
 
 /**
  * Route handler for the root path.
@@ -53,11 +62,11 @@ app.get('/api/articles', async (req, res) => {
     const limit = parseInt(req.query.limit) || 18;
     const query = req.query.query || "";
 
-    console.log("Received parameters: page is", page, "and limit is", limit, "and query is", query);
+    console.log("Received parameters: page is", page, "and limit is", limit, "and query is", query || "empty");
 
     try {
         const articles = await getCachedArticles(page, limit, query);
-        const total = getTotalArticles();
+        const total = getTotalArticles(query);
 
         console.log("Successfully gave", articles.length, "articles to the client.");
 

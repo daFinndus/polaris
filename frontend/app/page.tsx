@@ -12,6 +12,7 @@ import NewsPageButton from "@/components/news-page-button";
 import ColorModeButton from "@/components/color-mode-button";
 
 import {useWindowSize} from "@/app/hooks/useWindowSize";
+import ThreePageButton from "@/components/three-page-button";
 
 function Unsupported() {
     return (
@@ -40,6 +41,7 @@ function Supported() {
                 className={"laptop:flex laptop:flex-col hidden gap-y-2 laptop:fixed laptop:top-4 laptop:right-4"}>
                 <ColorModeButton/>
                 <NewsPageButton/>
+                <ThreePageButton/>
             </div>
             <div
                 className="flex items-start justify-center font-sans tablet:p-8 laptop:px-32">
@@ -69,6 +71,7 @@ function Supported() {
                         className={"flex gap-x-2 notebook:fixed notebook:flex-col notebook:gap-y-2 notebook:top-4 notebook:right-4"}>
                         <ColorModeButton/>
                         <NewsPageButton/>
+                        <ThreePageButton/>
                     </div>
                     <About/>
                     <Stack/>

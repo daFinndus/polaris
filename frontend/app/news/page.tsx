@@ -25,7 +25,7 @@ function Supported() {
     }, []);
 
     return (
-        <div className={"font-sans relative h-screen w-screen justify-center flex items-center"}>
+        <div className={"font-sans relative justify-center flex items-center"}>
             <div className={"h-full"}>
                 <Articles/>
             </div>

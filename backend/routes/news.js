@@ -68,31 +68,38 @@ const getCachedArticles = async (page = 1, limit = 18, query = "") => {
     let queried = cache;
 
     if (query) {
-        try {
-            queried = cache.filter(article => {
-                const title = article.title?.toLowerCase() || "";
-                const description = article.description?.toLowerCase() || "";
-                const sourceName = article.source?.name?.toLowerCase() || "";
+        queried = cache.filter(article => {
+            const title = article.title?.toLowerCase() || "";
+            const description = article.description?.toLowerCase() || "";
+            const sourceName = article.source?.name?.toLowerCase() || "";
 
-                return (
-                    title.includes(query.toLowerCase()) ||
-                    sourceName.includes(query.toLowerCase()) ||
-                    description.includes(query.toLowerCase())
-                );
-            });
-        } catch (err) {
-            console.error("Error executing query:", err.message);
-        }
+            return title.includes(query.toLowerCase()) || sourceName.includes(query.toLowerCase()) || description.includes(query.toLowerCase());
+        });
     }
 
+    queried.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
     return queried.slice((page - 1) * limit, page * limit);
 };
 
 /**
- * Returns the total number of articles in the cache.
+ * Returns the total number of articles in the current cache that match the query.
  * @returns {number} The total number of articles in the cache.
  */
-const getTotalArticles = () => cache.length;
+const getTotalArticles = (query = "") => {
+    let queried = cache;
+
+    if (query) {
+        queried = cache.filter(article => {
+            const title = article.title?.toLowerCase() || "";
+            const description = article.description?.toLowerCase() || "";
+            const sourceName = article.source?.name?.toLowerCase() || "";
+
+            return title.includes(query.toLowerCase()) || sourceName.includes(query.toLowerCase()) || description.includes(query.toLowerCase());
+        });
+    }
+
+    return queried.length;
+};
 
 /**
  * Filters out duplicate articles from the fetched articles.

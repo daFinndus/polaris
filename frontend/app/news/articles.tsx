@@ -14,9 +14,11 @@ import {
 } from "@/components/ui/pagination"
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
+import {CardBody, CardContainer, CardItem} from "@/components/ui/3d-card";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card"
+import {CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card";
 import {Skeleton} from "@/components/ui/skeleton";
+import Marquee from "react-fast-marquee";
 
 const uri = `${process.env.NEXT_PUBLIC_RENDER_BACKEND}/api/articles`;
 
@@ -104,11 +106,11 @@ export default function Articles() {
     return (
         <div className={"flex flex-col w-full px-8 py-4 justify-center items-center"}>
             <div
-                className={"flex flex-col tablet:flex-row gap-y-2 tablet:gap-y-0 tablet:gap-x-4 w-full mt-4 mb-8 items-center justify-center"}>
+                className={"flex flex-col notebook:flex-row gap-y-2 notebook:gap-y-0 notebook:gap-x-4 w-full mt-4 mb-8 items-center justify-center"}>
                 <ArticleSearchbar searchQuery={searchQuery} setQuery={setQuery}/>
                 <SelectLimit updateLimit={updateLimit}/>
             </div>
-            <div className={"grid tablet:grid-cols-2 laptop:grid-cols-3 gap-4 mb-4"}>
+            <div className={"grid gap-y-8 gap-x-4 notebook:grid-cols-2 laptop:grid-cols-3 gap-4"}>
                 {loading
                     ? [...Array(limit)].map((_, index) => <ArticleCardSkeleton key={index}/>)
                     : articles.map((article, index) => (
@@ -137,47 +139,98 @@ interface Article {
 }
 
 const ArticleCard = ({article}: { article: Article }) => {
+    const formatDate = (isoDate: string) => {
+        if (!isoDate) return "";
+
+        const date = new Date(isoDate);
+
+        let format;
+
+        try {
+            format = new Intl.DateTimeFormat('de-DE', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+            }).format(date);
+        } catch (err) {
+            console.error("Error whilst formatting date", err);
+        }
+
+        return format || isoDate;
+    };
+
     return (
-        <Card className={"relative flex h-[476px] w-72 flex-col"}>
-            <CardHeader>
-                <CardTitle className={"h-16 overflow-y-scroll"}>{article.title}</CardTitle>
-            </CardHeader>
-            <CardContent className={"w-full p-0 m-0"}>
-                <LazyImage src={article.urlToImage} alt={article.title}/>
-                <p className={"absolute bg-background-light p-2 top-52"}>{article.source.name}</p>
-            </CardContent>
-            <div className={"overflow-scroll h-64 p-4"}>
-                <CardDescription>{article.description}</CardDescription>
-            </div>
-            <CardFooter className={"flex justify-center"}>
-                <Link className={"mt-4"} href={article.url}>
-                    <Button variant={"secondary"}>Read more</Button>
-                </Link>
-            </CardFooter>
-        </Card>
+        <CardContainer className="inter-var h-min p-0 m-0">
+            <CardBody
+                className="bg-background-light relative shadow-lg hover:shadow-xl group/card border-background-lighter rounded-xl px-4 border"
+            >
+                <CardItem translateZ={50} translateY={10}>
+                    <CardHeader>
+                        <CardTitle>
+                            <Marquee className={"overflow-hidden"} gradient={false} speed={30} loop={0}>
+                                <span className={"mx-2"}>{"📰"}</span>
+                                <span>{article.title}</span>
+                            </Marquee>
+                        </CardTitle>
+                    </CardHeader>
+                </CardItem>
+                <CardItem translateZ={100} translateY={10} className={"w-full"}>
+                    <CardContent>
+                        <LazyImage src={article.urlToImage} alt={article.title}/>
+                        <p className={"absolute bg-background-light p-2 top-24 max-w-28 whitespace-nowrap font-bold text-sm overflow-hidden text-ellipsis"}>{article.source.name}</p>
+                        <p className={"absolute bg-background-light p-2 top-24 right-4 font-bold text-sm"}>{formatDate(article.publishedAt)}</p>
+                    </CardContent>
+                </CardItem>
+                <CardItem translateZ={50} className={"h-24 px-4 overflow-hidden text-ellipsis"}>
+                    <CardDescription>
+                        {article.description}
+                    </CardDescription>
+                </CardItem>
+                <CardItem translateZ={50} className={"w-full h-fit flex justify-center"}>
+                    <CardFooter className={"p-0 m-0"}>
+                        <Link href={article.url}>
+                            <Button variant={"secondary"}>Read more</Button>
+                        </Link>
+                    </CardFooter>
+                </CardItem>
+            </CardBody>
+        </CardContainer>
     );
 }
 
 const ArticleCardSkeleton = () => {
     return (
-        <div
-            className={"rounded-xl pt-6 items-center gap-y-6 border bg-card text-card-foreground shadow relative flex h-[476px] w-72 flex-col"}>
-            <Skeleton className={"w-60 h-20"}/>
-            <Skeleton className={"w-64 h-32 "}/>
-            <Skeleton className={"w-60 h-24 "}/>
-            <Skeleton className={"w-32 h-10 "}/>
-        </div>
+        <CardContainer className="inter-var h-min p-0 m-0">
+            <CardBody
+                className="flex flex-col items-center bg-background-light shadow-lg hover:shadow-xl group/card border-background-lighter rounded-xl px-4 border">
+                <CardItem translateZ={50} translateY={10} className={"w-fit mt-4 mb-6"}>
+                    <Skeleton className="h-8 w-72"/>
+                </CardItem>
+                <CardItem translateZ={100} translateY={10} className={"w-fit mb-6"}>
+                    <Skeleton className="h-28 w-72"/>
+                </CardItem>
+                <CardItem translateZ={50} className={"w-fit"}>
+                    <Skeleton className="h-20 w-72"/>
+                </CardItem>
+                <CardItem translateZ={50} className={"w-fit flex justify-center mt-6"}>
+                    <Skeleton className="h-8 w-24"/>
+                </CardItem>
+            </CardBody>
+        </CardContainer>
     );
-}
+};
 
 const LazyImage = ({src, alt}: { src: string; alt: string }) => {
     const [loaded, setLoaded] = useState(false);
 
     return (
-        <div className="relative h-36 w-full bg-background-light">
+        <div className="relative h-36 w-full bg-background-lighter rounded-xl">
             {!loaded && <Skeleton className="absolute inset-0"/>}
             <img
-                className={`h-36 w-full object-cover transition-opacity duration-500 ${
+                className={`h-36 w-full object-cover rounded-xl transition-opacity duration-500 
+                ${
                     loaded ? "opacity-100" : "opacity-0"
                 }`}
                 src={src || "https://source.unsplash.com/random"}
@@ -202,7 +255,7 @@ const ArticleSearchbar = ({searchQuery, setQuery}: { searchQuery: Function, setQ
 const SelectLimit = ({updateLimit}: { updateLimit: Function }) => {
     return (
         <Select onValueChange={value => updateLimit(Number(value))}>
-            <SelectTrigger className="w-full tablet:w-max gap-x-2 px-2">
+            <SelectTrigger className="w-full notebook:w-max gap-x-2 px-2">
                 <SelectValue placeholder="Change articles per page"/>
             </SelectTrigger>
             <SelectContent>
@@ -225,7 +278,7 @@ const PaginationGroup = ({page, updatePage, lastPage}: {
     const isNextDisabled = page >= lastPage;
 
     return (
-        <Pagination>
+        <Pagination className={"m-8"}>
             <PaginationContent>
                 <PaginationItem>
                     <PaginationPrevious
