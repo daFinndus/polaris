@@ -23,7 +23,7 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
     title: "Finn Luca Jensen",
-    description: "This is the portfolio of Finn 'daFinndus' Jensen",
+    description: "This is the portfolio of Finn Luca 'daFinndus' Jensen",
     icons: {
         icon: "/favicon/favicon.ico",
     }
@@ -37,7 +37,7 @@ export default function RootLayout({
     return (
         <html lang="en">
         <head>
-            <title>Polaris</title>
+            <title>Finn Luca Jensen</title>
             <link rel="icon" href="/favicon/favicon.ico" sizes="any"/>
             <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png"/>
             <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png"/>

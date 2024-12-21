@@ -1,10 +1,11 @@
 import {IconType} from "react-icons";
 import {BsStack} from "react-icons/bs";
 
-import technologies from "@/app/data/technologies";
+import security_techs from "@/app/data/security_techs";
 
 import {Badge} from "@/components/ui/badge";
 import {HoverCard, HoverCardContent, HoverCardTrigger,} from "@/components/ui/hover-card"
+
 
 function Technology({
                         Icon,
@@ -43,7 +44,7 @@ function Technology({
     );
 }
 
-export default function Stack() {
+export default function SecurityStack() {
     return (
         <div
             className={
@@ -52,13 +53,13 @@ export default function Stack() {
         >
             <div className={"flex flex-row"}>
                 <BsStack className={"size-6 text-color-light"}/>
-                <p className={"ml-3 text-xl font-bold"}>My Tech Stack</p>
+                <p className={"ml-3 text-xl font-bold"}>My Cybersecurity Stack</p>
             </div>
             <p className={"mb-4 mt-1 text-sm text-primary-darker"}>
-                Here are some of the technologies I use to build my projects
+                These are my go to tools and forums for cybersecurity
             </p>
             <div className={"grid grid-cols-2 gap-2"}>
-                {technologies.map((technology, index) => (
+                {security_techs.map((technology, index) => (
                     <Technology
                         key={index}
                         Icon={technology.Icon}

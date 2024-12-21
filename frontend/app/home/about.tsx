@@ -62,7 +62,7 @@ export default function About() {
                 </Avatar>
                 <div className={"ml-4 flex flex-col space-y-1"}>
                     <Badge className={"my-1 w-max"} variant={"color"}>
-                        Currently studying..
+                        Best experience on desktop!
                     </Badge>
                     <p className={"text-sm font-bold tablet:text-lg"}>
                         Finn Luca

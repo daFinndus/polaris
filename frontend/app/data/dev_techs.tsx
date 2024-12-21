@@ -4,7 +4,15 @@ import {TbBrandCSharp} from "react-icons/tb";
 import {BiLogoReact} from "react-icons/bi";
 import {FaNodeJs} from "react-icons/fa6";
 
-const technologies = [
+interface Technology {
+    Icon: any,
+    name: string,
+    content: string,
+    version: string,
+    href: string
+}
+
+const dev_techs: Technology[] = [
     {
         Icon: FaNodeJs,
         name: "Node.js",
@@ -56,4 +64,4 @@ const technologies = [
     }
 ];
 
-export default technologies;
+export default dev_techs;
