@@ -39,6 +39,7 @@ export default function ColorModeButton() {
         <>
             <Button variant={"secondary"}
                     onClick={changeMode}
+                    aria-label={"Change the color mode of the website"}
                     className={"notebook:w-12 w-1/2 flex items-center h-12"}>
                 {dark ? <MdLightMode/> : <MdDarkMode/>}
             </Button>

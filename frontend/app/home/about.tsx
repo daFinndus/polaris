@@ -57,7 +57,7 @@ export default function About() {
         >
             <div className={"flex flex-row"}>
                 <Avatar className={"ml-1 mt-1 size-20 rounded-xl tablet:size-28"}>
-                    <AvatarImage className={"object-cover"} src={"/images/me.png"}/>
+                    <AvatarImage className={"object-cover"} src={"/images/me.png"} alt={"This is me in Thailand"}/>
                     <AvatarFallback delayMs={500}>daFinndus</AvatarFallback>
                 </Avatar>
                 <div className={"ml-4 flex flex-col space-y-1"}>

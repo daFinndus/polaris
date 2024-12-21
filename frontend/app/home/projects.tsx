@@ -31,6 +31,7 @@ function Project({
                 alt={alt}
                 width={width}
                 height={height}
+                loading={"eager"}
             />
         </CarouselItem>
     );
