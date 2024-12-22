@@ -1,7 +1,7 @@
 import {IconType} from "react-icons";
 import {MdSecurity} from "react-icons/md";
 
-import security_techs from "@/app/data/security_techs";
+import security_methods from "@/app/data/security_methods";
 
 import {Badge} from "@/components/ui/badge";
 import {HoverCard, HoverCardContent, HoverCardTrigger,} from "@/components/ui/hover-card"
@@ -58,7 +58,7 @@ export default function SecurityStack() {
                 These are my go to tools and forums for cybersecurity
             </p>
             <div className={"grid grid-cols-2 gap-2"}>
-                {security_techs.map((technology, index) => (
+                {security_methods.map((technology, index) => (
                     <Technology
                         key={index}
                         Icon={technology.Icon}
