@@ -1,6 +1,6 @@
 import {RiNextjsFill, RiTailwindCssFill} from "react-icons/ri";
 import {DiMongodb, DiPython} from "react-icons/di";
-import {TbBrandCSharp} from "react-icons/tb";
+import {TbBrandCpp, TbBrandCSharp} from "react-icons/tb";
 import {BiLogoReact} from "react-icons/bi";
 import {FaNodeJs} from "react-icons/fa6";
 
@@ -8,11 +8,17 @@ interface Technology {
     Icon: any,
     name: string,
     content: string,
-    version: string,
+    version?: string,
     href: string
 }
 
-const dev_techs: Technology[] = [
+const development: Technology[] = [
+    {
+        Icon: DiPython,
+        name: "Python",
+        content: "Python is a versatile programming language I use for scripting, data analysis, and building prototypes.",
+        href: "https://python.org"
+    },
     {
         Icon: FaNodeJs,
         name: "Node.js",
@@ -45,23 +51,20 @@ const dev_techs: Technology[] = [
         Icon: DiMongodb,
         name: "MongoDB",
         content: "MongoDB is a NoSQL database I use to store and manage data in my projects. It's particularly helpful for handling flexible, document-based data.",
-        version: "v6+",
         href: "https://mongodb.com"
     },
     {
-        Icon: DiPython,
-        name: "Python",
-        content: "Python is a versatile programming language I use for scripting, data analysis, and building prototypes.",
-        version: "v3.9+",
-        href: "https://python.org"
+        Icon: TbBrandCpp,
+        name: "C++",
+        content: "C++ is my primary language for high-performance computing.",
+        href: "https://isocpp.org"
     },
     {
         Icon: TbBrandCSharp,
         name: "C#",
         content: "C# is my main language for windows desktop applications and game development using Unity.",
-        version: "v9+",
         href: "https://dotnet.microsoft.com/en-us/languages/csharp"
     }
 ];
 
-export default dev_techs;
+export default development;
