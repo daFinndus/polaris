@@ -1,16 +1,16 @@
 import {IconType} from "react-icons";
 import {MdSecurity} from "react-icons/md";
 
-import cybersecurity from "@/app/data/cybersecurity";
+import {cybersecurity} from "@/app/data/knowledge";
 
 import {Badge} from "@/components/ui/badge";
-import {HoverCard, HoverCardContent, HoverCardTrigger,} from "@/components/ui/hover-card"
+import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/hover-card"
 
 interface MethodsProps {
     Icon: IconType;
     name: string;
     content: string;
-    related: string[];
+    related?: string[];
     href: string;
 }
 

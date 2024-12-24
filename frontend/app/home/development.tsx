@@ -1,7 +1,7 @@
 import {IconType} from "react-icons";
 import {FaConnectdevelop} from "react-icons/fa6";
 
-import development from "@/app/data/development";
+import {development} from "@/app/data/knowledge";
 
 import {Badge} from "@/components/ui/badge";
 import {HoverCard, HoverCardContent, HoverCardTrigger,} from "@/components/ui/hover-card"
@@ -10,7 +10,7 @@ interface TechnologyProps {
     Icon: IconType;
     name: string;
     content: string;
-    version: string;
+    version?: string;
     href: string;
 }
 
