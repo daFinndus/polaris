@@ -1,33 +1,25 @@
 import {IconType} from "react-icons";
-import {MdSecurity} from "react-icons/md";
+import {FaConnectdevelop} from "react-icons/fa6";
 
-import security_techs from "@/app/data/security_techs";
+import {development} from "@/app/data/knowledge";
 
 import {Badge} from "@/components/ui/badge";
 import {HoverCard, HoverCardContent, HoverCardTrigger,} from "@/components/ui/hover-card"
 
-function Technology({
-                        Icon,
-                        name,
-                        content,
-                        version,
-                        href,
-                    }: {
-    Icon: IconType,
-    name: string,
-    content: string,
-    version: string,
-    href: string
-}) {
+interface TechnologyProps {
+    Icon: IconType;
+    name: string;
+    content: string;
+    version?: string;
+    href: string;
+}
+
+function Technology({Icon, name, content, version, href}: TechnologyProps) {
     return (
         <HoverCard>
             <HoverCardTrigger href={href} className={"group"}>
                 <Badge variant={"secondary"} className={"flex h-16 flex-row"}>
-                    <div
-                        className={
-                            "mr-2  rounded-lg border-2 border-background-lighter bg-background-light"
-                        }
-                    >
+                    <div className={"mr-2  rounded-lg border-2 border-background-lighter bg-background-light"}>
                         <Icon className={"size-12 p-2 text-color"}/>
                     </div>
                     <div className={"flex w-full flex-row items-center"}>
@@ -43,7 +35,7 @@ function Technology({
     );
 }
 
-export default function SecurityStack() {
+export default function DevStack() {
     return (
         <div
             className={
@@ -51,14 +43,14 @@ export default function SecurityStack() {
             }
         >
             <div className={"flex flex-row"}>
-                <MdSecurity className={"size-6 text-color-light"}/>
-                <p className={"ml-3 text-xl font-bold"}>My Cybersecurity Stack</p>
+                <FaConnectdevelop className={"size-6 text-color-light"}/>
+                <p className={"ml-3 text-xl font-bold"}>My Development Stack</p>
             </div>
             <p className={"mb-4 mt-1 text-sm text-primary-darker"}>
-                These are my go to tools and forums for cybersecurity
+                Here are some of the technologies I use to build my projects
             </p>
             <div className={"grid grid-cols-2 gap-2"}>
-                {security_techs.map((technology, index) => (
+                {development.map((technology, index) => (
                     <Technology
                         key={index}
                         Icon={technology.Icon}

@@ -5,7 +5,7 @@ import React from "react";
 import Head from "next/head";
 
 import About from "@/app/home/about";
-import DevStack from "@/app/home/dev_stack";
+import DevStack from "@/app/home/development";
 import Projects from "@/app/home/projects";
 
 import NewsPageButton from "@/components/news-page-button";
@@ -13,7 +13,7 @@ import ColorModeButton from "@/components/color-mode-button";
 
 import {useWindowSize} from "@/app/hooks/useWindowSize";
 import ThreePageButton from "@/components/three-page-button";
-import SecurityStack from "@/app/home/security_stack";
+import SecurityStack from "@/app/home/cybersecurity";
 
 function Unsupported() {
     return (
