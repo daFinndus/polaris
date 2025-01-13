@@ -20,7 +20,7 @@ function Method({Icon, name, content, related, href}: MethodsProps) {
             <HoverCardTrigger href={href} className={"group"}>
                 <Badge variant={"secondary"} className={"flex h-16 flex-row"}>
                     <div className={"mr-2  rounded-lg border-2 border-background-lighter bg-background-light"}>
-                        <Icon className={"size-12 p-2 text-color"}/>
+                        <Icon className={"size-12 p-2 text-color-light"}/>
                     </div>
                     <div className={"flex w-full flex-row items-center"}>
                         <div className={"flex flex-col"}>

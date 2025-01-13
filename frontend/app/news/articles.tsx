@@ -20,7 +20,8 @@ import {CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "
 import {Skeleton} from "@/components/ui/skeleton";
 import Marquee from "react-fast-marquee";
 
-const uri = `${process.env.NEXT_PUBLIC_RENDER_BACKEND}/api/articles`;
+// const uri = `${process.env.NEXT_PUBLIC_RENDER_BACKEND}/api/articles`;
+const uri = `http://localhost:8000/api/articles`;
 
 export default function Articles() {
     const [page, setPage] = useState(1);
@@ -42,7 +43,22 @@ export default function Articles() {
 
         try {
             const response = await axios.get(uri, {params: {page, limit, query}});
-            setArticles(response.data.articles);
+            const sortedArticles = response.data.articles.sort((a: Article, b: Article) => {
+                return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+            });
+
+            const formattedArticles = sortedArticles.map(article => {
+                const date = new Date(article.publishedAt);
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const year = date.getFullYear();
+                return {
+                    ...article,
+                    publishedAt: `${day}.${month}.${year}`
+                };
+            });
+
+            setArticles(formattedArticles);
             setTotalArticles(response.data.total);
             console.log("Fetched and set articles to", response.data.articles);
             console.log("Total articles are", response.data.total);
@@ -140,28 +156,6 @@ interface Article {
 }
 
 const ArticleCard = ({article}: { article: Article }) => {
-    const formatDate = (isoDate: string) => {
-        if (!isoDate) return "";
-
-        const date = new Date(isoDate);
-
-        let format;
-
-        try {
-            format = new Intl.DateTimeFormat('de-DE', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-            }).format(date);
-        } catch (err) {
-            console.error("Error whilst formatting date", err);
-        }
-
-        return format || isoDate;
-    };
-
     return (
         <CardContainer className="inter-var h-min p-0 m-0">
             <CardBody
@@ -181,7 +175,7 @@ const ArticleCard = ({article}: { article: Article }) => {
                     <CardContent>
                         <LazyImage src={article.urlToImage} alt={article.title}/>
                         <p className={"absolute bg-background-light p-2 top-24 max-w-28 whitespace-nowrap font-bold text-sm overflow-hidden text-ellipsis"}>{article.source.name}</p>
-                        <p className={"absolute bg-background-light p-2 top-24 right-4 font-bold text-sm"}>{formatDate(article.publishedAt)}</p>
+                        <p className={"absolute bg-background-light p-2 top-24 right-4 font-bold text-sm"}>{article.publishedAt}</p>
                     </CardContent>
                 </CardItem>
                 <CardItem translateZ={50} className={"h-24 px-4 overflow-hidden text-ellipsis"}>

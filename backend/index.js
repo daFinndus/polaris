@@ -2,7 +2,7 @@ const cors = require('cors');
 const axios = require('axios');
 const express = require('express');
 
-const {dupes} = require("./routes/database");
+const {dupes, dates} = require("./routes/database");
 const {fetchArticles, getCachedArticles, getTotalArticles} = require("./routes/news");
 
 require('dotenv').config({path: __dirname + '/.env'});
@@ -19,15 +19,6 @@ app.use(cors({
 }));
 
 /**
- * Middleware to log the origin of the request.
- */
-app.use((req, res, next) => {
-    const originDomain = req.get('host');
-    console.log('Request came from:', originDomain || 'Unknown host');
-    next();
-})
-
-/**
  * Route handler for the root path.
  * Responds with a 404 status and a message indicating the page does not exist.
  */
@@ -40,8 +31,8 @@ app.get('/', (_, res) => res.status(404).send('Sorry, this page does not exist!'
 app.get('/backend', (_, res) => res.send('Hello from backend!'));
 
 /**
- * Route handler for fetching duplicate articles from the database.
- * Responds with the number of duplicates found or an error message.
+ * Route handler for specific database functions.
+ * One for removing duplicates, the other for setting dates to the right format.
  */
 app.get("/database/dupes", async (_, res) => {
     try {
@@ -52,6 +43,16 @@ app.get("/database/dupes", async (_, res) => {
         console.log("Error fetching duplicates:", err.message);
     }
 });
+
+app.get("/database/dates", async (_, res) => {
+    try {
+        await dates();
+        res.status(200).json({success: true});
+    } catch (err) {
+        res.status(500).send("Failed to update dates.");
+        console.log("Error fetching dates:", err.message);
+    }
+})
 
 /**
  * Route handler for fetching articles with pagination.

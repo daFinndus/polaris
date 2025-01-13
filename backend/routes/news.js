@@ -18,10 +18,12 @@ const fetchArticles = async () => {
         // If the cache is empty, fetch articles from the database
         // That is necessary to remove duplicates from the cache
         if (cache.length === 0) await cacheArticles();
-        const ids = new Set(cache.map(article => article._id).filter(Boolean));
+        const urls = new Set(cache.map(article => article.url).filter(Boolean));
+
+        console.log("URLs:", urls);
 
         let articles = response.data.articles;
-        articles = filterDuplicates(articles, ids);
+        articles = filterDuplicates(articles, urls);
         console.log("Fetched", response.data.articles.length, "articles from the NewsAPI and filtered out", response.data.articles.length - articles.length, "duplicate articles.");
 
         if (articles.length) {
@@ -104,11 +106,11 @@ const getTotalArticles = (query = "") => {
 /**
  * Filters out duplicate articles from the fetched articles.
  * @param articles - The articles to filter.
- * @param ids - The existing article IDs to filter out.
+ * @param url - The url of the articles to filter out.
  * @returns {*} The filtered articles.
  */
-const filterDuplicates = (articles, ids) => {
-    return articles.filter(article => article._id && !ids.has(article._id));
+const filterDuplicates = (articles, url) => {
+    return articles.filter(article => !url.has(article.url));
 };
 
 /**

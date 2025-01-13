@@ -11,7 +11,7 @@ const badgeVariants = cva(
                 default:
                     "border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80",
                 color:
-                    "border-transparent bg-color text-color-lighter hover:bg-color/80",
+                    "border-transparent bg-color text-color-lighter hover:bg-color/90",
                 primary:
                     "border-transparent bg-primary text-primary-foreground hover:bg-primary/80",
                 secondary:
