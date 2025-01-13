@@ -110,7 +110,7 @@ const getTotalArticles = (query = "") => {
  * @returns {*} The filtered articles.
  */
 const filterDuplicates = (articles, url) => {
-    return articles.filter(article => !url.has(article.url));
+    return articles.filter(article => !url.has(article.url) && url !== "https://removed.com");
 };
 
 /**

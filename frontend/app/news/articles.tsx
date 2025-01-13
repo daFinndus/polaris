@@ -47,18 +47,7 @@ export default function Articles() {
                 return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
             });
 
-            const formattedArticles = sortedArticles.map(article => {
-                const date = new Date(article.publishedAt);
-                const day = String(date.getDate()).padStart(2, '0');
-                const month = String(date.getMonth() + 1).padStart(2, '0');
-                const year = date.getFullYear();
-                return {
-                    ...article,
-                    publishedAt: `${day}.${month}.${year}`
-                };
-            });
-
-            setArticles(formattedArticles);
+            setArticles(sortedArticles);
             setTotalArticles(response.data.total);
             console.log("Fetched and set articles to", response.data.articles);
             console.log("Total articles are", response.data.total);
@@ -156,6 +145,14 @@ interface Article {
 }
 
 const ArticleCard = ({article}: { article: Article }) => {
+    const formattedArticle = (publishedAt: string) => {
+        const date = new Date(publishedAt);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}.${month}.${year}`;
+    };
+
     return (
         <CardContainer className="inter-var h-min p-0 m-0">
             <CardBody
@@ -175,7 +172,7 @@ const ArticleCard = ({article}: { article: Article }) => {
                     <CardContent>
                         <LazyImage src={article.urlToImage} alt={article.title}/>
                         <p className={"absolute bg-background-light p-2 top-24 max-w-28 whitespace-nowrap font-bold text-sm overflow-hidden text-ellipsis"}>{article.source.name}</p>
-                        <p className={"absolute bg-background-light p-2 top-24 right-4 font-bold text-sm"}>{article.publishedAt}</p>
+                        <p className={"absolute bg-background-light p-2 top-24 right-4 font-bold text-sm"}>{formattedArticle(article.publishedAt)}</p>
                     </CardContent>
                 </CardItem>
                 <CardItem translateZ={50} className={"h-24 px-4 overflow-hidden text-ellipsis"}>
