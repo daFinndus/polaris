@@ -20,7 +20,8 @@ import {CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "
 import {Skeleton} from "@/components/ui/skeleton";
 import Marquee from "react-fast-marquee";
 
-const uri = `${process.env.NEXT_PUBLIC_RENDER_BACKEND}/api/articles`;
+// const uri = `${process.env.NEXT_PUBLIC_RENDER_BACKEND}/api/articles`;
+const uri = `http://localhost:8000/api/articles`;
 
 export default function Articles() {
     const [page, setPage] = useState(1);
@@ -46,6 +47,7 @@ export default function Articles() {
                 return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
             });
 
+            await fetchJoke(sortedArticles);
             setArticles(sortedArticles);
             setTotalArticles(response.data.total);
             console.log("Fetched and set articles to", response.data.articles);
@@ -57,20 +59,12 @@ export default function Articles() {
         }
     };
 
-    useEffect(() => {
-        fetchNews();
-    }, [page, limit]);
-
-    useEffect(() => {
-        updateLastPage();
-    }, [totalArticles, limit]);
-
     /**
      * This function adds or removes from the current page variable.
      * @param add - The amount to add or remove from the current page.
      */
     const updatePage = (add: number) => {
-        if (page + add > 0) {
+        if (page + add > 0 && page + add <= lastPage) {
             setPage(page + add);
         }
     }
@@ -80,10 +74,7 @@ export default function Articles() {
      */
     const updateLastPage = () => {
         const calculatedLastPage = Math.ceil(totalArticles / limit);
-        console.log("Variables are currently", totalArticles, limit);
-
         setLastPage(calculatedLastPage);
-        console.log("Updated last page to", calculatedLastPage);
     }
 
     /**
@@ -102,11 +93,33 @@ export default function Articles() {
      */
     const searchQuery = async ({key}: { key: string }) => {
         if (key === "Enter") {
-            console.log("Searching for", query);
             setPage(1);
             await fetchNews();
         }
     };
+
+    /**
+     * This function fetches a joke from the joke API and sets the description of the article to the joke.
+     * @param articles - The articles to check for empty descriptions.
+     */
+    const fetchJoke = async (articles: Article[]) => {
+        console.log("Checking", articles.length, "articles for empty descriptions");
+
+        for (const article of articles) {
+            if (article.description === null) {
+                const response = await axios.get("https://v2.jokeapi.dev/joke/Programming?format=txt&type=single").catch(console.error);
+                article.description = response?.data;
+            }
+        }
+    }
+
+    useEffect(() => {
+        fetchNews().catch(console.error);
+    }, [page, limit]);
+
+    useEffect(() => {
+        updateLastPage();
+    }, [totalArticles, limit]);
 
     return (
         <div className={"flex flex-col w-full px-8 py-4 justify-center items-center"}>
@@ -115,14 +128,18 @@ export default function Articles() {
                 <ArticleSearchbar searchQuery={searchQuery} setQuery={setQuery}/>
                 <SelectLimit updateLimit={updateLimit}/>
             </div>
-            <div className={"grid gap-y-8 gap-x-4 notebook:grid-cols-2 laptop:grid-cols-3 gap-4"}>
-                {loading
-                    ? [...Array(limit)].map((_, index) => <ArticleCardSkeleton key={index}/>)
-                    : articles.map((article, index) => (
-                        <ArticleCard key={index} article={article}/>
-                    ))
-                }
-            </div>
+            {totalArticles ?
+                <div className={"grid gap-y-8 gap-x-4 notebook:grid-cols-2 laptop:grid-cols-3 gap-4"}>
+                    {loading
+                        ? [...Array(limit)].map((_, index) => <ArticleCardSkeleton key={index}/>)
+                        : articles.map((article, index) => (
+                            <ArticleCard key={index} article={article}/>
+                        ))
+                    }
+                </div>
+                :
+                <p className={"text-center  my-32 text-"}>No articles found under given circumstances.</p>
+            }
             <PaginationGroup page={page} updatePage={updatePage} lastPage={lastPage}/>
         </div>
     );
@@ -174,12 +191,13 @@ const ArticleCard = ({article}: { article: Article }) => {
                         <p className={"absolute bg-background-light p-2 top-24 right-4 font-bold text-sm"}>{formattedArticle(article.publishedAt)}</p>
                     </CardContent>
                 </CardItem>
-                <CardItem translateZ={50} className={"h-24 px-4 overflow-hidden text-ellipsis"}>
+                <CardItem translateZ={50}
+                          className={"mx-4 min-h-20 line-clamp-4 overflow-hidden text-ellipsis"}>
                     <CardDescription>
                         {article.description}
                     </CardDescription>
                 </CardItem>
-                <CardItem translateZ={50} className={"w-full h-fit flex justify-center"}>
+                <CardItem translateZ={50} className={"w-full pt-4 h-fit flex justify-center"}>
                     <CardFooter className={"p-0 m-0"}>
                         <Link href={article.url}>
                             <Button variant={"secondary"}>Read more</Button>

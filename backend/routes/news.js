@@ -20,8 +20,6 @@ const fetchArticles = async () => {
         if (cache.length === 0) await cacheArticles();
         const urls = new Set(cache.map(article => article.url).filter(Boolean));
 
-        console.log("URLs:", urls);
-
         let articles = response.data.articles;
         articles = filterDuplicates(articles, urls);
         console.log("Fetched", response.data.articles.length, "articles from the NewsAPI and filtered out", response.data.articles.length - articles.length, "duplicate articles.");
@@ -64,7 +62,7 @@ const cacheArticles = async () => {
  * @param {number} [page=1] - The page number to start the cache from.
  * @param {number} [limit=18] - The number of articles to return.
  * @param {string} [query=""] - The query to filter the cached articles by.
- * @returns {Promise<Object[]>} A promise that resolves with the cached articles.
+ * @returns {Promise<Object[]>} Returns the specified articles and the total amount.
  */
 const getCachedArticles = async (page = 1, limit = 18, query = "") => {
     let queried = cache;
@@ -80,27 +78,7 @@ const getCachedArticles = async (page = 1, limit = 18, query = "") => {
     }
 
     queried.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
-    return queried.slice((page - 1) * limit, page * limit);
-};
-
-/**
- * Returns the total number of articles in the current cache that match the query.
- * @returns {number} The total number of articles in the cache.
- */
-const getTotalArticles = (query = "") => {
-    let queried = cache;
-
-    if (query) {
-        queried = cache.filter(article => {
-            const title = article.title?.toLowerCase() || "";
-            const description = article.description?.toLowerCase() || "";
-            const sourceName = article.source?.name?.toLowerCase() || "";
-
-            return title.includes(query.toLowerCase()) || sourceName.includes(query.toLowerCase()) || description.includes(query.toLowerCase());
-        });
-    }
-
-    return queried.length;
+    return [queried.slice((page - 1) * limit, page * limit), queried.length];
 };
 
 /**
@@ -110,7 +88,7 @@ const getTotalArticles = (query = "") => {
  * @returns {*} The filtered articles.
  */
 const filterDuplicates = (articles, url) => {
-    return articles.filter(article => !url.has(article.url) && url !== "https://removed.com");
+    return articles.filter(article => !url.has(article.url) && article.url !== "https://removed.com");
 };
 
 /**
@@ -123,4 +101,4 @@ const sliceTitle = (title) => {
     return dashIndex !== -1 ? title.substring(0, dashIndex).trim() : title;
 };
 
-module.exports = {fetchArticles, cacheArticles, getCachedArticles, getTotalArticles};
+module.exports = {fetchArticles, cacheArticles, getCachedArticles};

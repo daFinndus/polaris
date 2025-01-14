@@ -2,8 +2,8 @@ const cors = require('cors');
 const axios = require('axios');
 const express = require('express');
 
-const {dupes, dates} = require("./routes/database");
-const {fetchArticles, getCachedArticles, getTotalArticles} = require("./routes/news");
+const {dupes} = require("./routes/database");
+const {fetchArticles, getCachedArticles} = require("./routes/news");
 
 require('dotenv').config({path: __dirname + '/.env'});
 
@@ -22,7 +22,7 @@ app.use(cors({
  * Route handler for the root path.
  * Responds with a 404 status and a message indicating the page does not exist.
  */
-app.get('/', (_, res) => res.status(404).send('Sorry, this page does not exist!'));
+app.get('/', (_, res) => res.status(404).send('Sorry, this page does not exist! Nice for you being here though.'));
 
 /**
  * Route handler for the /backend path.
@@ -32,7 +32,7 @@ app.get('/backend', (_, res) => res.send('Hello from backend!'));
 
 /**
  * Route handler for specific database functions.
- * One for removing duplicates, the other for setting dates to the right format.
+ * Right now it's only for sorting out duplicates.
  */
 app.get("/database/dupes", async (_, res) => {
     try {
@@ -43,16 +43,6 @@ app.get("/database/dupes", async (_, res) => {
         console.log("Error fetching duplicates:", err.message);
     }
 });
-
-app.get("/database/dates", async (_, res) => {
-    try {
-        await dates();
-        res.status(200).json({success: true});
-    } catch (err) {
-        res.status(500).send("Failed to update dates.");
-        console.log("Error fetching dates:", err.message);
-    }
-})
 
 /**
  * Route handler for fetching articles with pagination.
@@ -66,8 +56,9 @@ app.get('/api/articles', async (req, res) => {
     console.log("Received parameters: page is", page, "and limit is", limit, "and query is", query || "empty");
 
     try {
-        const articles = await getCachedArticles(page, limit, query);
-        const total = getTotalArticles(query);
+        const [articles, total] = await getCachedArticles(page, limit, query);
+
+        console.log("Total is", total)
 
         console.log("Successfully gave", articles.length, "articles to the client.");
 

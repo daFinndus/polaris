@@ -96,27 +96,4 @@ const dupes = async () => {
     }
 };
 
-/**
- * This function turns the date of every article into a dd/mm/yyyy format.
- * @returns {Promise<void>} A promise that resolves when the articles are updated.
- */
-const dates = async () => {
-    try {
-        const mongoose = await connect();
-        const collection = mongoose.connection.db.collection('articles');
-        const articles = await collection.find({publishedAt: {$type: 'string'}}).toArray();
-
-        console.log("Going to verify the date for", articles.length, "articles.");
-
-        for (const article of articles) {
-            const date = new Date(article.publishedAt);
-            await collection.updateOne({_id: article._id}, {$set: {publishedAt: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`}});
-        }
-
-        console.log("Successfully verified the date for", articles.length, "articles.");
-    } catch (err) {
-        console.error("Error verifying the date:", err.message);
-    }
-}
-
-module.exports = {push, pull, dupes, dates};
+module.exports = {push, pull, dupes};
