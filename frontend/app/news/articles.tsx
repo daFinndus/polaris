@@ -66,6 +66,7 @@ export default function Articles() {
     const updatePage = (add: number) => {
         if (page + add > 0 && page + add <= lastPage) {
             setPage(page + add);
+            scrollTo({top: 0, behavior: "smooth"});
         }
     }
 
