@@ -21,8 +21,7 @@ import {CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "
 import {Skeleton} from "@/components/ui/skeleton";
 import Marquee from "react-fast-marquee";
 
-// const uri = `${process.env.NEXT_PUBLIC_RENDER_BACKEND}/api/articles`;
-const uri = `http://localhost:8000/api/articles`;
+const uri = `${process.env.NEXT_PUBLIC_RENDER_BACKEND}/api/articles`;
 
 export default function Articles() {
     const [page, setPage] = useState(1);
