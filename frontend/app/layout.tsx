@@ -7,6 +7,7 @@ import {Analytics} from "@vercel/analytics/react"
 import {SpeedInsights} from "@vercel/speed-insights/next"
 
 import "./globals.css";
+import {Toaster} from "@/components/ui/toaster";
 
 
 const geistSans = localFont({
@@ -46,6 +47,7 @@ export default function RootLayout({
         </head>
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
+        <Toaster/>
         <Analytics/>
         <SpeedInsights/>
         </body>

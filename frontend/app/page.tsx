@@ -8,6 +8,7 @@ import About from "@/app/home/about";
 import DevStack from "@/app/home/development";
 import Projects from "@/app/home/projects";
 
+import {Toaster} from "@/components/ui/toaster";
 import NewsPageButton from "@/components/news-page-button";
 import ColorModeButton from "@/components/color-mode-button";
 
@@ -37,7 +38,6 @@ function PageHead() {
 
 function Supported() {
     return (
-
         <div className="relative flex w-screen items-center justify-center bg-background">
             <div
                 className={"laptop:flex laptop:flex-col hidden gap-y-2 laptop:fixed laptop:top-4 laptop:right-4"}>

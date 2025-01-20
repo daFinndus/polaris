@@ -12,6 +12,7 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination"
+import {useToast} from "@/hooks/use-toast";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {CardBody, CardContainer, CardItem} from "@/components/ui/3d-card";
@@ -20,7 +21,8 @@ import {CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "
 import {Skeleton} from "@/components/ui/skeleton";
 import Marquee from "react-fast-marquee";
 
-const uri = `${process.env.NEXT_PUBLIC_RENDER_BACKEND}/api/articles`;
+// const uri = `${process.env.NEXT_PUBLIC_RENDER_BACKEND}/api/articles`;
+const uri = `http://localhost:8000/api/articles`;
 
 export default function Articles() {
     const [page, setPage] = useState(1);
@@ -33,12 +35,15 @@ export default function Articles() {
     const [articles, setArticles] = useState<Article[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
+    const {toast} = useToast();
+
     /**
      * This function fetches news articles from the backend.
      * After fetching the articles, it sets the articles state to the fetched articles.
      */
     const fetchNews = async () => {
         setLoading(true);
+        console.log("Before news fetching, total is", totalArticles);
 
         try {
             const response = await axios.get(uri, {params: {page, limit, query}});
@@ -46,11 +51,8 @@ export default function Articles() {
                 return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
             });
 
-            await fetchJoke(sortedArticles);
             setArticles(sortedArticles);
             setTotalArticles(response.data.total);
-            console.log("Fetched and set articles to", response.data.articles);
-            console.log("Total articles are", response.data.total);
         } catch (err) {
             console.error("Error whilst fetching news", err);
         } finally {
@@ -98,48 +100,40 @@ export default function Articles() {
         }
     };
 
-    /**
-     * This function fetches a joke from the joke API and sets the description of the article to the joke.
-     * @param articles - The articles to check for empty descriptions.
-     */
-    const fetchJoke = async (articles: Article[]) => {
-        console.log("Checking", articles.length, "articles for empty descriptions");
-
-        for (const article of articles) {
-            if (article.description === null) {
-                const response = await axios.get("https://v2.jokeapi.dev/joke/Programming?format=txt&type=single").catch(console.error);
-                article.description = response?.data;
-            }
-        }
-    }
-
     useEffect(() => {
         fetchNews().catch(console.error);
     }, [page, limit]);
 
     useEffect(() => {
         updateLastPage();
+
+        if (totalArticles === 0) {
+            console.log("Showing toast now")
+
+            toast({
+                title: "Damn. No articles found!",
+                description: "Please try again with a different keyword.",
+                duration: 3000,
+                variant: "destructive"
+            })
+        }
     }, [totalArticles, limit]);
 
     return (
-        <div className={"flex flex-col w-full px-8 py-4 justify-center items-center"}>
+        <div className={"flex flex-col w-full notebook:px-4 py-4 justify-center items-center"}>
             <div
                 className={"flex flex-col notebook:flex-row gap-y-2 notebook:gap-y-0 notebook:gap-x-4 w-full mt-4 mb-8 items-center justify-center"}>
                 <ArticleSearchbar searchQuery={searchQuery} setQuery={setQuery}/>
                 <SelectLimit updateLimit={updateLimit}/>
             </div>
-            {totalArticles ?
-                <div className={"grid gap-y-8 gap-x-4 notebook:grid-cols-2 laptop:grid-cols-3 gap-4"}>
-                    {loading
-                        ? [...Array(limit)].map((_, index) => <ArticleCardSkeleton key={index}/>)
-                        : articles.map((article, index) => (
-                            <ArticleCard key={index} article={article}/>
-                        ))
-                    }
-                </div>
-                :
-                <p className={"text-center  my-32 text-"}>No articles found under given circumstances.</p>
-            }
+            <div className={"grid gap-y-8 gap-x-4 notebook:grid-cols-2 laptop:grid-cols-3 gap-4"}>
+                {loading
+                    ? [...Array(limit)].map((_, index) => <ArticleCardSkeleton key={index}/>)
+                    : totalArticles > 0
+                        ? articles.map((article, index) => <ArticleCard key={index} article={article}/>)
+                        : [...Array(limit)].map((_, index) => <ArticleCardSkeleton key={index}/>)
+                }
+            </div>
             <PaginationGroup page={page} updatePage={updatePage} lastPage={lastPage}/>
         </div>
     );
