@@ -92,7 +92,7 @@ const reloadBackend = () => {
     const currentDate = new Date();
 
     axios.get(reloadURL + '/backend')
-        .then(response => console.log(`Reloaded at ${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()} on ${currentDate.getDay()}/${currentDate.getMonth()}: Status ${response.status}`))
+        .then(response => console.log(`Reloaded at ${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()} on ${currentDate.getDate()}/${currentDate.getUTCMonth() + 1}: Status ${response.status}`))
         .catch(error => console.error(`Error reloading at ${new Date().toISOString()}:`, error.stack));
 };
 

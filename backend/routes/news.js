@@ -52,12 +52,12 @@ const fetchArticles = async () => {
  */
 const cacheArticlesFromDB = async () => {
     try {
-        const cachedIds = new Set(cachedArticles.map(article => article._id));
+        const cachedURLs = new Set(cachedArticles.map(article => article.url));
         const databaseArticles = await pullArticlesFromDB(undefined, undefined);
 
         cachedArticles = [
             ...cachedArticles,
-            ...verifyArticles(databaseArticles, cachedIds).map(article => ({
+            ...verifyArticles(databaseArticles, cachedURLs).map(article => ({
                 ...article,
                 title: sliceTitle(article.title)
             }))
