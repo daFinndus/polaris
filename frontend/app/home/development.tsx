@@ -42,7 +42,7 @@ export default function DevStack() {
                 "flex h-max flex-col rounded-xl border-2 border-background-lighter bg-background-light p-4 text-primary tablet:w-[526px]"
             }
         >
-            <div className={"flex flex-row"}>
+            <div className={"flex"}>
                 <FaConnectdevelop className={"size-6 text-color-light"}/>
                 <p className={"ml-3 text-xl font-bold"}>My Development Stack</p>
             </div>

@@ -58,8 +58,8 @@ export default function SecurityStack() {
                         Icon={technology.Icon}
                         name={technology.name}
                         content={technology.content}
-                        related={technology.related}
-                        href={technology.href}
+                        href={""}
+                        related={[]}
                     />
                 ))}
             </div>

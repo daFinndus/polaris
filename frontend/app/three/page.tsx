@@ -8,6 +8,7 @@ import Link from "next/link";
 import {useWindowSize} from '../hooks/useWindowSize';
 import {getColorMode} from "@/app/hooks/getColorMode";
 import {Button} from "@/components/ui/button";
+import {TiHome} from "react-icons/ti";
 
 function Unsupported() {
     return (
@@ -106,9 +107,9 @@ function Supported() {
     return (
         <div className={"font-sans relative h-screen w-screen justify-center flex items-center"}>
             <ThreeScene/>
-            <Link href={"/"} className={"absolute top-4 left-4"}>
-                <Button variant={"secondary"}>
-                    Back to homepage
+            <Link href={"/"} className={"hidden laptop:block w-10 h-10 absolute top-4 left-4"}>
+                <Button className={"w-full h-full"} variant={"secondary"}>
+                    <TiHome size={4}/>
                 </Button>
             </Link>
         </div>

@@ -1,10 +1,10 @@
+import {GiBreakingChain, GiBrute, GiCrackedDisc} from "react-icons/gi";
 import {RiNextjsFill, RiTailwindCssFill} from "react-icons/ri";
-import {SiBurpsuite, SiHackthebox} from "react-icons/si";
 import {TbBrandCpp, TbBrandCSharp} from "react-icons/tb";
-import {GiBreakingChain, GiBrute} from "react-icons/gi";
 import {DiMongodb, DiPython} from "react-icons/di";
 import {FaEye, FaNodeJs} from "react-icons/fa6";
 import {BiLogoReact} from "react-icons/bi";
+import {SiBurpsuite} from "react-icons/si";
 
 interface Technology {
     Icon: any,
@@ -73,8 +73,6 @@ interface Method {
     Icon: any,
     name: string,
     content: string,
-    related?: string[],
-    href: string
 }
 
 export const cybersecurity: Method[] = [
@@ -82,35 +80,25 @@ export const cybersecurity: Method[] = [
         Icon: FaEye,
         name: "Network Scanning",
         content: "I am able to identify open ports, services, and vulnerabilities on networked systems using tools like Nmap.",
-        related: [],
-        href: "https://nmap.org/book/man.html"
     },
     {
         Icon: GiBrute,
         name: "Directory Fuzzing",
-        content: "I can discover hidden directories and files on web servers using tools like DirBuster and Gobuster or Ffuf.",
-        related: [],
-        href: "https://owasp.org/www-community/Vulnerability_Scanning/Tools_for_Fuzzing_and_Brute_Forcing"
+        content: "I can discover hidden directories and files on web servers using tools like DirBuster, Gobuster or Ffuf.",
     },
     {
         Icon: SiBurpsuite,
         name: "Web Application Testing",
-        content: "I know how to infiltrate web applications to identify vulnerabilities and security flaws with Burp Suite.",
-        related: [],
-        href: "https://portswigger.net/web-security"
+        content: "I know how to analyze web applications for security vulnerabilities using tools like Burp Suite.",
     },
     {
         Icon: GiBreakingChain,
         name: "Exploitation and Validation",
         content: "I know how to search for CVEs and exploit vulnerabilities to gain access to systems, then validate the exploit to ensure it works.",
-        related: [],
-        href: "https://www.metasploit.com/"
     },
     {
-        Icon: SiHackthebox,
-        name: "Theory & Practice",
-        content: "On HTB I am applying penetration testing skills to solve real-world scenarios in a controlled environment, focusing on problem-solving and methodology.",
-        related: ["Hack The Box"],
-        href: "https://www.hackthebox.com/"
+        Icon: GiCrackedDisc,
+        name: "Password Cracking",
+        content: "I can crack hashed passwords using tools like John the Ripper and Hashcat.",
     }
 ];

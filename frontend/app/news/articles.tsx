@@ -53,7 +53,7 @@ export default function Articles() {
             setArticles(sortedArticles);
             setTotalArticles(response.data.total);
         } catch (err) {
-            console.error("Error whilst fetching news", err);
+            console.error("Error whilst fetching news:", err);
         } finally {
             setLoading(false);
         }
@@ -106,9 +106,7 @@ export default function Articles() {
     useEffect(() => {
         updateLastPage();
 
-        if (totalArticles === 0) {
-            console.log("Showing toast now")
-
+        if (totalArticles === 0 && query !== "") {
             toast({
                 title: "Damn. No articles found!",
                 description: "Please try again with a different keyword.",
@@ -121,7 +119,7 @@ export default function Articles() {
     return (
         <div className={"flex flex-col w-full notebook:px-4 py-4 justify-center items-center"}>
             <div
-                className={"flex flex-col notebook:flex-row gap-y-2 notebook:gap-y-0 notebook:gap-x-4 w-full mt-4 mb-8 items-center justify-center"}>
+                className={"flex flex-col notebook:flex-row gap-y-2 notebook:gap-y-0 notebook:gap-x-4 w-full smartphone:px-4 mt-4 mb-8 items-center justify-center"}>
                 <ArticleSearchbar searchQuery={searchQuery} setQuery={setQuery}/>
                 <SelectLimit updateLimit={updateLimit}/>
             </div>

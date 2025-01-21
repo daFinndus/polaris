@@ -7,14 +7,14 @@ import Head from "next/head";
 import About from "@/app/home/about";
 import DevStack from "@/app/home/development";
 import Projects from "@/app/home/projects";
-
-import {Toaster} from "@/components/ui/toaster";
 import NewsPageButton from "@/components/news-page-button";
 import ColorModeButton from "@/components/color-mode-button";
 
 import {useWindowSize} from "@/app/hooks/useWindowSize";
 import ThreePageButton from "@/components/three-page-button";
 import SecurityStack from "@/app/home/cybersecurity";
+import HackTheBox from "@/app/home/hack_the_box";
+import Joke from "@/app/home/joke";
 
 function Unsupported() {
     return (
@@ -53,17 +53,25 @@ function Supported() {
                         <About/>
                         <SecurityStack/>
                     </div>
-                    <DevStack/>
-                    <Projects/>
+                    <div className={"space-y-4"}>
+                        <DevStack/>
+                        <HackTheBox/>
+                    </div>
+                    <div className={"space-y-4"}>
+                        <Projects/>
+                        <Joke/>
+                    </div>
                 </div>
                 <div className="hidden gap-4 laptop:grid laptop:grid-cols-2 desktop:hidden">
                     <div className="space-y-4">
                         <About/>
                         <DevStack/>
+                        <HackTheBox/>
                     </div>
                     <div className={"space-y-4"}>
                         <Projects/>
                         <SecurityStack/>
+                        <Joke/>
                     </div>
                 </div>
                 <div className="grid grid-cols-1 gap-4 p-4 laptop:hidden">
@@ -76,7 +84,9 @@ function Supported() {
                     <About/>
                     <DevStack/>
                     <SecurityStack/>
+                    <HackTheBox/>
                     <Projects/>
+                    <Joke/>
                 </div>
             </div>
         </div>

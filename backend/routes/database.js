@@ -104,8 +104,8 @@ const addImage = async () => {
     const articles = await pullArticlesFromDB();
 
     for (const article of articles) {
-        if (article.urlToImage === "https://source.unsplash.com/random") {
-            article.urlToImage = "https://picsum.photos/200/300";
+        if (article.urlToImage === "") {
+            article.urlToImage = "https://picsum.photos/1200/600";
 
             await mongoose.connection.db.collection('articles').updateOne({_id: article._id}, {$set: {urlToImage: article.urlToImage}});
             console.log("Added an image to the article:", article.title);
