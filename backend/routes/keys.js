@@ -2,26 +2,28 @@
  * Checks if the necessary keys are set in the environment variables.
  */
 const checkKeys = () => {
-    const requiredKeys = [
-        "PORT",
-        "LOCAL_IP",
-        "PUBLIC_IP",
-        "NEWS_API_KEY",
-        "RENDER_URL",
-        "VERCEL_URL",
-        "DB_URL",
-        "DB_USER",
-        "DB_PASS",
-    ];
+  const requiredKeys = [
+    "PORT",
+    "LOCAL_IP",
+    "PUBLIC_IP",
+    "NEWS_API_KEY",
+    "RENDER_URL",
+    "VERCEL_URL",
+    "DB_URL",
+    "DB_USER",
+    "DB_PASS",
+  ];
 
-    const missingKeys = requiredKeys.filter((key) => !process.env[key]);
+  const missingKeys = requiredKeys.filter((key) => !process.env[key]);
 
-    if (missingKeys.length > 0) {
-        missingKeys.forEach((key) => console.error(`The ${key} environment variable is not set.`));
-        process.exit(1);
-    }
+  if (missingKeys.length > 0) {
+    missingKeys.forEach((key) =>
+      console.error(`The ${key} environment variable is not set.`)
+    );
+    process.exit(1);
+  }
 
-    console.log("All keys found in .env file.");
+  console.log("All keys found in .env file.");
 };
 
-module.exports = {checkKeys};
+module.exports = { checkKeys };
