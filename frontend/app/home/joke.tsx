@@ -31,7 +31,7 @@ export default function Joke() {
     >
       <div className={"flex"}>
         <GiCardJoker className={"size-6 text-color-light"} />
-        <p className={"ml-3 text-xl font-bold"}>Classic Programmer</p>
+        <p className={"ml-3 text-xl font-bold"}>Classic Programmer Joke</p>
       </div>
       <p className={"text-sm mt-2"}>{joke}</p>
     </div>
