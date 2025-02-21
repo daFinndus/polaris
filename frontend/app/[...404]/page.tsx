@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 
 import { getColorMode } from "../hooks/getColorMode";
 
+// TODO: Add the little offline dinosaur game here - control with Spacebar and Touch
+
 export default function Page() {
   useEffect(() => {
     getColorMode();
