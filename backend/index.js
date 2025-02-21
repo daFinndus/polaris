@@ -21,7 +21,7 @@ app.use(
       "http://localhost:3000",
       process.env.LOCAL_IP,
       process.env.PUBLIC_IP,
-      process.env.VERCEL_URL,
+      process.env.FRONTEND_URL,
     ],
     methods: ["GET"],
   })
@@ -105,7 +105,7 @@ app.get("/api/articles", async (req, res) => {
  */
 app.listen(port, () => console.log(`Server running on port: ${port}`));
 
-const reloadURL = process.env.RENDER_URL;
+const reloadURL = process.env.BACKEND_URL;
 
 /**
  * This function reloads the backend on render.

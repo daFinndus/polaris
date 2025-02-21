@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useWindowSize } from "@/app/hooks/useWindowSize";
 import { getColorMode } from "@/app/hooks/getColorMode";
 import Articles from "@/app/news/articles";
+
 import { TiHome } from "react-icons/ti";
 
 function Unsupported() {

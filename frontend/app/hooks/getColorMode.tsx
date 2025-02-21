@@ -10,7 +10,6 @@ import { getCookie } from "cookies-next/client";
 export function getColorMode() {
   const isDark =
     getCookie("dark") === "Your website is currently in dark mode.";
-  console.log("Currently the dark mode is set to: ", isDark);
 
   if (isDark) {
     document.documentElement.classList.add("dark");

@@ -13,7 +13,7 @@ export default function Joke() {
       );
       setJoke(response.data);
     } catch (err) {
-      console.log("Error fetching joke:", err);
+      console.error("Error fetching joke:", err);
     }
   };
 

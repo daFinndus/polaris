@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Marquee from "react-fast-marquee";
 
 import Link from "next/link";
 
@@ -31,9 +32,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import Marquee from "react-fast-marquee";
 
-const uri = `${process.env.NEXT_PUBLIC_RENDER_BACKEND}/api/articles`;
+const uri = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/articles`;
 
 export default function Articles() {
   const [page, setPage] = useState(1);
@@ -54,7 +54,6 @@ export default function Articles() {
    */
   const fetchNews = async () => {
     setLoading(true);
-    console.log("Before news fetching, total is", totalArticles);
 
     try {
       const response = await axios.get(uri, { params: { page, limit, query } });

@@ -48,9 +48,6 @@ const ThreeScene: React.FC = () => {
     const backgroundHSL = CutVariables("--background-light");
     const cubeColorHSL = CutVariables("--color");
 
-    console.log(backgroundHSL);
-    console.log(cubeColorHSL);
-
     const scene = new THREE.Scene();
 
     // Camera
