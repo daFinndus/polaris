@@ -1,8 +1,16 @@
+import React, { useEffect } from "react";
+
 import Link from "next/link";
+
 import { Button } from "@/components/ui/button";
-import React from "react";
+
+import { getColorMode } from "../hooks/getColorMode";
 
 export default function Page() {
+  useEffect(() => {
+    getColorMode();
+  });
+
   return (
     <div
       className={
