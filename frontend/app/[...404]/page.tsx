@@ -145,8 +145,6 @@ function Supported() {
 export default function Home() {
   let size = useWindowSize();
 
-  notFound();
-
   if (size.width! > 396) {
     return <Supported />;
   } else if (size.width! > 0) {
