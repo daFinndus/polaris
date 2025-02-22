@@ -9,6 +9,7 @@ import { getColorMode } from "../hooks/getColorMode";
 import { useWindowSize } from "../hooks/useWindowSize";
 
 import { RiVolumeUpFill, RiVolumeMuteFill } from "react-icons/ri";
+import { notFound } from "next/navigation";
 
 function AudioButton() {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -143,6 +144,8 @@ function Supported() {
 
 export default function Home() {
   let size = useWindowSize();
+
+  notFound();
 
   if (size.width! > 396) {
     return <Supported />;

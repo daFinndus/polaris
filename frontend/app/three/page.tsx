@@ -118,7 +118,9 @@ function Supported() {
       }
     >
       <ThreeScene />
-      <HomeButton />
+      <div className={"absolute top-4 left-4"}>
+        <HomeButton />
+      </div>
     </div>
   );
 }
