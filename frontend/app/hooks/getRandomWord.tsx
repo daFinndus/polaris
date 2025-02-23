@@ -3,5 +3,5 @@
  * @param words - The array of words.
  */
 export function getRandomWord(words: string[]): string {
-  return words[Math.floor(Math.random() * words.length)];
+    return words[Math.floor(Math.random() * words.length)];
 }
