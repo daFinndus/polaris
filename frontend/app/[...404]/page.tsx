@@ -87,30 +87,19 @@ function VideoBackground() {
   };
 
   return (
-    <div className={"relative w-screen h-3/4"}>
+    <div className={"relative w-screen h-screen overflow-hidden"}>
       <video
         onPlay={handleVideoPlay}
         onEnded={handleVideoEnd}
         onCanPlayThrough={() => setTimeout(() => setFade(false), 500)}
         ref={videoRef}
-        className={`absolute object-cover w-full h-full transition-opacity duration-500 ${fade ? "opacity-0" : "opacity-100"
+        className={`brightness-60 blur-sm transition-opacity duration-500 ${fade ? "opacity-0" : "opacity-100"
           }`}
         src={currentVideo}
         autoPlay
         muted
       />
-      <div
-        className={`absolute w-full h-full bg-black transition-opacity duration-500 ${fade ? "opacity-0" : "opacity-50"
-          }`}
-      />
-      <div
-        className={
-          `flex absolute font-bold w-full top-0 left-1/2 -translate-x-1/2 flex-col items-center gap-y-2 justify-center h-full opacity-100 transition-colors duration-500 ${fade ? "text-primary" : "text-background"}`
-        }
-      >
-        <h1 className={"text-4xl"}>ERROR 404</h1>
-        <h2 className={"text-xl"}>Page does not exist, Choom!</h2>
-      </div>
+      <p className={`text-[40vw] drop-shadow-2xl h-min  absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 text-center font-bold opacity-100 transition-colors duration-500 ${fade ? "text-primary" : "text-background"}`}>404</p>
     </div>
   );
 }
