@@ -80,7 +80,6 @@ function VideoBackground() {
     };
 
     const handleVideoEnd = () => {
-        setFade(true);
         setCurrentVideo(getNextVideo());
     };
 
@@ -89,7 +88,7 @@ function VideoBackground() {
             <video
                 onPlay={handleVideoPlay}
                 onEnded={handleVideoEnd}
-                onCanPlayThrough={() => setTimeout(() => setFade(false), 500)}
+                onCanPlayThrough={() => setFade(false)}
                 ref={videoRef}
                 className={`brightness-60 rounded-2xl object-cover w-full h-full transition-opacity duration-500 ${fade ? "opacity-0" : "opacity-100"
                 }`}
