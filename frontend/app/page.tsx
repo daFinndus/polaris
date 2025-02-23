@@ -70,6 +70,7 @@ function Supported() {
                         <ColorModeButton/>
                         <NewsPageButton/>
                         <ThreePageButton/>
+                        <ErrorPageButton/>
                     </div>
                     <About/>
                     <DevStack/>
