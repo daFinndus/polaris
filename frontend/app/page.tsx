@@ -5,16 +5,19 @@ import React from "react";
 import Head from "next/head";
 
 import About from "./home/about";
-import DevStack from "@/app/home/development";
+import Joke from "@/app/home/joke";
 import Projects from "@/app/home/projects";
+import DevStack from "@/app/home/development";
+import HackTheBox from "@/app/home/hack_the_box";
+import SecurityStack from "@/app/home/cybersecurity";
+
 import NewsPageButton from "@/components/news-page-button";
 import ColorModeButton from "@/components/color-mode-button";
+import ErrorPageButton from "@/components/error-page-button";
+import ThreePageButton from "@/components/three-page-button";
 
 import {useWindowSize} from "@/app/hooks/useWindowSize";
-import ThreePageButton from "@/components/three-page-button";
-import SecurityStack from "@/app/home/cybersecurity";
-import HackTheBox from "@/app/home/hack_the_box";
-import Joke from "@/app/home/joke";
+
 
 function Unsupported() {
     return (
@@ -31,6 +34,7 @@ function Supported() {
                 <ColorModeButton/>
                 <NewsPageButton/>
                 <ThreePageButton/>
+                <ErrorPageButton/>
             </div>
             <div className="flex items-start justify-center font-sans tablet:p-8 laptop:px-32">
                 <PageHead/>

@@ -7,7 +7,8 @@ import {Button} from "@/components/ui/button";
 
 import {useWindowSize} from "../hooks/useWindowSize";
 
-import {RiVolumeUpFill, RiVolumeMuteFill} from "react-icons/ri";
+import {RiVolumeMuteFill, RiVolumeUpFill} from "react-icons/ri";
+import {getColorMode} from "@/app/hooks/getColorMode";
 
 function AudioButton() {
     const audioRef = useRef<HTMLAudioElement>(null);
@@ -84,17 +85,18 @@ function VideoBackground() {
     };
 
     return (
-        <div className={"relative w-full h-3/4 overflow-hidden"}>
+        <div className={"relative w-full p-8 h-3/4"}>
             <video
                 onPlay={handleVideoPlay}
                 onEnded={handleVideoEnd}
                 onCanPlayThrough={() => setTimeout(() => setFade(false), 500)}
                 ref={videoRef}
-                className={`brightness-60 scale-105 blur-sm py-2 object-cover w-full h-full transition-opacity duration-500 ${fade ? "opacity-0" : "opacity-100"
+                className={`brightness-60 rounded-2xl object-cover w-full h-full transition-opacity duration-500 ${fade ? "opacity-0" : "opacity-100"
                 }`}
                 src={currentVideo}
                 autoPlay
                 muted
+                playsInline
             />
             <p className={`text-[25vw] drop-shadow-2xl h-min absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 text-center font-bold opacity-100 transition-colors duration-500 ${fade ? "text-primary" : "text-background"}`}>404</p>
         </div>
@@ -110,6 +112,10 @@ function Unsupported() {
 }
 
 function Supported() {
+    useEffect(() => {
+        getColorMode();
+    }, []);
+
     return (
         <div className={"flex flex-col h-screen w-screen items-center bg-background justify-center font-sans"}>
             <div className={"z-10 flex flex-row gap-x-2 absolute top-4 right-4"}>
