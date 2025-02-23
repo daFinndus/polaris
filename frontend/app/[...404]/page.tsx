@@ -56,7 +56,7 @@ function VideoBackground() {
 
   const [currentVideo, setCurrentVideo] = useState(whitelist[0]);
   const [blacklist, setBlacklist] = useState<string[]>([whitelist[0]]);
-  const [fade, setFade] = useState(false);
+  const [fade, setFade] = useState(true);
 
   const handleVideoPlay = () => {
     setBlacklist([...blacklist, currentVideo]);
@@ -105,7 +105,7 @@ function VideoBackground() {
       />
       <div
         className={
-          "flex absolute font-bold w-full text-background top-0 left-1/2 -translate-x-1/2 flex-col items-center gap-y-2 justify-center h-full opacity-100"
+          `flex absolute font-bold w-full top-0 left-1/2 -translate-x-1/2 flex-col items-center gap-y-2 justify-center h-full opacity-100 transition-colors duration-500 ${fade ? "text-black" : "text-background"}`
         }
       >
         <h1 className={"text-4xl"}>ERROR 404</h1>
