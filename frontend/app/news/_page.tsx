@@ -34,7 +34,7 @@ function Supported() {
   );
 }
 
-export default function Home() {
+export default function Page() {
   let size = useWindowSize();
 
   if (size.width! > 396) {

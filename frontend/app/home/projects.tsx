@@ -1,20 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
+
+import projects from "@/app/data/projects";
 
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-import AutoScroll from "embla-carousel-auto-scroll";
 import "@/app/styles/carousel-fade.css";
+
+import AutoScroll from "embla-carousel-auto-scroll";
 
 import { GrCubes } from "react-icons/gr";
 import { FaCodepen } from "react-icons/fa";
 
-import projects from "@/app/data/projects";
 
 function Project({
   src,
@@ -44,6 +47,17 @@ function Project({
 }
 
 export default function Projects() {
+  const { toast } = useToast();
+
+  const Unavailable = () => {
+    toast({
+      title: "No projects yet.",
+      description: "Currently no projects are enlisted.",
+      duration: 5000,
+      variant: "destructive",
+    });
+  };
+
   return (
     <div
       className={
@@ -89,7 +103,7 @@ export default function Projects() {
           </Carousel>
         </div>
         <Button asChild variant={"color"} className={"w-56"}>
-          <Link href={"/projects"}>
+          <Link href={"/"} onClick={Unavailable}>
             <GrCubes className={"text-color-lighter"} />
             View all my projects
           </Link>

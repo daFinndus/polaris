@@ -4,7 +4,7 @@ import React from "react";
 
 import Head from "next/head";
 
-import About from "@/app/home/about";
+import About from "./home/about";
 import DevStack from "@/app/home/development";
 import Projects from "@/app/home/projects";
 import NewsPageButton from "@/components/news-page-button";
@@ -25,30 +25,6 @@ function Unsupported() {
     >
       <p>Your device is not supported.</p>
     </div>
-  );
-}
-
-function PageHead() {
-  return (
-    <Head>
-      <title>Finn Luca Jensen</title>
-      <meta
-        name="description"
-        content="This is the portfolio of Finn Luca 'daFinndus' Jensen"
-      />
-      <link
-        rel="apple-touch-icon"
-        sizes="180x180"
-        href={"/favicon/apple-touch-icon.png"}
-      />
-      <link
-        rel="icon"
-        type="image/png"
-        sizes="32x32"
-        href={"/favicon/favicon-32x32.png"}
-      />
-      <link rel="manifest" href={"/favicon/site.webmanifest"} />
-    </Head>
   );
 }
 
@@ -114,7 +90,31 @@ function Supported() {
   );
 }
 
-export default function Home() {
+function PageHead() {
+  return (
+    <Head>
+      <title>Finn Luca Jensen</title>
+      <meta
+        name="description"
+        content="This is the portfolio of Finn Luca 'daFinndus' Jensen"
+      />
+      <link
+        rel="apple-touch-icon"
+        sizes="180x180"
+        href={"/favicon/apple-touch-icon.png"}
+      />
+      <link
+        rel="icon"
+        type="image/png"
+        sizes="32x32"
+        href={"/favicon/favicon-32x32.png"}
+      />
+      <link rel="manifest" href={"/favicon/site.webmanifest"} />
+    </Head>
+  );
+}
+
+export default function Page() {
   let size = useWindowSize();
 
   if (size.width! > 396) {

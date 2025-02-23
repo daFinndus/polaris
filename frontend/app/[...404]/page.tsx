@@ -5,11 +5,9 @@ import React, { useEffect, useRef, useState } from "react";
 import HomeButton from "@/components/home-button";
 import { Button } from "@/components/ui/button";
 
-import { getColorMode } from "../hooks/getColorMode";
 import { useWindowSize } from "../hooks/useWindowSize";
 
 import { RiVolumeUpFill, RiVolumeMuteFill } from "react-icons/ri";
-import { notFound } from "next/navigation";
 
 function AudioButton() {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -60,6 +58,18 @@ function VideoBackground() {
   const [blacklist, setBlacklist] = useState<string[]>([whitelist[0]]);
   const [fade, setFade] = useState(false);
 
+  const handleVideoPlay = () => {
+    setBlacklist([...blacklist, currentVideo]);
+    console.log("Added to blacklist", currentVideo);
+
+    const videoDuration = videoRef.current?.duration || 0;
+    console.log("Video duration is", videoDuration);
+
+    setTimeout(() => {
+      setFade(true);
+    }, videoDuration! * 1000 - 500);
+  }
+
   const getNextVideo = () => {
     const available = whitelist.filter((video) => !blacklist.includes(video));
 
@@ -71,22 +81,17 @@ function VideoBackground() {
     return available[Math.floor(Math.random() * available.length)];
   };
 
-  const addBlacklist = (video: string) => setBlacklist([...blacklist, video]);
-
   const handleVideoEnd = () => {
     setFade(true);
-
-    setTimeout(() => {
-      setCurrentVideo(getNextVideo());
-      setFade(false);
-    }, 500);
+    setCurrentVideo(getNextVideo());
   };
 
   return (
-    <div className={"relative w-screen h-screen"}>
+    <div className={"relative w-screen h-3/4"}>
       <video
-        onPlay={() => addBlacklist(currentVideo)}
+        onPlay={handleVideoPlay}
         onEnded={handleVideoEnd}
+        onCanPlayThrough={() => setTimeout(() => setFade(false), 500)}
         ref={videoRef}
         className={`absolute object-cover w-full h-full transition-opacity duration-500 ${fade ? "opacity-0" : "opacity-100"
           }`}
@@ -95,12 +100,12 @@ function VideoBackground() {
         muted
       />
       <div
-        className={`absolute w-full h-full bg-black transition-opacity duration-500 ${!fade ? "opacity-50" : "opacity-0"
+        className={`absolute w-full h-full bg-black transition-opacity duration-500 ${fade ? "opacity-0" : "opacity-50"
           }`}
       />
       <div
         className={
-          "flex absolute font-bold w-full text-white top-0 left-1/2 -translate-x-1/2 flex-col items-center gap-y-2 justify-center h-full opacity-100"
+          "flex absolute font-bold w-full text-background top-0 left-1/2 -translate-x-1/2 flex-col items-center gap-y-2 justify-center h-full opacity-100"
         }
       >
         <h1 className={"text-4xl"}>ERROR 404</h1>
@@ -123,10 +128,6 @@ function Unsupported() {
 }
 
 function Supported() {
-  useEffect(() => {
-    getColorMode();
-  });
-
   return (
     <div
       className={
@@ -142,7 +143,7 @@ function Supported() {
   );
 }
 
-export default function Home() {
+export default function Page() {
   let size = useWindowSize();
 
   if (size.width! > 396) {

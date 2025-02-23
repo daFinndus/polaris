@@ -19,6 +19,25 @@ function Unsupported() {
   );
 }
 
+function Supported() {
+  useEffect(() => {
+    getColorMode();
+  }, []);
+
+  return (
+    <div
+      className={
+        "font-sans relative h-screen w-screen justify-center flex items-center"
+      }
+    >
+      <ThreeScene />
+      <div className={"absolute top-4 left-4"}>
+        <HomeButton />
+      </div>
+    </div>
+  );
+}
+
 /**
  * Gets the css variable from the root element and cuts it into a hsl string.
  * @param color The css variable to get.
@@ -106,26 +125,7 @@ const ThreeScene: React.FC = () => {
   );
 };
 
-function Supported() {
-  useEffect(() => {
-    getColorMode();
-  }, []);
-
-  return (
-    <div
-      className={
-        "font-sans relative h-screen w-screen justify-center flex items-center"
-      }
-    >
-      <ThreeScene />
-      <div className={"absolute top-4 left-4"}>
-        <HomeButton />
-      </div>
-    </div>
-  );
-}
-
-export default function Home() {
+export default function Page() {
   let size = useWindowSize();
 
   if (size.width! > 396) {
