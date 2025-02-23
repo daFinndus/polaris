@@ -105,7 +105,7 @@ function VideoBackground() {
       />
       <div
         className={
-          `flex absolute font-bold w-full top-0 left-1/2 -translate-x-1/2 flex-col items-center gap-y-2 justify-center h-full opacity-100 transition-colors duration-500 ${fade ? "text-black" : "text-background"}`
+          `flex absolute font-bold w-full top-0 left-1/2 -translate-x-1/2 flex-col items-center gap-y-2 justify-center h-full opacity-100 transition-colors duration-500 ${fade ? "text-primary" : "text-background"}`
         }
       >
         <h1 className={"text-4xl"}>ERROR 404</h1>
