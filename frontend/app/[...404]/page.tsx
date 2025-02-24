@@ -90,8 +90,7 @@ function VideoBackground() {
                 onEnded={handleVideoEnd}
                 onCanPlayThrough={() => setFade(false)}
                 ref={videoRef}
-                className={`brightness-60 rounded-2xl object-cover w-full h-full transition-opacity duration-500 ${fade ? "opacity-0" : "opacity-100"
-                }`}
+                className={`brightness-60 rounded-2xl object-cover w-full h-full transition-opacity duration-500 ${fade ? "opacity-0" : "opacity-100"}`}
                 src={currentVideo}
                 autoPlay
                 muted

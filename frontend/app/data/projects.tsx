@@ -14,8 +14,8 @@ const projects = [
     {
         src: "/images/portfolio.png",
         alt: "My Portfolio",
-        width: 1920,
-        height: 1080,
+        width: 768,
+        height: 432,
     },
     {
         src: "/images/voice_assistant.jpg",
