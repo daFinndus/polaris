@@ -51,12 +51,12 @@ function AudioButton() {
 function VideoBackground() {
     const videoRef = useRef<HTMLVideoElement>(null);
     const whitelist = Array.from(
-        {length: 44},
+        {length: 3},
         (_, i) => `/videos/cyberpunk_clip_${String(i).padStart(2, "0")}.mp4`
     );
 
     const [currentVideo, setCurrentVideo] = useState(whitelist[0]);
-    const [blacklist, setBlacklist] = useState<string[]>([whitelist[0]]);
+    const [blacklist, setBlacklist] = useState<string[]>([]);
     const [fade, setFade] = useState(true);
 
     const handleVideoPlay = () => {
@@ -79,15 +79,15 @@ function VideoBackground() {
         return available[Math.floor(Math.random() * available.length)];
     };
 
-    const handleVideoEnd = () => {
-        setCurrentVideo(getNextVideo());
-    };
+    useEffect(() => {
+        if (videoRef.current) setCurrentVideo(getNextVideo());
+    }, []);
 
     return (
         <div className={"relative w-full p-8 h-3/4"}>
             <video
                 onPlay={handleVideoPlay}
-                onEnded={handleVideoEnd}
+                onEnded={() => setCurrentVideo(getNextVideo())}
                 onCanPlayThrough={() => setFade(false)}
                 ref={videoRef}
                 className={`brightness-60 rounded-2xl object-cover w-full h-full transition-opacity duration-500 ${fade ? "opacity-0" : "opacity-100"}`}
