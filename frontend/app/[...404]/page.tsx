@@ -1,14 +1,14 @@
 "use client";
 
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import HomeButton from "@/components/home-button";
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 
-import {useWindowSize} from "../hooks/useWindowSize";
+import { useWindowSize } from "../hooks/useWindowSize";
 
-import {RiVolumeMuteFill, RiVolumeUpFill} from "react-icons/ri";
-import {getColorMode} from "@/app/hooks/getColorMode";
+import { RiVolumeMuteFill, RiVolumeUpFill } from "react-icons/ri";
+import { getColorMode } from "@/app/hooks/getColorMode";
 
 function AudioButton() {
     const audioRef = useRef<HTMLAudioElement>(null);
@@ -35,7 +35,7 @@ function AudioButton() {
                 className="w-full h-full"
                 onClick={ToggleAudio}
             >
-                {isMuted ? <RiVolumeMuteFill/> : <RiVolumeUpFill/>}
+                {isMuted ? <RiVolumeMuteFill /> : <RiVolumeUpFill />}
             </Button>
             <audio
                 loop={true}
@@ -50,8 +50,10 @@ function AudioButton() {
 
 function VideoBackground() {
     const videoRef = useRef<HTMLVideoElement>(null);
+
+    // Executing the script under ~/frontend/public/scripts/video-clip-count.py will count the number of clips, basically the whitelist array length.
     const whitelist = Array.from(
-        {length: 3},
+        { length: 46 },
         (_, i) => `/videos/cyberpunk_clip_${String(i).padStart(2, "0")}.mp4`
     );
 
@@ -117,10 +119,10 @@ function Supported() {
     return (
         <div className={"flex flex-col h-screen w-screen items-center bg-background justify-center font-sans"}>
             <div className={"z-10 flex flex-row gap-x-2 absolute top-4 right-4"}>
-                <HomeButton/>
-                <AudioButton/>
+                <HomeButton />
+                <AudioButton />
             </div>
-            <VideoBackground/>
+            <VideoBackground />
         </div>
     );
 }
@@ -129,8 +131,8 @@ export default function Page() {
     let size = useWindowSize();
 
     if (size.width! > 396) {
-        return <Supported/>;
+        return <Supported />;
     } else if (size.width! > 0) {
-        return <Unsupported/>;
+        return <Unsupported />;
     }
 }
