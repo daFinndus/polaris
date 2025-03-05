@@ -30,7 +30,7 @@ export default function HackTheBox() {
                     <Avatar className={"ml-1 mt-1 size-20 rounded-xl tablet:size-28"}>
                         <AvatarImage
                             className={"object-cover"}
-                            src={"/images/lucy.jpg"}
+                            src={"/images/lucy.webp"}
                             alt={"This is me in Thailand"}
                         />
                         <AvatarFallback delayMs={500}>daFinndus</AvatarFallback>

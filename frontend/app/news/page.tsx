@@ -1,11 +1,14 @@
 "use client";
 
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 
 import HomeButton from "@/components/home-button";
 import Articles from "@/app/news/articles";
+
 import {useWindowSize} from "@/app/hooks/useWindowSize";
 import {getColorMode} from "@/app/hooks/getColorMode";
+import {checkBackendConnection} from "@/app/hooks/checkBackendConnection";
+import {notFound} from "next/navigation";
 
 
 function Unsupported() {
@@ -26,13 +29,24 @@ function Supported() {
             <div className={"h-full"}>
                 <Articles/>
             </div>
-            <HomeButton/>
+            <div className={"hidden notebook:flex absolute top-6 left-4"}><HomeButton/></div>
         </div>
     );
 }
 
 export default function Page() {
-    let size = useWindowSize();
+    const size = useWindowSize();
+    const [backend, setBackend] = useState<boolean | null>(null);
+
+    useEffect(() => {
+        checkBackendConnection().then((response) => {
+            if (response === null) setBackend(false);
+            else setBackend(true);
+        });
+    }, []);
+    
+    if (backend === null) return null;
+    if (!backend) return notFound();
 
     if (size.width! > 396) {
         return <Supported/>;

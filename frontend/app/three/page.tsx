@@ -120,7 +120,7 @@ const ThreeScene: React.FC = () => {
 };
 
 export default function Page() {
-    let size = useWindowSize();
+    const size = useWindowSize();
 
     if (size.width! > 396) {
         return <Supported/>;

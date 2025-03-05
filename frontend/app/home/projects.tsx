@@ -6,11 +6,7 @@ import {Button} from "@/components/ui/button";
 
 import projects from "@/app/data/projects";
 
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-} from "@/components/ui/carousel";
+import {Carousel, CarouselContent, CarouselItem,} from "@/components/ui/carousel";
 import "@/app/styles/carousel-fade.css";
 
 import AutoScroll from "embla-carousel-auto-scroll";
