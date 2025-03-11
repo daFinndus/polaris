@@ -6,9 +6,7 @@ require("dotenv").config({
 });
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_URL}/portfolio?retryWrites=true&w=majority`;
-const options = {
-    serverApi: {version: "1", strict: true, deprecationErrors: true},
-};
+const options = {serverApi: {version: "1", strict: true, deprecationErrors: true}};
 
 let connection;
 

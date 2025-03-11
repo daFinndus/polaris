@@ -1,6 +1,9 @@
+const fs = require("fs");
 const cors = require("cors");
-const axios = require("axios");
+const https = require("https");
 const express = require("express");
+
+
 const {checkKeys} = require("./routes/keys.js");
 const {removeDupesFromDB} = require("./routes/database");
 const {updateArticles, getCachedArticles} = require("./routes/news.js");
@@ -11,6 +14,18 @@ checkKeys();
 
 const port = process.env.PORT;
 const app = express();
+
+let options = {};
+
+if (port === 443) {
+    options = {
+        key: fs.readFileSync('/etc/letsencrypt/live/finnlucajensen.ddns.net/privkey.pem'),
+        cert: fs.readFileSync('/etc/letsencrypt/live/finnlucajensen.ddns.net/cert.pem'),
+        ca: fs.readFileSync('/etc/letsencrypt/live/finnlucajensen.ddns.net/chain.pem')
+    }
+
+    console.log("\nSetup SSL with certificates.\n");
+}
 
 /**
  * Middleware to enable CORS with specified origins and methods.
@@ -101,9 +116,11 @@ app.get("/api/articles", async (req, res) => {
 });
 
 /**
- * Necessary to run the server on the specified port.
+ * Run the server on https if certificates are available, otherwise run on http.
  */
-app.listen(port, () => console.log(`Server running on port: ${port}`));
+if (port === 443) https.createServer(options, app).listen(port, () => console.log(`Server running on port ${port} with SSL enabled.`));
+else app.listen(port, () => console.log(`Server running on port: ${port} without SSL.`));
+
 
 // Set intervals for reloading the backend and fetching articles
 setInterval(updateArticles, 1000 * 60 * 60);
