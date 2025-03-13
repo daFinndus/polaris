@@ -11,7 +11,7 @@ require("dotenv").config({path: require("path").resolve(__dirname, "../.env")});
 
 checkKeys();
 
-const port = process.env.PORT;
+const port = parseInt(process.env.PORT, 10);
 const app = express();
 
 let options = {};
