@@ -1,9 +1,7 @@
 const axios = require("axios");
 const {pushArticlesToDB, pullArticlesFromDB} = require("./database");
 
-require("dotenv").config({
-    path: require("path").resolve(__dirname, "../.env"),
-});
+require("dotenv").config({path: require("path").resolve(__dirname, "../.env")});
 
 let cachedArticles = [];
 
@@ -15,16 +13,13 @@ let cachedArticles = [];
 const updateArticles = async () => {
     let freshArticles = await fetchArticles();
 
-    // If the cache is empty, fetch articles from the database
-    // That is necessary to remove duplicates from the cache
-    if (cachedArticles.length === 0) await cacheArticlesFromDB();
-    const cachedURLs = new Set(cachedArticles.map((article) => article.url));
+    // Get all URLs from the database for comparison
+    const cachedURLs = new Set((await pullArticlesFromDB()).map(article => article.url));
 
-    freshArticles = verifyArticles(freshArticles, cachedURLs);
+    // Remove duplicates and verify content in terms of images and descriptions
+    if (freshArticles) freshArticles = await verifyArticles(freshArticles, cachedURLs);
 
     if (freshArticles.length) {
-        await addDescription(freshArticles);
-        await addImage(freshArticles);
         await pushArticlesToDB(freshArticles);
         await cacheArticlesFromDB();
     }
@@ -38,10 +33,7 @@ const fetchArticles = async () => {
     const uri = "https://newsapi.org/v2/top-headlines";
 
     try {
-        const response = await axios.get(uri, {
-            params: {category: "technology", apiKey: process.env.NEWS_API_KEY},
-        });
-
+        const response = await axios.get(uri, {params: {category: "technology", apiKey: process.env.NEWS_API_KEY}});
         return response.data.articles;
     } catch (err) {
         console.error("Error fetching articles:", err.stack);
@@ -54,16 +46,8 @@ const fetchArticles = async () => {
  */
 const cacheArticlesFromDB = async () => {
     try {
-        const cachedURLs = new Set(cachedArticles.map((article) => article.url));
         const databaseArticles = await pullArticlesFromDB(undefined, undefined);
-
-        cachedArticles = [
-            ...cachedArticles,
-            ...verifyArticles(databaseArticles, cachedURLs).map((article) => ({
-                ...article,
-                title: sliceTitle(article.title),
-            })),
-        ];
+        cachedArticles = databaseArticles.map(article => ({...article, title: sliceTitle(article.title)}));
     } catch (err) {
         console.error("Error pulling articles from the database:", err.stack);
     }
@@ -99,16 +83,63 @@ const getCachedArticles = async (page = 1, limit = 18, query = "") => {
 };
 
 /**
+ * Adds a default image to articles that don't have one.
+ * @param articles - The articles to check for not existent images.
+ * @returns {*} The articles with the added image.
+ */
+const addImage = (articles) => {
+    for (const article of articles) {
+        if (!article.urlToImage) {
+            article.urlToImage = "https://picsum.photos/600/400";
+        }
+    }
+
+    return articles;
+}
+
+/**
+ * Adds a joke as a description to articles that don't have one.
+ * @param articles - The articles to check for empty descriptions.
+ * @returns {Promise<void>} A promise that resolves when the descriptions are added.
+ */
+const addDescription = async (articles) => {
+    try {
+        for (const article of articles) {
+            if (!article.description) {
+                const response = await axios.get("https://v2.jokeapi.dev/joke/Programming?format=txt&type=single");
+                article.description = response?.data;
+            }
+        }
+    } catch (err) {
+        console.error("Error while updating article description:", err.stack);
+    }
+
+    return articles;
+}
+
+/**
+ * Removes duplicate articles from the articles array.
+ * @param articles - The articles to filter.
+ * @param url - The URL of the articles to filter out.
+ * @returns {*} The filtered articles.
+ */
+const removeDuplicates = (articles, url) => {
+    return articles.filter((article) => !url.has(article.url) && article.url !== "https://removed.com");
+}
+
+/**
  * Filters out duplicate articles by comparing already stored URLs and the new ones.
- * It also removes articles with the URL "https://removed.com".
+ * It also removes articles with the URL "https://removed.com", updates descriptions and images if not existent.
  * @param articles - The articles to filter.
  * @param url - The url of the articles to filter out.
  * @returns {*} The filtered articles.
  */
-const verifyArticles = (articles, url) => {
-    return articles.filter(
-        (article) => !url.has(article.url) && article.url !== "https://removed.com"
-    );
+const verifyArticles = async (articles, url) => {
+    articles = removeDuplicates(articles, url);
+    articles = await addDescription(articles);
+    articles = addImage(articles);
+
+    return articles;
 };
 
 /**
@@ -121,36 +152,6 @@ const sliceTitle = (title) => {
     return dashIndex !== -1 ? title.substring(0, dashIndex).trim() : title;
 };
 
-/**
- * Adds a random image to articles without an image.
- */
-const addImage = (articles) => {
-    articles.forEach((article) => {
-        if (!article.urlToImage)
-            article.urlToImage = "https://source.unsplash.com/random";
-    });
-};
-
-/**
- * This description adds a joke as a description to the articles.
- * @param articles - The articles to add the description to.
- * @returns {Promise<void>} A promise that resolves when the descriptions are added.
- */
-const addDescription = (articles) => {
-    try {
-        articles.forEach(async (article) => {
-            if (!article.description) {
-                const response = await axios.get(
-                    "https://v2.jokeapi.dev/joke/Programming?format=txt&type=single"
-                );
-                article.description = response?.data;
-
-                console.log("Added a joke to the article:", article.title);
-            }
-        });
-    } catch (err) {
-        console.error("Error fetching joke:", err.stack);
-    }
-};
+cacheArticlesFromDB().catch((err) => console.error("Error fetching articles from the database:", err.stack));
 
 module.exports = {getCachedArticles, updateArticles};

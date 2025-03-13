@@ -8,7 +8,6 @@ import {checkBackendConnection} from "@/app/hooks/checkBackendConnection";
 
 import {HiNewspaper} from "react-icons/hi2";
 
-
 export default function NewsPageButton() {
     const {toast} = useToast();
     const [backend, setBackend] = useState<boolean | null>(null);

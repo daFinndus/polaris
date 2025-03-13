@@ -4,8 +4,6 @@
 const checkKeys = () => {
     const requiredKeys = [
         "PORT",
-        "LOCAL_IP",
-        "PUBLIC_IP",
         "NEWS_API_KEY",
         "BACKEND_URL",
         "FRONTEND_URL",
@@ -17,9 +15,7 @@ const checkKeys = () => {
     const missingKeys = requiredKeys.filter((key) => !process.env[key]);
 
     if (missingKeys.length > 0) {
-        missingKeys.forEach((key) =>
-            console.error(`The ${key} environment variable is not set.`)
-        );
+        missingKeys.forEach((key) => console.error(`The ${key} environment variable is not set.`));
         process.exit(1);
     }
 

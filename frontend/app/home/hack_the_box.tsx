@@ -5,10 +5,8 @@ import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 
 import {IconType} from "react-icons";
 import {GiRank3} from "react-icons/gi";
-import {TiWorld} from "react-icons/ti";
 import {FaUserAlt} from "react-icons/fa";
 import {FaServer} from "react-icons/fa6";
-import {MdSportsScore} from "react-icons/md";
 
 function Statistic({Icon, name}: { Icon: IconType; name: string }) {
     return (
@@ -40,8 +38,6 @@ export default function HackTheBox() {
                         <div
                             className={"flex h-auto flex-wrap items-center gap-2 rounded-lg border-none bg-background px-4 py-3"}>
                             <Statistic Icon={GiRank3} name={"Script Kiddie"}/>
-                            <Statistic Icon={TiWorld} name={"#820 Global Rank"}/>
-                            <Statistic Icon={MdSportsScore} name={"25 Final Score"}/>
                             <Statistic Icon={FaUserAlt} name={"7 User Pawns"}/>
                             <Statistic Icon={FaServer} name={"7 System Pawns"}/>
                         </div>

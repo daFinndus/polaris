@@ -1,14 +1,13 @@
 const fs = require("fs");
-const cors = require("cors");
 const https = require("https");
 const express = require("express");
 
+const {checkKeys} = require("./functions/keys.js");
+const {updateArticles} = require("./functions/news.js");
+const {removeDupesFromDB} = require("./functions/database");
+const {defaultLimit, strictLimiter} = require("./middleware/limiters");
 
-const {checkKeys} = require("./routes/keys.js");
-const {removeDupesFromDB} = require("./routes/database");
-const {updateArticles, getCachedArticles} = require("./routes/news.js");
-
-require("dotenv").config({path: require("path").resolve(__dirname, "/.env")});
+require("dotenv").config({path: require("path").resolve(__dirname, "../.env")});
 
 checkKeys();
 
@@ -24,107 +23,45 @@ if (port === 443) {
         ca: fs.readFileSync('/etc/letsencrypt/live/finnlucajensen.ddns.net/chain.pem')
     }
 
-    console.log("\nSetup SSL with certificates.\n");
+    console.log("\nSetup SSL with given certificates.\n");
 }
 
-/**
- * Middleware to enable CORS with specified origins and methods.
- */
-app.use(
-    cors({
-        origin: [
-            "http://localhost:3000",
-            process.env.LOCAL_IP,
-            process.env.PUBLIC_IP,
-            process.env.FRONTEND_URL,
-        ],
-        methods: ["GET"],
-    })
-);
+const securityMiddleware = require("./middleware/security");
+
+app.use(securityMiddleware);
+
+const apiRoutes = require("./routes/api");
+const backendRoutes = require("./routes/backend");
+const databaseRoutes = require("./routes/database");
 
 /**
  * Route handler for the root path.
  * Responds with a 404 status and a message indicating the page does not exist.
  */
-app.get("/", (_, res) =>
-    res
-        .status(404)
-        .send("Sorry, this page does not exist! Nice for you being here though.")
-);
+app.get("/", (_, res) => res
+    .status(404)
+    .send("Sorry, this page does not exist! Nice for you being here though."));
 
-/**
- * Route handler for the /backend path.
- * Responds with a message indicating the backend is running.
- */
-app.get("/backend", (_, res) => res.send("Hello from backend!"));
 
-/**
- * Route handler for specific database functions.
- * Right now it's only for sorting out duplicates.
- */
-app.get("/database/dupes", async (_, res) => {
-    try {
-        const duplicates = await removeDupesFromDB();
-        res.status(200).json({success: true, duplicates: duplicates});
-    } catch (err) {
-        res.status(500).send("Failed to remove duplicates.");
-        console.error("Error fetching duplicates:", err.stack);
-    }
-});
+app.use("/api", defaultLimit, apiRoutes);
+app.use("/database", strictLimiter, databaseRoutes);
+app.use("/backend", backendRoutes);
 
-/**
- * Route handler for fetching articles with pagination.
- * Responds with the articles and pagination information or an error message.
- */
-app.get("/api/articles", async (req, res) => {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 18;
-    const query = req.query.query || "";
-
-    console.log(
-        "Received parameters: page is",
-        page,
-        "and limit is",
-        limit,
-        "and query is",
-        query || "empty"
-    );
-
-    try {
-        const [articles, total] = await getCachedArticles(page, limit, query);
-
-        console.log(
-            "Successfully gave",
-            articles.length,
-            "articles to the client."
-        );
-
-        res.status(200).json({
-            success: true,
-            total: total,
-            articles: articles,
-            query: query,
-            pagination: {page: page, limit: limit},
-        });
-    } catch (err) {
-        res.status(500).send("Failed to fetch articles.");
-        console.error(
-            "Error while trying to send a response for articles:",
-            err.stack
-        );
-    }
-});
-
-/**
- * Run the server on https if certificates are available, otherwise run on http.
- */
+// Run the server on https if certificates are available, otherwise run on http.
 if (port === 443) https.createServer(options, app).listen(port, () => console.log(`Server running on port ${port} with SSL enabled.`));
-else app.listen(port, () => console.log(`Server running on port: ${port} without SSL.`));
-
+else app.listen(port, () => console.log(`Server running on port ${port} without SSL.`));
 
 // Set intervals for reloading the backend and fetching articles
-setInterval(updateArticles, 1000 * 60 * 60);
-setInterval(removeDupesFromDB, 1000 * 60 * 60);
+const scheduleUpdate = () => {
+    updateArticles().catch(err => console.error("Error updating articles:", err.stack));
+    setTimeout(scheduleUpdate, 1000 * 60 * 60);
+};
 
-// Call fetch articles on startup to populate the cache
-updateArticles().catch((err) => console.error("Error fetching articles on startup:", err.stack));
+const scheduleDupesCleanup = () => {
+    removeDupesFromDB().catch(err => console.error("Error removing duplicates:", err.stack));
+    setTimeout(scheduleDupesCleanup, 1000 * 60 * 90);
+};
+
+// Start scheduled tasks
+scheduleUpdate();
+setTimeout(scheduleDupesCleanup, 1000 * 30);  // Start second task 30s later

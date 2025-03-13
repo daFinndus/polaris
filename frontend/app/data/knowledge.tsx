@@ -1,6 +1,5 @@
 import {GiBreakingChain, GiBrute, GiCrackedDisc} from "react-icons/gi";
 import {RiNextjsFill, RiTailwindCssFill} from "react-icons/ri";
-import {TbBrandCpp, TbBrandCSharp} from "react-icons/tb";
 import {DiMongodb, DiPython} from "react-icons/di";
 import {FaEye, FaNodeJs} from "react-icons/fa6";
 import {BiLogoReact} from "react-icons/bi";
@@ -60,19 +59,6 @@ export const development: Technology[] = [
         content:
             "MongoDB is a NoSQL database I use to store and manage data in my projects. It's particularly helpful for handling flexible, document-based data.",
         href: "https://mongodb.com",
-    },
-    {
-        Icon: TbBrandCpp,
-        name: "C++",
-        content: "C++ is my primary language for high-performance computing.",
-        href: "https://isocpp.org",
-    },
-    {
-        Icon: TbBrandCSharp,
-        name: "C#",
-        content:
-            "C# is my main language for windows desktop applications and game development using Unity.",
-        href: "https://dotnet.microsoft.com/en-us/languages/csharp",
     },
 ];
 
