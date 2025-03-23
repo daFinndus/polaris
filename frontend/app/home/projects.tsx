@@ -14,18 +14,7 @@ import AutoScroll from "embla-carousel-auto-scroll";
 import {GrCubes} from "react-icons/gr";
 import {FaCodepen} from "react-icons/fa";
 
-
-function Project({
-                     src,
-                     alt,
-                     width,
-                     height,
-                 }: {
-    src: string;
-    alt: string;
-    width: number;
-    height: number;
-}) {
+const Project = ({src, alt, width, height}: { src: string; alt: string; width: number; height: number; }) => {
     return (
         <CarouselItem className={"basis-1/3"}>
             <Image

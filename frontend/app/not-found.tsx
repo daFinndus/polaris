@@ -14,7 +14,7 @@ import {RiVolumeMuteFill, RiVolumeUpFill} from "react-icons/ri";
  * This function is responsible for rendering the audio button.
  * It will loop through one audio file and play it in the background.
  */
-function AudioButton() {
+const AudioButton = () => {
     const audioRef = useRef<HTMLAudioElement>(null);
 
     const [isMuted, setIsMuted] = React.useState(true);
@@ -56,7 +56,7 @@ function AudioButton() {
  * This function is responsible for rendering the video background.
  * It will loop through a list of video clips and play them in the background.
  */
-function VideoBackground() {
+const VideoBackground = () => {
     const videoRef = useRef<HTMLVideoElement>(null);
 
     // Executing the script under ~/frontend/public/scripts/video-clip-count.py will count the number of clips, basically the whitelist array length.
@@ -111,7 +111,7 @@ function VideoBackground() {
     );
 }
 
-function Unsupported() {
+const Unsupported = () => {
     return (
         <div className={"flex h-screen w-screen items-center justify-center font-sans text-xs"}>
             <p>Your device is not supported.</p>
@@ -119,7 +119,7 @@ function Unsupported() {
     );
 }
 
-function Supported() {
+const Supported = () => {
     useEffect(() => {
         getColorMode();
     }, []);

@@ -4,7 +4,7 @@ import axios from "axios";
  * This function checks the connection to the backend API.
  * To be fast enough it will only ping the backend not retrieving any more data.
  */
-export async function checkBackendConnection() {
+export const checkBackendConnection = async () => {
     const uri = `${process.env.NEXT_PUBLIC_BACKEND_URL}/backend`;
 
     let response = null;

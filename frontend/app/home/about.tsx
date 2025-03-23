@@ -15,11 +15,11 @@ import {IconType} from "react-icons";
 import {LuCake} from "react-icons/lu";
 import {BsBriefcase} from "react-icons/bs";
 import {IoGlobe, IoLanguage} from "react-icons/io5";
-import {SiGmail, SiNintendogamecube} from "react-icons/si";
+import {SiGmail} from "react-icons/si";
 import {FaGithub, FaLinkedin, FaTwitter} from "react-icons/fa";
-import {MdOutlineLocationOn, MdOutlineSportsSoccer} from "react-icons/md";
+import {MdOutlineLocationOn} from "react-icons/md";
 
-function Tag({Icon, name}: { Icon: IconType; name: string }) {
+const Tag = ({Icon, name}: { Icon: IconType; name: string }) => {
     return (
         <Badge variant={"about"} className={"h-[28px] px-2 py-1 smartphone:w-max"}>
             <Icon className={"mr-2 size-4 text-color"}/>
@@ -40,6 +40,13 @@ export default function About() {
         overflow: true,
         overdrive: true,
     });
+
+    const getAge = () => {
+        const birthDate = new Date("2002-11-10");
+        const currentDate = new Date();
+
+        return Math.floor((currentDate.getTime() - birthDate.getTime()) / 3.15576e+10);
+    }
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -79,12 +86,10 @@ export default function About() {
             <div
                 className={"mt-4 flex h-auto flex-wrap items-center gap-2 rounded-lg border-none bg-background px-4 py-3"}>
                 <Tag Icon={IoLanguage} name={"German & English"}></Tag>
-                <Tag Icon={LuCake} name={"22 years old"}></Tag>
+                <Tag Icon={LuCake} name={`${getAge()} years old`}></Tag>
                 <Tag Icon={MdOutlineLocationOn} name={"Kiel"}></Tag>
                 <Tag Icon={IoGlobe} name={"UTC+1"}></Tag>
                 <Tag Icon={BsBriefcase} name={"Student"}></Tag>
-                <Tag Icon={SiNintendogamecube} name={"Animal Crossing"}></Tag>
-                <Tag Icon={MdOutlineSportsSoccer} name={"Football"}></Tag>
             </div>
             <div className={"mt-4 flex flex-row justify-center space-x-2"}>
                 <Button asChild variant={"color"}>

@@ -8,7 +8,7 @@ import {GiRank3} from "react-icons/gi";
 import {FaUserAlt} from "react-icons/fa";
 import {FaServer} from "react-icons/fa6";
 
-function Statistic({Icon, name}: { Icon: IconType; name: string }) {
+const Statistic = ({Icon, name}: { Icon: IconType; name: string }) => {
     return (
         <Badge
             variant={"secondary"}

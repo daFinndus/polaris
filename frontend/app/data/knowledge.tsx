@@ -4,6 +4,7 @@ import {DiMongodb, DiPython} from "react-icons/di";
 import {FaEye, FaNodeJs} from "react-icons/fa6";
 import {BiLogoReact} from "react-icons/bi";
 import {SiBurpsuite} from "react-icons/si";
+import {VscTerminalBash} from "react-icons/vsc";
 
 interface Technology {
     Icon: any;
@@ -99,4 +100,9 @@ export const cybersecurity: Method[] = [
         content:
             "I can crack hashed passwords using tools like John the Ripper and Hashcat.",
     },
+    {
+        Icon: VscTerminalBash,
+        name: "Scripting",
+        content: "I now my way around Bash and PowerShell for automating tasks, monitoring systems, and more.",
+    }
 ];

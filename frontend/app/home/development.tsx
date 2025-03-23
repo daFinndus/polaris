@@ -4,11 +4,7 @@ import {FaConnectdevelop} from "react-icons/fa6";
 import {development} from "@/app/data/knowledge";
 
 import {Badge} from "@/components/ui/badge";
-import {
-    HoverCard,
-    HoverCardContent,
-    HoverCardTrigger,
-} from "@/components/ui/hover-card";
+import {HoverCard, HoverCardContent, HoverCardTrigger,} from "@/components/ui/hover-card";
 
 interface TechnologyProps {
     Icon: IconType;
@@ -18,7 +14,7 @@ interface TechnologyProps {
     href: string;
 }
 
-function Technology({Icon, name, content, version, href}: TechnologyProps) {
+const Technology = ({Icon, name, content, version, href}: TechnologyProps) => {
     return (
         <HoverCard>
             <HoverCardTrigger href={href} className={"group"}>

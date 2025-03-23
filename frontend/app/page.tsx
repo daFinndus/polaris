@@ -5,21 +5,18 @@ import React from "react";
 import Head from "next/head";
 
 import About from "./home/about";
-import Joke from "@/app/home/joke";
+
 import Projects from "@/app/home/projects";
 import DevStack from "@/app/home/development";
-import HackTheBox from "@/app/home/hack_the_box";
+import HackTheBox from "@/app/home/hack-the-box";
 import SecurityStack from "@/app/home/cybersecurity";
 
-import NewsPageButton from "@/components/news-page-button";
 import ColorModeButton from "@/components/color-mode-button";
 import ErrorPageButton from "@/components/error-page-button";
-import ThreePageButton from "@/components/three-page-button";
 
 import {useWindowSize} from "@/app/hooks/useWindowSize";
 
-
-function Unsupported() {
+const Unsupported = () => {
     return (
         <div className={"flex h-screen w-screen items-center justify-center font-sans text-xs"}>
             <p>Your device is not supported.</p>
@@ -27,13 +24,11 @@ function Unsupported() {
     );
 }
 
-function Supported() {
+const Supported = () => {
     return (
         <div className="relative flex w-screen items-center justify-center bg-background">
             <div className={"laptop:flex laptop:flex-col hidden gap-y-2 laptop:fixed laptop:top-4 laptop:right-4"}>
                 <ColorModeButton/>
-                <NewsPageButton/>
-                <ThreePageButton/>
                 <ErrorPageButton/>
             </div>
             <div className="flex items-start justify-center font-sans tablet:p-8 laptop:px-32">
@@ -41,15 +36,14 @@ function Supported() {
                 <div className="hidden justify-center gap-4 desktop:grid desktop:grid-cols-3">
                     <div className={"space-y-4"}>
                         <About/>
+                        <DevStack/>
+                    </div>
+                    <div className={"space-y-4"}>
                         <SecurityStack/>
                     </div>
                     <div className={"space-y-4"}>
-                        <DevStack/>
-                        <HackTheBox/>
-                    </div>
-                    <div className={"space-y-4"}>
                         <Projects/>
-                        <Joke/>
+                        <HackTheBox/>
                     </div>
                 </div>
                 <div className="hidden gap-4 laptop:grid laptop:grid-cols-2 desktop:hidden">
@@ -61,15 +55,12 @@ function Supported() {
                     <div className={"space-y-4"}>
                         <Projects/>
                         <SecurityStack/>
-                        <Joke/>
                     </div>
                 </div>
                 <div className="grid grid-cols-1 gap-4 p-4 laptop:hidden">
                     <div
                         className={"flex gap-x-2 notebook:fixed notebook:flex-col notebook:gap-y-2 notebook:top-4 notebook:right-4"}>
                         <ColorModeButton/>
-                        <NewsPageButton/>
-                        <ThreePageButton/>
                         <ErrorPageButton/>
                     </div>
                     <About/>
@@ -77,14 +68,13 @@ function Supported() {
                     <SecurityStack/>
                     <HackTheBox/>
                     <Projects/>
-                    <Joke/>
                 </div>
             </div>
         </div>
     );
 }
 
-function PageHead() {
+const PageHead = () => {
     return (
         <Head>
             <title>Finn Luca Jensen</title>

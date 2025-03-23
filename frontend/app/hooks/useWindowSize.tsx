@@ -5,7 +5,7 @@ import {useEffect, useState} from "react";
  * This is basically stolen from stack overflow.
  * @returns The window size, width and height in pixels.
  */
-export function useWindowSize() {
+export const useWindowSize = () => {
     const [windowSize, setWindowSize] = useState({
         width: 0,
         height: 0,

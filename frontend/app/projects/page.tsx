@@ -9,7 +9,7 @@ import {Button} from "@/components/ui/button";
 import {useWindowSize} from "@/app/hooks/useWindowSize";
 import {getColorMode} from "@/app/hooks/getColorMode";
 
-function Unsupported() {
+const Unsupported = () => {
     return (
         <div className={"flex h-screen w-screen items-center justify-center font-sans text-xs"}>
             <p>Your device is not supported.</p>
@@ -17,7 +17,7 @@ function Unsupported() {
     );
 }
 
-function Supported() {
+const Supported = () => {
     useEffect(() => {
         getColorMode();
     }, []);

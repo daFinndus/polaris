@@ -4,11 +4,7 @@ import {MdSecurity} from "react-icons/md";
 import {cybersecurity} from "@/app/data/knowledge";
 
 import {Badge} from "@/components/ui/badge";
-import {
-    HoverCard,
-    HoverCardContent,
-    HoverCardTrigger,
-} from "@/components/ui/hover-card";
+import {HoverCard, HoverCardContent, HoverCardTrigger,} from "@/components/ui/hover-card";
 
 interface MethodsProps {
     Icon: IconType;
@@ -18,7 +14,7 @@ interface MethodsProps {
     href: string;
 }
 
-function Method({Icon, name, content, related, href}: MethodsProps) {
+const Method = ({Icon, name, content, related, href}: MethodsProps) => {
     return (
         <HoverCard>
             <HoverCardTrigger href={href} className={"group"}>
