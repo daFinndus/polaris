@@ -4,12 +4,7 @@
 const checkKeys = () => {
     const requiredKeys = [
         "PORT",
-        "NEWS_API_KEY",
-        "BACKEND_URL",
         "FRONTEND_URL",
-        "DB_URL",
-        "DB_USER",
-        "DB_PASS",
     ];
 
     const missingKeys = requiredKeys.filter((key) => !process.env[key]);

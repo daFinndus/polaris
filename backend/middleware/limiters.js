@@ -11,7 +11,5 @@ const defaultLimit = rateLimit({
 const strictLimiter = rateLimit({
     windowMs: 60 * 60 * 1000,
     max: 10,
-    message: {success: false, error: "Too many requests to this endpoint."}
+    message: {success: false, error: "Too many requests to this endpoint, please try again later."}
 });
-
-module.exports = {defaultLimit, strictLimiter};
