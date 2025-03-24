@@ -1,14 +1,14 @@
 "use client";
 
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 
-import {setCookie} from "cookies-next/client";
-import {deleteCookie} from "cookies-next";
+import { setCookie } from "cookies-next/client";
+import { deleteCookie } from "cookies-next";
 
-import {MdDarkMode, MdLightMode} from "react-icons/md";
-import {getColorMode} from "@/app/hooks/getColorMode";
+import { MdDarkMode, MdLightMode } from "react-icons/md";
+import { getColorMode } from "@/app/hooks/getColorMode";
 
 /**
  * This is a custom button that changes the color mode of the website.
@@ -17,31 +17,31 @@ import {getColorMode} from "@/app/hooks/getColorMode";
  * @constructor
  */
 export default function ColorModeButton() {
-    const [dark, setDark] = useState(false);
+  const [dark, setDark] = useState(false);
 
-    useEffect(() => {
-        setDark(getColorMode());
-    }, []);
+  useEffect(() => {
+    setDark(getColorMode());
+  }, []);
 
-    const changeMode = () => {
-        setDark(!dark);
+  const changeMode = () => {
+    setDark(!dark);
 
-        if (dark) {
-            document.documentElement.classList.remove("dark");
-            deleteCookie("dark");
-        } else {
-            document.documentElement.classList.add("dark");
-            setCookie("dark", "Your website is currently in dark mode.");
-        }
-    };
+    if (dark) {
+      document.documentElement.classList.remove("dark");
+      deleteCookie("dark");
+    } else {
+      document.documentElement.classList.add("dark");
+      setCookie("dark", "Your website is currently in dark mode.");
+    }
+  };
 
-    return (
-        <Button
-            variant={"secondary"}
-            onClick={changeMode}
-            aria-label={"Change the color mode of the website"}
-            className={"notebook:w-12 w-1/2 flex items-center h-12"}>
-            {dark ? <MdLightMode/> : <MdDarkMode/>}
-        </Button>
-    );
+  return (
+    <Button
+      variant={"secondary"}
+      onClick={changeMode}
+      aria-label={"Change the color mode of the website"}
+      className={"notebook:w-12 w-1/2 flex items-center h-12"}>
+      {dark ? <MdLightMode /> : <MdDarkMode />}
+    </Button>
+  );
 }
