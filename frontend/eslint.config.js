@@ -6,12 +6,12 @@ export default [
     eslint.configs.recommended,
     {
         plugins: {
-            "@next/next": next,
-            "tailwindcss": pluginTailwindCSS
+            "tailwindcss": pluginTailwindCSS,
+            "@next/next": next
         },
         rules: {
-            ...next.configs.recommended.rules,
-            ...pluginTailwindCSS.configs.recommended.rules
+            ...pluginTailwindCSS.configs.recommended.rules,
+            ...next.configs.recommended.rules
         }
     }
 ];

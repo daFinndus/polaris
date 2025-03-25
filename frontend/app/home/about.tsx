@@ -99,17 +99,17 @@ export default function About() {
           </Link>
         </Button>
         <Button asChild variant={"secondary"}>
-          <Link href={"https://github.com/daFinndus"}>
+          <Link href={"https://github.com/daFinndus"} target={"_blank"}>
             <FaGithub />
           </Link>
         </Button>
         <Button asChild variant={"secondary"}>
-          <Link href={"https://www.linkedin.com/in/finn-luca-jensen-98a839286/"}>
+          <Link href={"https://www.linkedin.com/in/finn-luca-jensen-98a839286/"} target={"_blank"}>
             <FaLinkedin />
           </Link>
         </Button>
         <Button asChild variant={"secondary"}>
-          <Link href={"https://x.com/dafinndus"}>
+          <Link href={"https://x.com/dafinndus"} target={"_blank"}>
             <FaTwitter />
           </Link>
         </Button>
