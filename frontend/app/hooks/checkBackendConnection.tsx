@@ -1,19 +1,19 @@
-import axios from "axios";
+import axios from "axios"
 
 /**
  * This function checks the connection to the backend API.
  * To be fast enough it will only ping the backend not retrieving any more data.
  */
 export const checkBackendConnection = async () => {
-  const uri = `${process.env.NEXT_PUBLIC_BACKEND_URL}/backend`;
+    const uri = `${process.env.NEXT_PUBLIC_BACKEND_URL}/backend`
 
-  let response = null;
+    let response = null
 
-  try {
-    response = await axios.get(uri);
-  } catch (err) {
-    return null;
-  }
+    try {
+        response = await axios.get(uri)
+    } catch (err) {
+        return null
+    }
 
-  return response;
-};
+    return response
+}

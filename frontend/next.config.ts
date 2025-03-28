@@ -1,7 +1,16 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
-  reactStrictMode: true
-};
+    reactStrictMode: true,
+    images: {
+        remotePatterns: [
+            {
+                protocol: "https",
+                hostname: "s8lcpnzirhyz4bbt.public.blob.vercel-storage.com",
+                port: "",
+            },
+        ],
+    },
+}
 
-export default nextConfig;
+export default nextConfig

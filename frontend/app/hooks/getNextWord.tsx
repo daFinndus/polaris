@@ -4,8 +4,8 @@
  * @param word - The current word.
  */
 export const getNextWord = (words: string[], word: string): string => {
-  const currentIndex = words.indexOf(word);
-  const nextIndex = (currentIndex + 1) % words.length;
+    const currentIndex = words.indexOf(word)
+    const nextIndex = (currentIndex + 1) % words.length
 
-  return words[nextIndex];
-};
+    return words[nextIndex]
+}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
 
 /**
  * Hook for getting the window size.
@@ -6,26 +6,26 @@ import { useEffect, useState } from "react";
  * @returns The window size, width and height in pixels.
  */
 export const useWindowSize = () => {
-  const [windowSize, setWindowSize] = useState({
-    width: 0,
-    height: 0
-  });
+    const [windowSize, setWindowSize] = useState({
+        width: 0,
+        height: 0,
+    })
 
-  useEffect(() => {
-    function handleResize() {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight
-      });
-    }
+    useEffect(() => {
+        function handleResize() {
+            setWindowSize({
+                width: window.innerWidth,
+                height: window.innerHeight,
+            })
+        }
 
-    window.addEventListener("resize", handleResize);
-    handleResize();
+        window.addEventListener("resize", handleResize)
+        handleResize()
 
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+        return () => window.removeEventListener("resize", handleResize)
+    }, [])
 
-  return windowSize;
-};
+    return windowSize
+}
 
 // Stolen from here: https://stackoverflow.com/questions/73070114/i-want-to-change-style-according-to-window-width-using-states
