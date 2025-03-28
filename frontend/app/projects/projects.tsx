@@ -40,14 +40,14 @@ const Tile = ({ project }: { project: Project }) => {
     return (
         <div
             className={
-                "relative flex h-[412px] w-[312px] flex-col items-center justify-start rounded-lg border-2 border-background-lighter bg-background-light px-4"
+                "relative flex h-[456px] w-[312px] flex-col items-center justify-start rounded-lg border-2 border-background-lighter bg-background-light px-4"
             }
         >
-            <CardContainer className={"mb-6 h-fit w-full"}>
-                <CardBody className={"relative h-fit w-full shadow-lg shadow-background-lighter"}>
-                    <CardItem className={"h-fit w-full"} translateZ={15} translateY={2.5}>
+            <CardContainer className={"py-6"}>
+                <CardBody className={"relative h-full w-full shadow-lg shadow-background-lighter"}>
+                    <CardItem translateZ={15} translateY={2.5}>
                         <Image
-                            className={"mt-4 h-44 w-[364px] rounded-lg"}
+                            className={"h-44 rounded-lg"}
                             src={project.src}
                             alt={project.alt}
                             width={project.width}
@@ -62,18 +62,18 @@ const Tile = ({ project }: { project: Project }) => {
                 <div className={"mt-4 flex flex-wrap gap-x-2 gap-y-2"}>
                     {project.skills?.map((skill, index) => (
                         <Badge
-                            className={`${skill.background} hover:${skill.background} flex min-h-6 gap-x-2 pl-2 text-primary`}
+                            className={`${skill.background} hover:${skill.background}/70 flex min-h-6 items-center justify-center gap-x-2 pl-2 font-bold ${skill.color}`}
                             key={index}
                         >
                             {skill.name}
-                            <skill.icon className={`${skill.color}`} />
+                            <skill.icon />
                         </Badge>
                     ))}
                 </div>
-                <div className={"mb-2 flex h-full w-full items-end gap-x-4 px-4"}>
+                <div className={"mb-4 flex h-full w-full items-end gap-x-4 px-4"}>
                     {project.url ? (
                         <Link href={project.url} className={"w-1/2"} target={"_blank"}>
-                            <Button className={"mt-6 w-full bg-color-light text-primary hover:bg-primary hover:text-color"}>
+                            <Button className={"mt-6 w-full bg-color-light text-background hover:bg-color/80 hover:text-primary"}>
                                 Sourcecode
                             </Button>
                         </Link>
@@ -84,7 +84,9 @@ const Tile = ({ project }: { project: Project }) => {
                     )}
                     {project.demo ? (
                         <Link href={project.demo} className={"w-1/2"} target={"_blank"}>
-                            <Button className={"mt-6 w-full bg-primary text-color hover:bg-color hover:text-primary"}>Demo</Button>
+                            <Button className={"mt-6 w-full bg-primary text-background hover:bg-background hover:text-primary"}>
+                                Demo
+                            </Button>
                         </Link>
                     ) : (
                         <Button className={"mt-6 w-1/2 bg-background-lighter text-primary-darker"} disabled>

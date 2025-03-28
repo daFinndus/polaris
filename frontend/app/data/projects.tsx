@@ -35,21 +35,21 @@ const projects: Project[] = [
         skills: [
             {
                 name: "Python",
-                background: "bg-cyan-700",
+                background: "bg-cyan-800",
                 icon: SiPython,
                 color: "text-yellow-400",
             },
             {
                 name: "OpenCV",
-                background: "bg-green-600",
+                background: "bg-green-800",
                 icon: SiOpencv,
-                color: "text-primary",
+                color: "text-cyan-400",
             },
             {
                 name: "TKinter",
-                background: "bg-background-lighter",
+                background: "bg-color",
                 icon: RiInkBottleFill,
-                color: "text-primary",
+                color: "text-background",
             },
         ],
     },
@@ -65,15 +65,15 @@ const projects: Project[] = [
         skills: [
             {
                 name: "Python",
-                background: "bg-cyan-700",
+                background: "bg-cyan-800",
                 icon: SiPython,
                 color: "text-yellow-400",
             },
             {
                 name: "TKinter",
-                background: "bg-background-lighter",
+                background: "bg-color",
                 icon: RiInkBottleFill,
-                color: "text-primary",
+                color: "text-background",
             },
         ],
     },
@@ -90,9 +90,15 @@ const projects: Project[] = [
         skills: [
             {
                 name: "Next.js",
-                background: "bg-black",
+                background: "bg-background",
                 icon: RiNextjsFill,
                 color: "text-primary",
+            },
+            {
+                name: "Node.js",
+                background: "bg-green-600",
+                icon: IoLogoNodejs,
+                color: "text-gray-800",
             },
             {
                 name: "TailwindCSS",
@@ -101,16 +107,10 @@ const projects: Project[] = [
                 color: "text-primary",
             },
             {
-                name: "Node.js",
-                background: "bg-blue-800",
-                icon: IoLogoNodejs,
-                color: "text-primary",
-            },
-            {
                 name: "MongoDB",
-                background: "bg-green-600",
+                background: "bg-green-300",
                 icon: DiMongodb,
-                color: "text-primary",
+                color: "text-green-700",
             },
         ],
     },
@@ -126,7 +126,7 @@ const projects: Project[] = [
         skills: [
             {
                 name: "Python",
-                background: "bg-cyan-700",
+                background: "bg-cyan-800",
                 icon: SiPython,
                 color: "text-yellow-400",
             },
