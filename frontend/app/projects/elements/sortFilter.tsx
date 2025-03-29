@@ -1,0 +1,27 @@
+import React from "react"
+
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+
+import { FaSort } from "react-icons/fa6"
+
+export const SortFilter = () => {
+    return (
+        <div className={"flex flex-col gap-y-2 laptop:w-1/4"}>
+            <p className={"flex w-fit items-center gap-x-2 text-sm"}>
+                <FaSort size={12} />
+                Sort by
+            </p>
+            <Select>
+                <SelectTrigger className="h-12 w-[180px] rounded-lg border-2">
+                    <SelectValue placeholder="Select sort mode" />
+                </SelectTrigger>
+                <SelectContent className={"font-sans"}>
+                    <SelectItem value="latest">Latest first</SelectItem>
+                    <SelectItem value="oldest">Oldest first</SelectItem>
+                    <SelectItem value="alphabetic">A-Z</SelectItem>
+                    <SelectItem value="alphabetic-reverse">Z-A</SelectItem>
+                </SelectContent>
+            </Select>
+        </div>
+    )
+}

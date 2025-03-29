@@ -5,19 +5,18 @@ import Link from "next/link"
 
 import projects from "@/app/data/projects"
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
-import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card"
-import { Checkbox } from "@/components/ui/checkbox"
+import { SortFilter } from "@/app/projects/elements/sortFilter"
+import { ResetFilter } from "@/app/projects/elements/resetFilter"
+import { ProjectFilter } from "@/app/projects/elements/projectFilter"
+import { LanguageFilter } from "@/app/projects/elements/languageFilter"
+
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 
 import { IconType } from "react-icons"
-import { FaSort } from "react-icons/fa6"
-import { CiFilter } from "react-icons/ci"
 import { IoFilter } from "react-icons/io5"
-import { FaProjectDiagram } from "react-icons/fa"
-import { RiEqualizerFill } from "react-icons/ri"
 
 interface Project {
     name: string
@@ -40,7 +39,7 @@ const Tile = ({ project }: { project: Project }) => {
     return (
         <div
             className={
-                "relative flex h-[456px] w-[312px] flex-col items-center justify-start rounded-lg border-2 border-background-lighter bg-background-light px-4"
+                "relative flex h-[512px] w-[312px] flex-col items-center justify-start rounded-lg border-2 border-background-lighter bg-background-light px-4 notebook:h-[456px]"
             }
         >
             <CardContainer className={"py-6"}>
@@ -70,7 +69,7 @@ const Tile = ({ project }: { project: Project }) => {
                         </Badge>
                     ))}
                 </div>
-                <div className={"mb-4 flex h-full w-full items-end gap-x-4 px-4"}>
+                <div className={"mb-4 flex h-full w-full items-end gap-x-2"}>
                     {project.url ? (
                         <Link href={project.url} className={"w-1/2"} target={"_blank"}>
                             <Button className={"mt-6 w-full bg-color-light text-background hover:bg-color/80 hover:text-primary"}>
@@ -99,136 +98,50 @@ const Tile = ({ project }: { project: Project }) => {
     )
 }
 
-const Filter = () => {
-    return (
-        <Collapsible className="bg-background tablet:max-w-[964px]">
-            <div className="mb-4 flex items-center justify-between space-x-4 rounded-lg border-2 border-background-lighter bg-background-light px-2 py-1">
-                <h4 className="ml-2 min-w-fit text-sm font-semibold">Set filters</h4>
-                <CollapsibleTrigger asChild className={"items-center justify-end"}>
-                    <div className={"flex w-full items-end"}>
-                        <Button variant={"ghost"}>
-                            <IoFilter />
-                        </Button>
-                    </div>
-                </CollapsibleTrigger>
-            </div>
-            <CollapsibleContent className="mb-4 space-y-2">
-                <div
-                    className={
-                        "flex w-auto max-w-[312px] flex-col gap-x-8 gap-y-8 rounded-lg border-2 border-background-lighter p-4 notebook:max-w-none laptop:flex-row laptop:gap-y-0"
-                    }
-                >
-                    <LanguageFilter />
-                    <ProjectTypeFilter />
-                    <SortFilter />
-                    <ResetFilter />
-                </div>
-            </CollapsibleContent>
-        </Collapsible>
-    )
-}
-
-const LanguageFilter = () => {
-    return (
-        <div className={"flex flex-col gap-y-2 laptop:w-1/4"}>
-            <p className={"flex w-fit items-center gap-x-2 text-sm"}>
-                <CiFilter size={12} />
-                Select languages
-            </p>
-            <div className={"flex flex-row flex-wrap gap-x-2 gap-y-2"}>
-                <Button variant={"secondary"} size={"sm"}>
-                    Next.js
-                </Button>
-                <Button variant={"secondary"} size={"sm"}>
-                    Tailwind
-                </Button>
-                <Button variant={"secondary"} size={"sm"}>
-                    Node.js
-                </Button>
-                <Button variant={"secondary"} size={"sm"}>
-                    Python
-                </Button>
-                <Button variant={"secondary"} size={"sm"}>
-                    Java
-                </Button>
-                <Button variant={"secondary"} size={"sm"}>
-                    C#
-                </Button>
-                <Button variant={"secondary"} size={"sm"}>
-                    MongoDB
-                </Button>
-                <Button variant={"secondary"} size={"sm"}>
-                    Raspberry Pi
-                </Button>
-            </div>
-        </div>
-    )
-}
-
-const ProjectTypeFilter = () => {
-    return (
-        <div className={"flex flex-col gap-y-2 laptop:w-1/4"}>
-            <p className={"flex w-fit items-center gap-x-2 text-sm"}>
-                <FaProjectDiagram size={12} />
-                Choose project criteria
-            </p>
-            <div className={"flex gap-x-2"}>
-                <Checkbox id="opensource" />
-                <label htmlFor="opensource">Opensource</label>
-            </div>
-            <div className={"flex gap-x-2"}>
-                <Checkbox id="demo" />
-                <label htmlFor="demo">Demo available</label>
-            </div>
-            <div className={"flex gap-x-2"}>
-                <Checkbox id="personal" />
-                <label htmlFor="personal">Personal project</label>
-            </div>
-        </div>
-    )
-}
-
-const SortFilter = () => {
-    return (
-        <div className={"flex flex-col gap-y-2 laptop:w-1/4"}>
-            <p className={"flex w-fit items-center gap-x-2 text-sm"}>
-                <FaSort size={12} />
-                Sort by
-            </p>
-            <Select>
-                <SelectTrigger className="h-12 w-[180px] rounded-lg border-2">
-                    <SelectValue placeholder="Select sort mode" />
-                </SelectTrigger>
-                <SelectContent className={"font-sans"}>
-                    <SelectItem value="latest">Latest first</SelectItem>
-                    <SelectItem value="oldest">Oldest first</SelectItem>
-                    <SelectItem value="alphabetic">A-Z</SelectItem>
-                    <SelectItem value="alphabetic-reverse">Z-A</SelectItem>
-                </SelectContent>
-            </Select>
-        </div>
-    )
-}
-
-const ResetFilter = () => {
-    return (
-        <div className={"flex flex-col gap-y-2 laptop:w-1/4"}>
-            <p className={"flex w-fit items-center gap-x-2 text-sm"}>
-                <RiEqualizerFill size={12} />
-                Showing 3/7 projects
-            </p>
-            <Button variant={"secondary"}>Reset filters</Button>
-        </div>
-    )
-}
-
 export default function Projects() {
     const [open, setOpen] = useState<boolean>(false)
 
     const [demo, setDemo] = useState<boolean>(false)
     const [sort, setSort] = useState<string>("latest")
+    const [personal, setPersonal] = useState<boolean>(false)
     const [languages, setLanguages] = useState<string[]>([])
     const [opensource, setOpensource] = useState<boolean>(false)
+
+    const Filter = () => {
+        return (
+            <Collapsible open={open} onOpenChange={() => setOpen(!open)} className="bg-background tablet:max-w-[964px]">
+                <div className="mb-4 flex items-center justify-between space-x-4 rounded-lg border-2 border-background-lighter bg-background-light px-2 py-1">
+                    <h4 className="ml-2 min-w-fit text-sm font-semibold">Set filters</h4>
+                    <CollapsibleTrigger asChild className={"items-center justify-end"}>
+                        <div className={"flex w-full items-end"}>
+                            <Button variant={"ghost"}>
+                                <IoFilter />
+                            </Button>
+                        </div>
+                    </CollapsibleTrigger>
+                </div>
+                <CollapsibleContent className="mb-4 space-y-2">
+                    <div
+                        className={
+                            "flex w-auto max-w-[312px] flex-col gap-x-8 gap-y-8 rounded-lg border-2 border-background-lighter p-4 notebook:max-w-none laptop:flex-row laptop:gap-y-0"
+                        }
+                    >
+                        <LanguageFilter languages={languages} setLanguages={setLanguages} />
+                        <ProjectFilter
+                            opensource={opensource}
+                            setOpensource={setOpensource}
+                            demo={demo}
+                            setDemo={setDemo}
+                            personal={personal}
+                            setPersonal={setPersonal}
+                        />
+                        <SortFilter />
+                        <ResetFilter />
+                    </div>
+                </CollapsibleContent>
+            </Collapsible>
+        )
+    }
 
     return (
         <div className={"mb-4 flex w-auto font-sans text-xs"}>
@@ -239,9 +152,9 @@ export default function Projects() {
                         "grid grid-cols-1 justify-items-center gap-4 gap-x-4 gap-y-8 notebook:grid-cols-2 laptop:grid-cols-3"
                     }
                 >
-                    {projects.map((project, index) => (
-                        <Tile key={index} project={project} />
-                    ))}
+                    {projects.map((project, index) => {
+                        return <Tile key={index} project={project} />
+                    })}
                 </div>
             </div>
         </div>
