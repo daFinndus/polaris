@@ -8,11 +8,13 @@ import { FaRaspberryPi } from "react-icons/fa6"
 
 interface Project {
     name: string
+    date: Date
     src: string
     alt: string
     width: number
     height: number
     description: string
+    personal: boolean
     url?: string
     demo?: string
     skills?: {
@@ -25,66 +27,15 @@ interface Project {
 
 const projects: Project[] = [
     {
-        name: "Beerpong Tracker",
-        src: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Projects/beerpong_tracker-8UmAAr4rLY8XNUSvjgrLtrcjqQUCyU.webp",
-        alt: "Beerpong Tracker",
-        width: 630,
-        height: 594,
-        description: "A python application that uses OpenCV, TKinter and a camera to track the cups and balls in a beerpong game.",
-        url: "https://github.com/daFinndus/beerpong",
-        skills: [
-            {
-                name: "Python",
-                background: "bg-cyan-800",
-                icon: SiPython,
-                color: "text-yellow-400",
-            },
-            {
-                name: "OpenCV",
-                background: "bg-green-800",
-                icon: SiOpencv,
-                color: "text-cyan-400",
-            },
-            {
-                name: "TKinter",
-                background: "bg-color",
-                icon: RiInkBottleFill,
-                color: "text-background",
-            },
-        ],
-    },
-    {
-        name: "Key Guardian",
-        src: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Projects/key_guardian-ZgU3XXToMCtfx7yQgNPC6oCrOqxTnE.webp",
-        alt: "Key Guardian",
-        width: 802,
-        height: 632,
-        description:
-            "A python application that uses TKinter to create a GUI, to make it possible for easy password generation and strength checking.",
-        url: "https://github.com/daFinndus/key_guardian",
-        skills: [
-            {
-                name: "Python",
-                background: "bg-cyan-800",
-                icon: SiPython,
-                color: "text-yellow-400",
-            },
-            {
-                name: "TKinter",
-                background: "bg-color",
-                icon: RiInkBottleFill,
-                color: "text-background",
-            },
-        ],
-    },
-    {
-        name: "My Portfolio",
+        name: "Portfolio",
+        date: new Date("2024-12-03"),
         src: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Projects/portfolio-BdRW0YtU2v1lCWy4urZkmsP8JV661a.webp",
         alt: "My Portfolio",
         width: 768,
         height: 432,
         description:
             "A Next.js application that uses TailwindCSS and Node.js on the backend to create a responsive and accessible portfolio, displaying projects, and more.",
+        personal: true,
         url: "https://github.com/daFinndus/polaris",
         demo: "https://finnlucajensen.vercel.app",
         skills: [
@@ -115,13 +66,46 @@ const projects: Project[] = [
         ],
     },
     {
+        name: "Beerpong Tracker",
+        date: new Date("2024-04-12"),
+        src: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Projects/beerpong_tracker-8UmAAr4rLY8XNUSvjgrLtrcjqQUCyU.webp",
+        alt: "Beerpong Tracker",
+        width: 630,
+        height: 594,
+        description: "A python application that uses OpenCV, TKinter and a camera to track the cups and balls in a beerpong game.",
+        personal: false,
+        url: "https://github.com/daFinndus/beerpong",
+        skills: [
+            {
+                name: "Python",
+                background: "bg-cyan-800",
+                icon: SiPython,
+                color: "text-yellow-400",
+            },
+            {
+                name: "OpenCV",
+                background: "bg-green-800",
+                icon: SiOpencv,
+                color: "text-cyan-400",
+            },
+            {
+                name: "TKinter",
+                background: "bg-color",
+                icon: RiInkBottleFill,
+                color: "text-background",
+            },
+        ],
+    },
+    {
         name: "Voice Assistant",
+        date: new Date("2023-10-19"),
         src: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Projects/voice_assistant-yfCE4b98YafJ2CvvCrYO4AWokeCOJV.webp",
         alt: "Voice Assistant",
         width: 450,
         height: 450,
         description:
             "A python application that uses vosk to create a voice assistant that can be used to control the motors and sensors of a raspberry pi.",
+        personal: false,
         url: "https://github.com/daFinndus/voice_assistant/",
         skills: [
             {
@@ -135,6 +119,32 @@ const projects: Project[] = [
                 background: "bg-purple-700",
                 icon: FaRaspberryPi,
                 color: "text-red-300",
+            },
+        ],
+    },
+    {
+        name: "Key Guardian",
+        date: new Date("2023-08-10"),
+        src: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Projects/key_guardian-ZgU3XXToMCtfx7yQgNPC6oCrOqxTnE.webp",
+        alt: "Key Guardian",
+        width: 802,
+        height: 632,
+        description:
+            "A python application that uses TKinter to create a GUI, to make it possible for easy password generation and strength checking.",
+        personal: true,
+        url: "https://github.com/daFinndus/key_guardian",
+        skills: [
+            {
+                name: "Python",
+                background: "bg-cyan-800",
+                icon: SiPython,
+                color: "text-yellow-400",
+            },
+            {
+                name: "TKinter",
+                background: "bg-color",
+                icon: RiInkBottleFill,
+                color: "text-background",
             },
         ],
     },

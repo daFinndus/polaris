@@ -5,10 +5,10 @@ import Link from "next/link"
 
 import projects from "@/app/data/projects"
 
-import { SortFilter } from "@/app/projects/elements/sortFilter"
-import { ResetFilter } from "@/app/projects/elements/resetFilter"
-import { ProjectFilter } from "@/app/projects/elements/projectFilter"
-import { LanguageFilter } from "@/app/projects/elements/languageFilter"
+import { SortFilter } from "@/app/projects/components/sortFilter"
+import { ResetFilter } from "@/app/projects/components/resetFilter"
+import { ProjectFilter } from "@/app/projects/components/projectFilter"
+import { LanguageFilter } from "@/app/projects/components/languageFilter"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -20,11 +20,13 @@ import { IoFilter } from "react-icons/io5"
 
 interface Project {
     name: string
+    date: Date
     src: string
     alt: string
     width: number
     height: number
     description: string
+    personal: boolean
     url?: string
     demo?: string
     skills?: {
@@ -39,10 +41,10 @@ const Tile = ({ project }: { project: Project }) => {
     return (
         <div
             className={
-                "relative flex h-[512px] w-[312px] flex-col items-center justify-start rounded-lg border-2 border-background-lighter bg-background-light px-4 notebook:h-[456px]"
+                "relative flex h-[456px] w-[312px] flex-col items-center justify-start rounded-lg border-2 border-background-lighter bg-background-light px-4"
             }
         >
-            <CardContainer className={"py-6"}>
+            <CardContainer className={"py-4"}>
                 <CardBody className={"relative h-full w-full shadow-lg shadow-background-lighter"}>
                     <CardItem translateZ={15} translateY={2.5}>
                         <Image
@@ -57,8 +59,8 @@ const Tile = ({ project }: { project: Project }) => {
             </CardContainer>
             <div className={"flex h-full w-full flex-col items-start justify-start text-start"}>
                 <p className={"mb-2 text-base font-bold"}>{project.name}</p>
-                <p className={"text-sm text-primary-darker"}>{project.description}</p>
-                <div className={"mt-4 flex flex-wrap gap-x-2 gap-y-2"}>
+                <p className={"mb-2 text-sm text-primary-darker"}>{project.description}</p>
+                <div className={"flex w-full flex-wrap gap-x-2 gap-y-2"}>
                     {project.skills?.map((skill, index) => (
                         <Badge
                             className={`${skill.background} hover:${skill.background}/70 flex min-h-6 items-center justify-center gap-x-2 pl-2 font-bold ${skill.color}`}
@@ -69,26 +71,26 @@ const Tile = ({ project }: { project: Project }) => {
                         </Badge>
                     ))}
                 </div>
-                <div className={"mb-4 flex h-full w-full items-end gap-x-2"}>
+                <div className={"my-2 flex h-full w-full items-end gap-x-2"}>
                     {project.url ? (
                         <Link href={project.url} className={"w-1/2"} target={"_blank"}>
-                            <Button className={"mt-6 w-full bg-color-light text-background hover:bg-color/80 hover:text-primary"}>
+                            <Button className={"w-full bg-color-light text-background hover:bg-color/80 hover:text-primary"}>
                                 Sourcecode
                             </Button>
                         </Link>
                     ) : (
-                        <Button className={"mt-6 w-1/2 bg-background-lighter text-primary-darker"} disabled>
+                        <Button className={"w-1/2 bg-background-lighter text-primary-darker"} disabled>
                             No Sourcecode Available
                         </Button>
                     )}
                     {project.demo ? (
                         <Link href={project.demo} className={"w-1/2"} target={"_blank"}>
-                            <Button className={"mt-6 w-full bg-primary text-background hover:bg-background hover:text-primary"}>
+                            <Button className={"w-full bg-primary text-background hover:bg-background hover:text-primary"}>
                                 Demo
                             </Button>
                         </Link>
                     ) : (
-                        <Button className={"mt-6 w-1/2 bg-background-lighter text-primary-darker"} disabled>
+                        <Button className={"w-1/2 bg-background-lighter text-primary-darker"} disabled>
                             No Demo Available
                         </Button>
                     )}
@@ -106,6 +108,33 @@ export default function Projects() {
     const [personal, setPersonal] = useState<boolean>(false)
     const [languages, setLanguages] = useState<string[]>([])
     const [opensource, setOpensource] = useState<boolean>(false)
+
+    /**
+     * I think this could be the most disgusting function in the whole project.
+     * I don't wanna improve it yet, and maybe I never will.
+     */
+    const filtered = projects
+        .filter((project) => {
+            // Filter for the project types
+            if (opensource && !project.url) return false
+            if (demo && !project.demo) return false
+            if (personal && !project.personal) return false
+
+            // Filter by selected languages
+            if (languages.length > 0) {
+                const sprachen = project.skills?.map((skill) => skill.name) || []
+                return languages.some((sprache) => sprachen.includes(sprache))
+            }
+
+            return true
+        })
+        .sort((a, b) => {
+            if (sort === "latest") return b.date.getTime() - a.date.getTime()
+            else if (sort === "oldest") return a.date.getTime() - b.date.getTime()
+            else if (sort === "alphabetic") return a.name.localeCompare(b.name)
+            else if (sort === "alphabetic-reverse") return b.name.localeCompare(b.name)
+            return 0
+        })
 
     const Filter = () => {
         return (
@@ -135,8 +164,14 @@ export default function Projects() {
                             personal={personal}
                             setPersonal={setPersonal}
                         />
-                        <SortFilter />
-                        <ResetFilter />
+                        <SortFilter sort={sort} setSort={setSort} />
+                        <ResetFilter
+                            setLanguages={setLanguages}
+                            setOpensource={setOpensource}
+                            setDemo={setDemo}
+                            setPersonal={setPersonal}
+                            setSort={setSort}
+                        />
                     </div>
                 </CollapsibleContent>
             </Collapsible>
@@ -152,7 +187,7 @@ export default function Projects() {
                         "grid grid-cols-1 justify-items-center gap-4 gap-x-4 gap-y-8 notebook:grid-cols-2 laptop:grid-cols-3"
                     }
                 >
-                    {projects.map((project, index) => {
+                    {filtered.map((project, index) => {
                         return <Tile key={index} project={project} />
                     })}
                 </div>
