@@ -66,8 +66,8 @@ export default function About() {
                 <Avatar className={"ml-1 mt-1 size-20 rounded-xl tablet:size-28"}>
                     <AvatarImage
                         className={"object-cover"}
-                        src="https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Miscellaneous/me-2GlI3TM3WKbrbtKoVFXj7diDRobFpl.webp"
-                        alt="This is me in Thailand"
+                        src="https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Miscellaneous/me-NgKhpmKcwVTtiOmeoe82pUnGEh2Onv.jpg"
+                        alt="This is me."
                         width={400}
                         height={300}
                     />
