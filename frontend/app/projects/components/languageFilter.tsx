@@ -16,13 +16,11 @@ interface languageFilterProps {
  * @constructor
  */
 export const LanguageFilter = ({ languages, setLanguages }: languageFilterProps) => {
-    const sprachen = ["Next.js", "Tailwind", "Node.js", "Python", "Java", "C#", "MongoDB", "Raspberry Pi"]
+    const sprachen = ["Next.js", "TailwindCSS", "Node.js", "Python", "Java", "C#", "MongoDB", "Raspberry Pi"]
 
     const toggleLanguage = (language: string) => {
         if (languages.includes(language)) setLanguages(languages.filter((sprache) => sprache !== language))
         else setLanguages([...languages, language])
-
-        console.log("Currently selected languages: ", languages)
     }
 
     return (

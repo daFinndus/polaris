@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React from "react"
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
@@ -10,10 +10,6 @@ interface sortFilterProps {
 }
 
 export const SortFilter = ({ sort, setSort }: sortFilterProps) => {
-    useEffect(() => {
-        console.log("Sort seems to be changed:", sort)
-    }, [sort])
-
     return (
         <div className={"flex flex-col gap-y-2 laptop:w-1/4"}>
             <p className={"flex w-fit items-center gap-x-2 text-sm"}>
