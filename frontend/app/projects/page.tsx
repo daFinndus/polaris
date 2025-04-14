@@ -19,6 +19,7 @@ const Unsupported = () => {
 
 const Supported = () => {
     useEffect(() => {
+        scrollTo(0, 0)
         getColorMode()
     }, [])
 

@@ -3,8 +3,10 @@ import React from "react"
 import { Button } from "@/components/ui/button"
 
 import { RiEqualizerFill } from "react-icons/ri"
+import projects from "@/app/data/projects"
 
 interface resetFilterProps {
+    projectCount: number
     setLanguages: React.Dispatch<React.SetStateAction<string[]>>
     setOpensource: React.Dispatch<React.SetStateAction<boolean>>
     setDemo: React.Dispatch<React.SetStateAction<boolean>>
@@ -12,7 +14,7 @@ interface resetFilterProps {
     setSort: React.Dispatch<React.SetStateAction<string>>
 }
 
-export const ResetFilter = ({ setLanguages, setOpensource, setDemo, setPersonal, setSort }: resetFilterProps) => {
+export const ResetFilter = ({ projectCount, setLanguages, setOpensource, setDemo, setPersonal, setSort }: resetFilterProps) => {
     const resetFilter = () => {
         setLanguages([])
         setOpensource(false)
@@ -25,7 +27,7 @@ export const ResetFilter = ({ setLanguages, setOpensource, setDemo, setPersonal,
         <div className={"flex flex-col gap-y-2 laptop:w-1/4"}>
             <p className={"flex w-fit items-center gap-x-2 text-sm"}>
                 <RiEqualizerFill size={12} />
-                Showing 3/7 projects
+                Showing {projectCount}/{projects.length} projects
             </p>
             <Button variant={"secondary"} onClick={resetFilter}>
                 Reset filters

@@ -111,7 +111,7 @@ export default function Projects() {
 
     /**
      * I think this could be the most disgusting function in the whole project.
-     * I don't wanna improve it yet, and maybe I never will.
+     * I don't want to improve it yet, and maybe I never will.
      */
     const filtered = projects
         .filter((project) => {
@@ -166,6 +166,7 @@ export default function Projects() {
                         />
                         <SortFilter sort={sort} setSort={setSort} />
                         <ResetFilter
+                            projectCount={filtered.length}
                             setLanguages={setLanguages}
                             setOpensource={setOpensource}
                             setDemo={setDemo}

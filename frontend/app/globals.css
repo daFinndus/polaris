@@ -13,9 +13,10 @@
         --foreground-darker: 240 3.7% 15.9%;
         --card: 0 0% 98%;
         --card-foreground: 240 10% 3.9%;
-        --color: 336 85% 30%;
-        --color-light: 336 85% 40%;
-        --color-lighter: 338 90% 50%;
+        --color: 338 90% 20%;
+        --color-light: 336 85% 30%;
+        --color-lighter: 336 80% 40%;
+        --color-lightest: 338 90% 60%;
         --popover: 0 0% 95%;
         --popover-background: 0 0% 98%;
         --popover-foreground: 240 10% 3.9%;
@@ -54,9 +55,10 @@
         --card: 240 10% 3.9%;
         --card-foreground: 0 0% 98%;
         --color-dark: 336 85% 30%;
-        --color: 336 97% 25%;
-        --color-light: 338 100% 33%;
-        --color-lighter: 340 100% 50%;
+        --color: 338 90% 20%;
+        --color-light: 336 85% 30%;
+        --color-lighter: 336 80% 40%;
+        --color-lightest: 338 90% 60%;
         --popover: 240 5.9% 10%;
         --popover-background: 240 10% 3.9%;
         --popover-foreground: 0 0% 98%;

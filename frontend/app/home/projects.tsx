@@ -70,7 +70,7 @@ export default function Projects() {
                 </div>
                 <Button asChild variant={"color"} className={"w-56"}>
                     <Link href={"/projects"}>
-                        <GrCubes className={"text-color-lighter"} />
+                        <GrCubes className={"font-bold text-color-lightest"} />
                         View all my projects
                     </Link>
                 </Button>

@@ -11,13 +11,12 @@ interface MethodsProps {
     name: string
     content: string
     related?: string[]
-    href: string
 }
 
-const Method = ({ Icon, name, content, related, href }: MethodsProps) => {
+const Method = ({ Icon, name, content, related }: MethodsProps) => {
     return (
         <HoverCard>
-            <HoverCardTrigger href={href} className={"group"}>
+            <HoverCardTrigger className={"group"}>
                 <Badge variant={"secondary"} className={"flex h-16 flex-row"}>
                     <div className={"mr-2 rounded-lg border-2 border-background-lighter bg-background-light"}>
                         <Icon className={"size-12 p-2 text-color-light"} />
@@ -49,14 +48,7 @@ export default function SecurityStack() {
             <p className={"mb-4 mt-1 text-sm text-primary-darker"}>These are my go to tools and forums for cybersecurity</p>
             <div className={"grid grid-cols-2 gap-2"}>
                 {cybersecurity.map((technology, index) => (
-                    <Method
-                        key={index}
-                        Icon={technology.Icon}
-                        name={technology.name}
-                        content={technology.content}
-                        href={""}
-                        related={[]}
-                    />
+                    <Method key={index} Icon={technology.Icon} name={technology.name} content={technology.content} related={[]} />
                 ))}
             </div>
         </div>

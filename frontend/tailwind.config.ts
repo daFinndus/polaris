@@ -33,6 +33,7 @@ export default {
                     DEFAULT: "hsl(var(--color))",
                     light: "hsl(var(--color-light))",
                     lighter: "hsl(var(--color-lighter))",
+                    lightest: "hsl(var(--color-lightest))",
                 },
                 foreground: {
                     DEFAULT: "hsl(var(--foreground))",

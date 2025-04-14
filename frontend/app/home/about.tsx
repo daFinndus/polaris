@@ -51,7 +51,7 @@ export default function About() {
     useEffect(() => {
         const interval = setInterval(() => {
             setWord(getNextWord(words, word))
-        }, 5000)
+        }, 2500)
 
         return () => clearInterval(interval)
     })
@@ -98,7 +98,7 @@ export default function About() {
             <div className={"mt-4 flex flex-row justify-center space-x-2"}>
                 <Button asChild variant={"color"}>
                     <Link href={"mailto:finnlucajensen555@gmail.com"}>
-                        <SiGmail className={"text-color-lighter"} />
+                        <SiGmail className={"font-bold text-color-lightest"} />
                         Contact me!
                     </Link>
                 </Button>
