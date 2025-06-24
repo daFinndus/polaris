@@ -8,7 +8,6 @@ import About from "./home/about"
 
 import Projects from "@/app/home/projects"
 import DevStack from "@/app/home/development"
-import HackTheBox from "@/app/home/hack-the-box"
 import SecurityStack from "@/app/home/cybersecurity"
 
 import ColorModeButton from "@/components/color-mode-button"
@@ -42,14 +41,12 @@ const Supported = () => {
                     </div>
                     <div className={"space-y-4"}>
                         <Projects />
-                        <HackTheBox />
                     </div>
                 </div>
                 <div className="hidden gap-4 laptop:grid laptop:grid-cols-2 desktop:hidden">
                     <div className="space-y-4">
                         <About />
                         <DevStack />
-                        <HackTheBox />
                     </div>
                     <div className={"space-y-4"}>
                         <Projects />
@@ -66,7 +63,6 @@ const Supported = () => {
                     <About />
                     <DevStack />
                     <SecurityStack />
-                    <HackTheBox />
                     <Projects />
                 </div>
             </div>

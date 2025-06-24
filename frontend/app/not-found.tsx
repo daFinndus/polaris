@@ -14,12 +14,16 @@ import { checkScreenValidity } from "@/app/hooks/checkScreenValidity"
  * It will loop through one audio file and play it in the background.
  */
 const AudioButton = () => {
+    const audioList = ["/audios/been_good_to_know_ya.mp3", "/audios/crustpunk.mp3", "/audios/phantom_liberty.mp3"]
     const audioRef = useRef<HTMLAudioElement>(null)
 
     const [isMuted, setIsMuted] = React.useState(true)
 
     useEffect(() => {
         if (audioRef.current) {
+            // Set a random audio file from the list
+            audioRef.current.src = audioList[Math.floor(Math.random() * audioList.length)]
+
             audioRef.current.volume = 0.1
             audioRef.current.play().catch((error) => console.error(error))
         }
@@ -36,7 +40,7 @@ const AudioButton = () => {
             <Button variant="secondary" className="h-full w-full" onClick={ToggleAudio}>
                 {isMuted ? <RiVolumeMuteFill /> : <RiVolumeUpFill />}
             </Button>
-            <audio loop={true} muted={isMuted} ref={audioRef} src="/audios/been_good_to_know_ya.mp3" preload="auto" />
+            <audio loop={true} muted={isMuted} ref={audioRef} preload="auto" />
         </div>
     )
 }
