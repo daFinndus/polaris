@@ -29,6 +29,22 @@ const AudioButton = () => {
         }
     }, [])
 
+    // Function to play the next audio file from the list
+    const NextAudio = () => {
+        if (audioRef.current) {
+            // Pause the current audio
+            audioRef.current.pause()
+
+            // Set a new audio file which is not the current one
+            const current = audioRef.current.src
+            let tempAudioList = audioList.filter((i) => i !== current)
+
+            audioRef.current.src = tempAudioList[Math.floor(Math.random() * tempAudioList.length)]
+            audioRef.current.play().catch((error) => console.error(error))
+        }
+    }
+
+    // This function is self-explanatory, it toggles the audio on and off
     const ToggleAudio = () => {
         if (audioRef.current) {
             setIsMuted(!isMuted)
@@ -40,7 +56,7 @@ const AudioButton = () => {
             <Button variant="secondary" className="h-full w-full" onClick={ToggleAudio}>
                 {isMuted ? <RiVolumeMuteFill /> : <RiVolumeUpFill />}
             </Button>
-            <audio loop={true} muted={isMuted} ref={audioRef} preload="auto" />
+            <audio muted={isMuted} ref={audioRef} preload="auto" onEnded={NextAudio} />
         </div>
     )
 }

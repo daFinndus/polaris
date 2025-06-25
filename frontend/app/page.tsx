@@ -6,6 +6,7 @@ import Head from "next/head"
 
 import About from "./home/about"
 
+import Blogs from "@/app/home/blogs"
 import Projects from "@/app/home/projects"
 import DevStack from "@/app/home/development"
 import SecurityStack from "@/app/home/cybersecurity"
@@ -41,6 +42,7 @@ const Supported = () => {
                     </div>
                     <div className={"space-y-4"}>
                         <Projects />
+                        <Blogs />
                     </div>
                 </div>
                 <div className="hidden gap-4 laptop:grid laptop:grid-cols-2 desktop:hidden">
@@ -51,6 +53,7 @@ const Supported = () => {
                     <div className={"space-y-4"}>
                         <Projects />
                         <SecurityStack />
+                        <Blogs />
                     </div>
                 </div>
                 <div className="grid grid-cols-1 gap-4 p-4 laptop:hidden">
@@ -64,6 +67,7 @@ const Supported = () => {
                     <DevStack />
                     <SecurityStack />
                     <Projects />
+                    <Blogs />
                 </div>
             </div>
         </div>
