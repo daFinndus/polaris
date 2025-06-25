@@ -57,7 +57,7 @@ const skills: Skill[] = [
         color: "text-white",
     },
     {
-        name: "RaspberryPi",
+        name: "Raspberry Pi",
         background: "bg-purple-700",
         icon: FaRaspberryPi,
         color: "text-red-300",

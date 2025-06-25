@@ -63,7 +63,7 @@ const projects: Project[] = [
             "A python application that uses vosk to create a voice assistant that can be used to control the motors and sensors of a raspberry pi.",
         personal: false,
         url: "https://github.com/daFinndus/voice_assistant/",
-        skills: [map.get("Python")!, map.get("RaspberryPi")!],
+        skills: [map.get("Python")!, map.get("Raspberry Pi")!],
     },
     {
         name: "Key Guardian",
@@ -91,7 +91,7 @@ const projects: Project[] = [
             "I receive probably around 80 attacks per day.\t" +
             "With the received logs it is possible to view entered usernames, passwords, commands, and where the attackers are from.\t",
         personal: true,
-        skills: [map.get("Bash")!, map.get("Linux")!],
+        skills: [map.get("Bash")!, map.get("Linux")!, map.get("Raspberry Pi")!],
     },
     {
         name: "Working with Furhat",
