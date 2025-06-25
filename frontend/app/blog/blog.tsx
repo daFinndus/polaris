@@ -27,11 +27,19 @@ const Entry = ({ title, date, description, content }: Blog) => {
 
     return (
         <div className="relative flex h-max w-[312px] flex-col rounded-xl border-2 border-background-lighter bg-background-light px-8 py-6 text-primary tablet:w-[526px]">
-            <p className="text-xl font-bold">{title}</p>
+            <p className="text-lg font-bold tablet:text-xl">{title}</p>
             <p className="mb-4 text-sm text-primary-darker">{date}</p>
-            <p className={"max-w-prose leading-relaxed tracking-wide"}>{description}</p>
+            <p className={"max-w-prose text-justify text-xs leading-relaxed tracking-wide tablet:text-base"}>{description}</p>
             <div className="flex w-full flex-col items-center">
-                {showContent && <div className="mt-2 max-w-prose leading-relaxed tracking-wide text-primary-darker">{content}</div>}
+                {showContent && (
+                    <div
+                        className={
+                            "mt-4 max-w-prose text-justify text-xs leading-relaxed tracking-wide text-primary-darker tablet:text-base"
+                        }
+                    >
+                        {content}
+                    </div>
+                )}
                 <Button asChild variant="secondary" className="mt-4 w-56" onClick={() => toggleContent(!showContent)}>
                     <p>{showContent ? "Hide" : "Show"} content</p>
                 </Button>

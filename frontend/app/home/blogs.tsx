@@ -11,12 +11,12 @@ const Preview = () => {
     const latest = blogs.slice(0, 2)
 
     return (
-        <div className="mb-6 mt-4 space-y-4">
+        <div className="mb-6 mt-4 space-y-6">
             {latest.map((blog, index) => (
-                <div key={index} className="rounded-md bg-background-lighter p-3 shadow-sm transition hover:shadow-md">
-                    <p className="text-lg font-semibold text-primary">{blog.title}</p>
+                <div key={index} className="rounded-md bg-background-lighter p-3 shadow-lg shadow-primary-light transition">
+                    <p className="text-base font-semibold text-primary">{blog.title}</p>
                     <p className="text-sm text-primary-darker">{blog.date}</p>
-                    <p className="mt-2 whitespace-pre-line text-sm text-primary-dark">{blog.description}</p>
+                    <p className="mt-2 whitespace-pre-line text-xs text-primary-dark tablet:text-sm">{blog.description}</p>
                 </div>
             ))}
         </div>

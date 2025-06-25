@@ -1,7 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 
-import projects from "@/app/data/projects"
+import projects from "@/app/data/projects/projects"
 
 import "@/app/styles/carousel-fade.css"
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel"

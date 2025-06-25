@@ -3,7 +3,7 @@ import React, { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 
-import projects from "@/app/data/projects"
+import projects from "@/app/data/projects/projects"
 
 import { SortFilter } from "@/app/projects/components/sortFilter"
 import { ResetFilter } from "@/app/projects/components/resetFilter"
@@ -18,6 +18,13 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { IconType } from "react-icons"
 import { IoFilter } from "react-icons/io5"
 
+interface Skill {
+    name: string
+    background: string
+    icon: IconType
+    color: string
+}
+
 interface Project {
     name: string
     date: Date
@@ -29,12 +36,7 @@ interface Project {
     personal: boolean
     url?: string
     demo?: string
-    skills?: {
-        name: string
-        background: string
-        icon: IconType
-        color: string
-    }[]
+    skills?: Skill[]
 }
 
 const Tile = ({ project }: { project: Project }) => {
@@ -59,7 +61,7 @@ const Tile = ({ project }: { project: Project }) => {
             </CardContainer>
             <div className={"flex h-full w-full flex-col items-start justify-start text-start"}>
                 <p className={"mb-2 text-base font-bold"}>{project.name}</p>
-                <p className={"mb-2 text-sm text-primary-darker"}>{project.description}</p>
+                <p className={"mb-2 text-justify text-sm text-primary-darker"}>{project.description}</p>
                 <div className={"flex w-full flex-wrap gap-x-2 gap-y-2"}>
                     {project.skills?.map((skill, index) => (
                         <Badge
@@ -80,7 +82,7 @@ const Tile = ({ project }: { project: Project }) => {
                         </Link>
                     ) : (
                         <Button className={"w-1/2 bg-background-lighter text-primary-darker"} disabled>
-                            No Sourcecode Available
+                            No Sourcecode
                         </Button>
                     )}
                     {project.demo ? (
@@ -91,7 +93,7 @@ const Tile = ({ project }: { project: Project }) => {
                         </Link>
                     ) : (
                         <Button className={"w-1/2 bg-background-lighter text-primary-darker"} disabled>
-                            No Demo Available
+                            No Demo
                         </Button>
                     )}
                 </div>

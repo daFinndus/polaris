@@ -3,7 +3,7 @@ import React from "react"
 import { Button } from "@/components/ui/button"
 
 import { RiEqualizerFill } from "react-icons/ri"
-import projects from "@/app/data/projects"
+import projects from "@/app/data/projects/projects"
 
 interface resetFilterProps {
     projectCount: number

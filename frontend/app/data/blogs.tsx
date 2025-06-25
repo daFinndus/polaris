@@ -1,6 +1,26 @@
 import React from "react"
+
 import Image from "next/image"
 import Link from "next/link"
+
+interface Picture {
+    src: string
+    alt: string
+    width: number
+    height: number
+}
+
+const Bild = ({ src, alt, width, height }: Picture) => {
+    return (
+        <Image
+            className={"mx-2 my-8 h-auto w-full rounded-xl shadow-lg shadow-background-lightest"}
+            src={src}
+            alt={alt}
+            width={width}
+            height={height}
+        />
+    )
+}
 
 interface Blog {
     title: string
@@ -11,12 +31,12 @@ interface Blog {
 
 export const blogs: Blog[] = [
     {
-        title: "The Importance of Strong Passwords",
+        title: "Strong Passwords",
         date: "26.06.2025",
         description:
             "Passwords are the first line of defense against unauthorized access to your accounts and sensitive information.",
         content: (
-            <p className={"mt-4 flex flex-col items-center leading-7 tracking-wide text-primary-darker"}>
+            <p className={"flex flex-col items-center"}>
                 Many people I know use weak passwords repeatedly across multiple accounts. Even though this may be convenient, it is
                 a significant security risk. In todays world, where data breaches and phishing attacks are more and more common, it
                 is crucial to use strong, unique passwords for each of your accounts. A strong password typically consists of a mix
@@ -25,14 +45,13 @@ export const blogs: Blog[] = [
                 password manager can help you generate and store strong passwords securely, so you don't have to remember them all.
                 Personally I can recommend Bitwarden, just click the image below.
                 <Link href={"https://bitwarden.com"}>
-                    <Image
-                        className={"my-8 h-44 w-auto rounded-xl shadow-lg shadow-background-lightest"}
+                    <Bild
                         src={
                             "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/bitwarden-AQqjr4xTcWpZnzyxJf8eVUwgsV05Gp.jpg"
                         }
-                        alt={"This is the Bitwarden logo."}
-                        width={480}
-                        height={243}
+                        alt={"The bitwarden logo"}
+                        width={384}
+                        height={232}
                     />
                 </Link>
                 TL;DR: Use strong, unique passwords with a mix of lowercase and uppercase letters, numbers, and special characters.
@@ -52,12 +71,11 @@ export const blogs: Blog[] = [
                 to share my knowledge and experiences with others, and I hope you find it helpful and informative. I will be writing
                 about various topics related to technology, cybersecurity, and my personal experiences in the field. If you have any
                 questions or suggestions for future blog posts, feel free to reach out to me via the contact form on this website.
-                <Image
-                    className={"my-8 h-44 w-auto rounded-xl shadow-lg shadow-background-lightest"}
+                <Bild
                     src={
                         "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/edgerunners-4YAasH0FPF47NheurrLiEaRFes6xqU.png"
                     }
-                    alt={"This is from the edgerunners anime."}
+                    alt={"This is from the edgerunners anime"}
                     width={480}
                     height={243}
                 />

@@ -1,12 +1,22 @@
 import React from "react"
 
+import skills from "@/app/data/projects/skills"
+
 import { Button } from "@/components/ui/button"
 
 import { CiFilter } from "react-icons/ci"
+import { IconType } from "react-icons"
 
-interface languageFilterProps {
+interface LanguageFilterProps {
     languages: string[]
     setLanguages: React.Dispatch<React.SetStateAction<string[]>>
+}
+
+interface Skill {
+    name: string
+    background: string
+    icon: IconType
+    color: string
 }
 
 /**
@@ -15,8 +25,8 @@ interface languageFilterProps {
  * @param setLanguages The function to set the languages.
  * @constructor
  */
-export const LanguageFilter = ({ languages, setLanguages }: languageFilterProps) => {
-    const sprachen = ["Next.js", "TailwindCSS", "Node.js", "Python", "Java", "C#", "MongoDB", "Raspberry Pi"]
+export const LanguageFilter = ({ languages, setLanguages }: LanguageFilterProps) => {
+    const sprachen = skills.map((skill: Skill) => skill.name)
 
     const toggleLanguage = (language: string) => {
         if (languages.includes(language)) setLanguages(languages.filter((sprache) => sprache !== language))
