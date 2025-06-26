@@ -43,7 +43,7 @@ const Tile = ({ project }: { project: Project }) => {
     return (
         <div
             className={
-                "relative flex h-[456px] w-[312px] flex-col items-center justify-start rounded-lg border-2 border-background-lighter bg-background-light px-4"
+                "relative flex h-auto w-[312px] flex-col items-center justify-start rounded-lg border-2 border-background-lighter bg-background-light px-4"
             }
         >
             <CardContainer className={"py-4"}>
@@ -62,7 +62,7 @@ const Tile = ({ project }: { project: Project }) => {
             <div className={"flex h-full w-full flex-col items-start justify-start text-start"}>
                 <p className={"mb-2 text-base font-bold"}>{project.name}</p>
                 <p className={"mb-2 text-justify text-sm text-primary-darker"}>{project.description}</p>
-                <div className={"flex w-full flex-wrap gap-x-2 gap-y-2"}>
+                <div className={"mb-8 flex h-fit w-full flex-wrap gap-x-2 gap-y-2"}>
                     {project.skills?.map((skill, index) => (
                         <Badge
                             className={`${skill.background} hover:${skill.background}/70 flex min-h-6 items-center justify-center gap-x-2 pl-2 font-bold ${skill.color}`}
@@ -73,7 +73,7 @@ const Tile = ({ project }: { project: Project }) => {
                         </Badge>
                     ))}
                 </div>
-                <div className={"my-2 flex h-full w-full items-end gap-x-2"}>
+                <div className={"mb-2 mt-auto flex w-full items-end gap-x-2"}>
                     {project.url ? (
                         <Link href={project.url} className={"w-1/2"} target={"_blank"}>
                             <Button className={"w-full bg-color-light text-background hover:bg-color/80 hover:text-primary"}>

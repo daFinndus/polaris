@@ -40,7 +40,12 @@ const Entry = ({ title, date, description, content }: Blog) => {
                         {content}
                     </div>
                 )}
-                <Button asChild variant="secondary" className="mt-4 w-56" onClick={() => toggleContent(!showContent)}>
+                <Button
+                    asChild
+                    variant="secondary"
+                    className="mt-8 w-full cursor-default"
+                    onClick={() => toggleContent(!showContent)}
+                >
                     <p>{showContent ? "Hide" : "Show"} content</p>
                 </Button>
             </div>

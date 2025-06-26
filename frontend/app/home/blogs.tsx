@@ -15,7 +15,7 @@ const Preview = () => {
             {latest.map((blog, index) => (
                 <div key={index} className="rounded-md bg-background-lighter p-3 shadow-lg shadow-primary-light transition">
                     <p className="text-base font-semibold text-primary">{blog.title}</p>
-                    <p className="text-sm text-primary-darker">{blog.date}</p>
+                    <p className="text-sm text-primary">{blog.date}</p>
                     <p className="mt-2 whitespace-pre-line text-xs text-primary-dark tablet:text-sm">{blog.description}</p>
                 </div>
             ))}
