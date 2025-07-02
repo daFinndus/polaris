@@ -29,11 +29,7 @@ const Supported = () => {
                 <HomeButton />
                 <ColorModeButton />
             </div>
-            <div
-                className={
-                    "mt-4 flex w-full flex-row items-center justify-center gap-x-2 tablet:mt-12 tablet:w-[526px] notebook:hidden"
-                }
-            >
+            <div className={"mt-4 flex w-full flex-row items-center justify-center gap-x-2 tablet:w-[526px] notebook:hidden"}>
                 <HomeButton />
                 <ColorModeButton />
             </div>

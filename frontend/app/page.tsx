@@ -23,15 +23,16 @@ const Unsupported = () => {
     )
 }
 
+// TODO: Clear up code duplication between this and the blog page
 const Supported = () => {
     return (
         <div className="relative flex items-center justify-center font-sans">
-            <div className={"hidden gap-y-2 laptop:fixed laptop:right-4 laptop:top-4 laptop:flex laptop:flex-col"}>
+            <PageHead />
+            <div className={"right-4 top-4 hidden flex-col gap-y-2 laptop:fixed laptop:flex"}>
                 <ColorModeButton />
                 <ErrorPageButton />
             </div>
-            <div className="flex items-start justify-center tablet:p-8 laptop:px-32">
-                <PageHead />
+            <div className="flex laptop:px-32">
                 <div className="hidden justify-center gap-4 desktop:grid desktop:grid-cols-3">
                     <div className={"space-y-4"}>
                         <About />
@@ -56,7 +57,7 @@ const Supported = () => {
                         <Blogs />
                     </div>
                 </div>
-                <div className="grid grid-cols-1 gap-4 p-4 laptop:hidden">
+                <div className="grid grid-cols-1 gap-4 p-4 notebook:mt-16 laptop:hidden">
                     <div
                         className={"flex gap-x-2 notebook:fixed notebook:right-4 notebook:top-4 notebook:flex-col notebook:gap-y-2"}
                     >
