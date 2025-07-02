@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 
 import { notFound } from "next/navigation"
 
@@ -15,25 +15,18 @@ interface Blog {
 }
 
 export default function Blog() {
+    useEffect(() => {
+        if (blogs.length <= 0) {
+            notFound()
+        }
+    })
+
     return (
-        <>
-            {blogs.length == 0 ? (
-                notFound()
-            ) : (
-                <div className={"flex w-auto flex-col items-center justify-center gap-4 notebook:my-20"}>
-                    {blogs.length > 0 &&
-                        blogs.map((blog, index) => (
-                            <Entry
-                                key={index}
-                                title={blog.title}
-                                date={blog.date}
-                                description={blog.description}
-                                content={blog.content}
-                            />
-                        ))}
-                </div>
-            )}
-        </>
+        <div className={"grid grid-cols-1 gap-4 text-justify text-primary"}>
+            {blogs.map((blog, index) => (
+                <Entry key={index} title={blog.title} date={blog.date} description={blog.description} content={blog.content} />
+            ))}
+        </div>
     )
 }
 
@@ -41,7 +34,7 @@ const Entry = ({ title, date, description, content }: Blog) => {
     const [showContent, toggleContent] = useState(false)
 
     return (
-        <div className="flex h-max w-auto flex-col rounded-xl border-2 border-background-lighter bg-background-light px-8 py-6 text-justify text-primary tablet:w-[526px] notebook:mx-0">
+        <div className="flex flex-col rounded-xl border-2 border-background-lighter bg-background-light px-8 py-6 tablet:w-[526px]">
             <p className="text-lg font-bold tablet:text-xl">{title}</p>
             <p className="mb-4 text-sm text-primary-darker">{date}</p>
             <p className={"text-sm"}>{description}</p>

@@ -4,9 +4,9 @@ import React, { useEffect } from "react"
 
 import Blog from "@/app/blog/blog"
 import { getColorMode } from "@/app/hooks/getColorMode"
+import { checkScreenValidity } from "@/app/hooks/checkScreenValidity"
 
 import HomeButton from "@/components/home-button"
-import { checkScreenValidity } from "@/app/hooks/checkScreenValidity"
 import ColorModeButton from "@/components/color-mode-button"
 
 const Unsupported = () => {
@@ -18,29 +18,29 @@ const Unsupported = () => {
 }
 
 const Supported = () => {
-    useEffect(() => {
-        scrollTo(0, 0)
-        getColorMode()
-    }, [])
-
     return (
-        <div className={"relative mx-4 flex flex-col items-center justify-center gap-y-4 font-sans notebook:mx-0"}>
-            <div className={"absolute right-4 top-4 hidden flex-col gap-y-2 notebook:flex"}>
+        <div className={"m-4 flex justify-center font-sans notebook:my-8"}>
+            <div className={"right-4 top-4 hidden flex-col gap-y-2 notebook:fixed notebook:flex"}>
                 <HomeButton />
                 <ColorModeButton />
             </div>
-            <div className={"mt-4 flex w-full flex-row items-center justify-center gap-x-2 tablet:w-[526px] notebook:hidden"}>
-                <HomeButton />
-                <ColorModeButton />
+            <div className={"grid grid-cols-1 gap-4"}>
+                <div className={"flex gap-x-2 notebook:hidden"}>
+                    <HomeButton />
+                    <ColorModeButton />
+                </div>
+                <Blog />
             </div>
-            <Blog />
         </div>
     )
 }
 
 export default function Page() {
     useEffect(() => {
-        getColorMode()
+        if (typeof window !== undefined) {
+            scrollTo(0, 0)
+            getColorMode()
+        }
     }, [])
 
     return checkScreenValidity(Supported(), Unsupported())
