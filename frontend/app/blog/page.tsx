@@ -24,18 +24,20 @@ const Supported = () => {
     }, [])
 
     return (
-        <div className={"relative flex w-screen flex-col items-center justify-center gap-y-8 font-sans"}>
-            <div className={"absolute right-4 top-4 hidden flex-col gap-y-2 tablet:flex"}>
+        <div className={"relative mx-4 flex flex-col items-center justify-center gap-y-4 font-sans notebook:mx-0"}>
+            <div className={"absolute right-4 top-4 hidden flex-col gap-y-2 notebook:flex"}>
                 <HomeButton />
                 <ColorModeButton />
             </div>
-            <div className={"-mb-2 mt-4 flex w-[312px] items-center justify-center gap-x-2 tablet:hidden"}>
+            <div
+                className={
+                    "mt-4 flex w-full flex-row items-center justify-center gap-x-2 tablet:mt-12 tablet:w-[526px] notebook:hidden"
+                }
+            >
                 <HomeButton />
                 <ColorModeButton />
             </div>
-            <div className={"flex items-center justify-center tablet:mt-20"}>
-                <Blog />
-            </div>
+            <Blog />
         </div>
     )
 }

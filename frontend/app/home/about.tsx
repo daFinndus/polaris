@@ -98,7 +98,7 @@ export default function About() {
             <div className={"mt-4 flex flex-row justify-center space-x-2"}>
                 <Button asChild variant={"color"}>
                     <Link href={"mailto:finnlucajensen555@gmail.com"}>
-                        <SiGmail className={"font-bold text-color-lightest"} />
+                        <SiGmail />
                         Contact me!
                     </Link>
                 </Button>

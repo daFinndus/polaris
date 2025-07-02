@@ -25,12 +25,12 @@ const Unsupported = () => {
 
 const Supported = () => {
     return (
-        <div className="relative flex w-screen items-center justify-center bg-background">
+        <div className="relative flex items-center justify-center font-sans">
             <div className={"hidden gap-y-2 laptop:fixed laptop:right-4 laptop:top-4 laptop:flex laptop:flex-col"}>
                 <ColorModeButton />
                 <ErrorPageButton />
             </div>
-            <div className="flex items-start justify-center font-sans tablet:p-8 laptop:px-32">
+            <div className="flex items-start justify-center tablet:p-8 laptop:px-32">
                 <PageHead />
                 <div className="hidden justify-center gap-4 desktop:grid desktop:grid-cols-3">
                     <div className={"space-y-4"}>
