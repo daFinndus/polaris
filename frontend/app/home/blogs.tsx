@@ -11,7 +11,7 @@ const Preview = () => {
     const latest = blogs.slice(0, 2)
 
     return (
-        <div className="my-4 min-w-[494px] space-y-4 text-base">
+        <div className="my-4 w-auto space-y-4 text-base tablet:min-w-[494px]">
             {latest.map((blog, index) => (
                 <div key={index} className="rounded-md bg-background-lighter px-4 py-4">
                     <p className="text-base font-semibold text-primary">{blog.title}</p>

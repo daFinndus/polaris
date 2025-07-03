@@ -14,18 +14,10 @@
 
 .carousel-fade-overlay::before {
     left: 0;
-    background: linear-gradient(
-            to right,
-            hsl(var(--background-light) / 1),
-            hsl(var(--background-light) / 0)
-    );
+    background: linear-gradient(to right, hsl(var(--background-light) / 1), hsl(var(--background-light) / 0));
 }
 
 .carousel-fade-overlay::after {
     right: 0;
-    background: linear-gradient(
-            to left,
-            hsl(var(--background-light) / 1),
-            hsl(var(--background-light) / 0)
-    );
+    background: linear-gradient(to left, hsl(var(--background-light) / 1), hsl(var(--background-light) / 0));
 }
