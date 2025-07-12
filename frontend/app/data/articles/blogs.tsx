@@ -2,6 +2,7 @@ import React from "react"
 
 import Passwords from "@/app/data/articles/markdown/passwords.mdx"
 import TwoFactorAuthentication from "@/app/data/articles/markdown/two-factor-authentication.mdx"
+import ArchLinux from "@/app/data/articles/markdown/arch-linux.mdx"
 
 interface Blog {
     title: string
@@ -11,6 +12,13 @@ interface Blog {
 }
 
 export const blogs: Blog[] = [
+    {
+        title: "Arch Linux",
+        date: "13.07.2025",
+        description:
+            "Arch Linux is one of the most popular Linux distributions. It is known for its difficult setup and steep learning curve, but also for its powerful customization options and minimalism.",
+        content: <ArchLinux />,
+    },
     {
         title: "Two-Factor Authentication",
         date: "02.07.2025",
