@@ -32,9 +32,9 @@ export default function Blogs() {
                         "flex h-max flex-col rounded-xl border-2 border-background-lighter bg-background-light p-4 text-primary tablet:w-[526px]"
                     }
                 >
-                    <div className={"flex flex-row"}>
+                    <div className={"flex flex-row items-center"}>
                         <SiInoreader className={"size-6 text-color-light"} />
-                        <p className={"ml-3 text-xl font-bold"}>Read my Blog</p>
+                        <p className={"ml-3 text-lg font-bold smartphone:text-xl"}>Read my Blog</p>
                     </div>
                     <div className={"flex flex-col items-center"}>
                         <Preview />

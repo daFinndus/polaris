@@ -10,6 +10,9 @@ export default {
                 sans: "var(--font-geist-sans)",
                 mono: "var(--font-geist-mono)",
             },
+            fontSize: {
+                xxs: "0.625rem",
+            },
             colors: {
                 background: {
                     DEFAULT: "hsl(var(--background))",
@@ -78,7 +81,7 @@ export default {
                 sm: "calc(var(--radius) - 4px)",
             },
             screens: {
-                smartphone: "320px",
+                smartphone: "400px",
                 tablet: "640px",
                 notebook: "816px",
                 laptop: "1316px",

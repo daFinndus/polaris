@@ -14,7 +14,7 @@ import { FaCodepen } from "react-icons/fa"
 
 const Project = ({ src, alt, width, height }: { src: string; alt: string; width: number; height: number }) => {
     return (
-        <CarouselItem className={"basis-1/3"}>
+        <CarouselItem className={"basis-1/2 smartphone:basis-1/3"}>
             <Image
                 className={
                     "m-0 flex h-24 w-[172px] items-center justify-center rounded-lg bg-background p-0 text-center text-xs font-bold blur-[2px]"
@@ -36,9 +36,9 @@ export default function Projects() {
                 "flex h-max flex-col rounded-xl border-2 border-background-lighter bg-background-light p-4 text-primary tablet:w-[526px]"
             }
         >
-            <div className={"flex flex-row"}>
+            <div className={"flex flex-row items-center"}>
                 <FaCodepen className={"size-6 text-color-light"} />
-                <p className={"ml-3 text-xl font-bold"}>My Projects</p>
+                <p className={"ml-3 text-lg font-bold smartphone:text-xl"}>My Projects</p>
             </div>
             <p className={"mt-1 text-sm text-primary-darker"}>These are some of the projects I&#39;ve been working on</p>
             <div className={"flex flex-col items-center"}>

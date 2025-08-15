@@ -17,13 +17,13 @@ const Method = ({ Icon, name, content, related }: MethodsProps) => {
     return (
         <HoverCard>
             <HoverCardTrigger className={"group"}>
-                <Badge variant={"secondary"} className={"flex h-16 flex-row"}>
+                <Badge variant={"secondary"} className={"flex h-auto flex-row items-center justify-start px-1"}>
                     <div className={"mr-2 rounded-lg border-2 border-background-lighter bg-background-light"}>
-                        <Icon className={"size-12 p-2 text-color-light"} />
+                        <Icon className={"size-10 p-2 text-color-light smartphone:size-12"} />
                     </div>
                     <div className={"flex w-full flex-row items-center"}>
                         <div className={"flex flex-col"}>
-                            <span className={"font-bold"}>{name}</span>
+                            <span className={"text-xxs font-bold smartphone:text-xs"}>{name}</span>
                             {related && <p className={"overflow-hidden text-xs text-color-light"}>{related.join(", ")}</p>}
                         </div>
                     </div>
@@ -41,9 +41,9 @@ export default function SecurityStack() {
                 "flex h-max flex-col rounded-xl border-2 border-background-lighter bg-background-light p-4 text-primary tablet:w-[526px]"
             }
         >
-            <div className={"flex flex-row"}>
+            <div className={"flex flex-row items-center"}>
                 <MdSecurity className={"size-6 text-color-light"} />
-                <p className={"ml-3 text-xl font-bold"}>My Cybersecurity Stack</p>
+                <p className={"ml-3 text-lg font-bold smartphone:text-xl"}>My Cybersecurity Stack</p>
             </div>
             <p className={"mb-4 mt-1 text-sm text-primary-darker"}>These are my go to tools and forums for cybersecurity</p>
             <div className={"grid grid-cols-2 gap-2"}>

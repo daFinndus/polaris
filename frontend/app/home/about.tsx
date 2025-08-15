@@ -21,7 +21,7 @@ import { MdOutlineLocationOn } from "react-icons/md"
 
 const Tag = ({ Icon, name }: { Icon: IconType; name: string }) => {
     return (
-        <Badge variant={"about"} className={"h-[28px] px-2 py-1 smartphone:w-max"}>
+        <Badge variant={"about"} className={"h-[28px] px-2 py-1 text-xxs smartphone:w-max smartphone:text-xs"}>
             <Icon className={"mr-2 size-4 text-color"} />
             {name}
         </Badge>
@@ -54,7 +54,7 @@ export default function About() {
         }, 2500)
 
         return () => clearInterval(interval)
-    })
+    }, [word])
 
     return (
         <div
@@ -63,7 +63,7 @@ export default function About() {
             }
         >
             <div className={"flex flex-row"}>
-                <Avatar className={"ml-1 mt-1 size-20 rounded-xl tablet:size-28"}>
+                <Avatar className={"size-16 rounded-xl smartphone:size-20 tablet:size-28"}>
                     <AvatarImage
                         className={"object-cover"}
                         src="https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Miscellaneous/pose-rYj3rIYRrWtK759jsZFVIpmv7ohikY.jpg"
@@ -71,48 +71,47 @@ export default function About() {
                         width={400}
                         height={300}
                     />
-                    <AvatarFallback delayMs={500}>daFinndus</AvatarFallback>
+                    <AvatarFallback className={"rounded-xl"}>404</AvatarFallback>
                 </Avatar>
-                <div className={"ml-4 flex flex-col space-y-1"}>
-                    <Badge className={"my-1 w-max"} variant={"color"}>
-                        Best experience on desktop!
+                <div className={"ml-2 flex flex-col space-y-1 smartphone:ml-4"}>
+                    <Badge className={"mb-1 w-max text-xxs smartphone:text-xs"} variant={"color"}>
+                        <p className={"text-white"}>Best experience on desktop!</p>
                     </Badge>
-                    <p className={"text-sm font-bold tablet:text-lg"}>
+                    <p className={"text-xs font-bold smartphone:text-sm tablet:text-lg"}>
                         Finn Luca
                         <span className={"text-color-light"}> &#34;daFinndus&#34; </span>
                         Jensen
                     </p>
-                    <div className={"flex flex-row space-x-1 text-xs font-bold tablet:text-sm"}>
+                    <div className={"flex flex-row space-x-1 text-xxs font-bold smartphone:text-xs tablet:text-sm"}>
                         <p>I am a</p>
                         <span ref={ref} />
                     </div>
                 </div>
             </div>
             <div className={"mt-4 flex h-auto flex-wrap items-center gap-2 rounded-lg border-none bg-background px-4 py-3"}>
-                <Tag Icon={IoLanguage} name={"German & English"}></Tag>
-                <Tag Icon={LuCake} name={`${getAge()} years old`}></Tag>
-                <Tag Icon={MdOutlineLocationOn} name={"Kiel"}></Tag>
-                <Tag Icon={IoGlobe} name={"UTC+1"}></Tag>
-                <Tag Icon={BsBriefcase} name={"Student"}></Tag>
+                <Tag Icon={IoLanguage} name={"German & English"} />
+                <Tag Icon={LuCake} name={`${getAge()} years old`} />
+                <Tag Icon={MdOutlineLocationOn} name={"Kiel"} />
+                <Tag Icon={IoGlobe} name={"UTC+1"} />
+                <Tag Icon={BsBriefcase} name={"Student"} />
             </div>
-            <div className={"mt-4 flex flex-row justify-center space-x-2"}>
-                <Button asChild variant={"color"}>
-                    <Link href={"mailto:finnlucajensen555@gmail.com"}>
+            <div className={"mt-4 flex w-full flex-row justify-center space-x-2"}>
+                <Button className={"w-full"} variant={"color"}>
+                    <Link href={"mailto:finnlucajensen@proton.me"} target={"_blank"}>
                         <SiGmail />
-                        Contact me!
                     </Link>
                 </Button>
-                <Button asChild variant={"secondary"}>
+                <Button className={"w-full"} variant={"secondary"}>
                     <Link href={"https://github.com/daFinndus"} target={"_blank"}>
                         <FaGithub />
                     </Link>
                 </Button>
-                <Button asChild variant={"secondary"}>
+                <Button className={"w-full"} variant={"secondary"}>
                     <Link href={"https://www.linkedin.com/in/finn-luca-jensen-98a839286/"} target={"_blank"}>
                         <FaLinkedin />
                     </Link>
                 </Button>
-                <Button asChild variant={"secondary"}>
+                <Button className={"w-full"} variant={"secondary"}>
                     <Link href={"https://x.com/dafinndus"} target={"_blank"}>
                         <FaTwitter />
                     </Link>
