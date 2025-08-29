@@ -45,8 +45,7 @@ const Supported = () => {
     }, [])
 
     return (
-        <div className={"relative flex h-screen w-screen items-center justify-center text-center font-sans"}>
-            <span className="text-center text-8xl text-primary">{time}</span>
+        <div className={"relative flex h-screen w-screen flex-col items-center justify-center text-center font-sans"}>
             <div className={"absolute right-4 top-4 hidden flex-col gap-y-2 tablet:flex"}>
                 <HomeButton />
                 <ColorModeButton />
@@ -55,6 +54,9 @@ const Supported = () => {
                 <HomeButton />
                 <ColorModeButton />
             </div>
+            <span className="flex h-full items-center text-center text-4xl text-primary smartphone:text-6xl tablet:text-8xl">
+                {time}
+            </span>
         </div>
     )
 }
