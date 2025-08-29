@@ -6,8 +6,8 @@ import { Blog } from "@/app/blog/blog"
 import { getColorMode } from "@/app/hooks/getColorMode"
 import { checkScreenValidity } from "@/app/hooks/checkScreenValidity"
 
-import HomeButton from "@/components/home-button"
-import ColorModeButton from "@/components/color-mode-button"
+import { HomeButton } from "@/components/home-button"
+import { ColorModeButton } from "@/components/color-mode-button"
 
 const Unsupported = () => {
     return (
