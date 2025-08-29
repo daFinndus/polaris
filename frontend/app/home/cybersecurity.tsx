@@ -34,7 +34,7 @@ const Method = ({ Icon, name, content, related }: MethodsProps) => {
     )
 }
 
-export default function SecurityStack() {
+export const SecurityStack = () => {
     return (
         <div
             className={

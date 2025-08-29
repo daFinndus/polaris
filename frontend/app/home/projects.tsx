@@ -1,13 +1,13 @@
 import Link from "next/link"
 import Image from "next/image"
 
-import projects from "@/app/data/projects/projects"
+import { projects } from "@/app/data/projects/projects"
 
 import "@/app/styles/carousel-fade.css"
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel"
-import { Button } from "@/components/ui/button"
-
 import AutoScroll from "embla-carousel-auto-scroll"
+
+import { Button } from "@/components/ui/button"
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel"
 
 import { GrCubes } from "react-icons/gr"
 import { FaCodepen } from "react-icons/fa"
@@ -29,7 +29,7 @@ const Project = ({ src, alt, width, height }: { src: string; alt: string; width:
     )
 }
 
-export default function Projects() {
+export const Projects = () => {
     return (
         <div
             className={

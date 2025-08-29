@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react"
 
-import Blog from "@/app/blog/blog"
+import { Blog } from "@/app/blog/blog"
 import { getColorMode } from "@/app/hooks/getColorMode"
 import { checkScreenValidity } from "@/app/hooks/checkScreenValidity"
 

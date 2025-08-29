@@ -3,6 +3,7 @@ import React from "react"
 import Link from "next/link"
 
 import { blogs } from "@/app/data/articles/blogs"
+
 import { Button } from "@/components/ui/button"
 
 import { SiInoreader, SiReadthedocs } from "react-icons/si"
@@ -23,7 +24,7 @@ const Preview = () => {
     )
 }
 
-export default function Blogs() {
+export const Blogs = () => {
     return (
         <>
             {blogs.length > 0 ? (

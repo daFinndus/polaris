@@ -7,7 +7,7 @@ import { getCookie } from "cookies-next/client"
  * It also sets the color mode of the website by adding a class to the document element.
  * @returns A boolean value that represents the color mode. True if dark, false if light.
  */
-export const getColorMode = () => {
+export const getColorMode = (): boolean => {
     const isDark = getCookie("dark") === "Your website is currently in dark mode."
 
     if (isDark) {

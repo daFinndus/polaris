@@ -1,6 +1,6 @@
 import React from "react"
 
-import skills from "@/app/data/projects/skills"
+import { skills } from "@/app/data/projects/skills"
 
 import { Button } from "@/components/ui/button"
 

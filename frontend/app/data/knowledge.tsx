@@ -6,7 +6,7 @@ import { BiLogoReact } from "react-icons/bi"
 import { SiBurpsuite } from "react-icons/si"
 import { VscTerminalBash } from "react-icons/vsc"
 
-interface Technology {
+interface Development {
     Icon: any
     name: string
     content: string
@@ -14,7 +14,7 @@ interface Technology {
     href: string
 }
 
-export const development: Technology[] = [
+export const development: Development[] = [
     {
         Icon: DiPython,
         name: "Python",

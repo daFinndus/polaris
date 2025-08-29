@@ -4,17 +4,18 @@ import React, { useEffect } from "react"
 
 import Head from "next/head"
 
-import About from "./home/about"
+import { About } from "@/app/home/about"
 
-import Blogs from "@/app/home/blogs"
-import Projects from "@/app/home/projects"
-import DevStack from "@/app/home/development"
-import SecurityStack from "@/app/home/cybersecurity"
+import { Blogs } from "@/app/home/blogs"
+import { Projects } from "@/app/home/projects"
+import { DevStack } from "@/app/home/development"
+import { SecurityStack } from "@/app/home/cybersecurity"
 import { getColorMode } from "@/app/hooks/getColorMode"
 import { checkScreenValidity } from "@/app/hooks/checkScreenValidity"
 
-import ColorModeButton from "@/components/color-mode-button"
-import ErrorPageButton from "@/components/error-page-button"
+import { ColorModeButton } from "@/components/color-mode-button"
+import { ErrorPageButton } from "@/components/error-page-button"
+import { ClockPageButton } from "@/components/clock-page-button"
 
 const Unsupported = () => {
     return (
@@ -30,6 +31,7 @@ const Supported = () => {
             <PageHead />
             <div className={"right-4 top-4 hidden flex-col gap-y-2 notebook:fixed notebook:flex"}>
                 <ColorModeButton />
+                <ClockPageButton />
                 <ErrorPageButton />
             </div>
             <div className="hidden gap-4 desktop:grid desktop:grid-cols-3">
@@ -57,6 +59,7 @@ const Supported = () => {
             <div className="grid grid-cols-1 gap-4 laptop:hidden">
                 <div className={"flex gap-x-2 notebook:hidden"}>
                     <ColorModeButton />
+                    <ClockPageButton />
                     <ErrorPageButton />
                 </div>
                 <About />

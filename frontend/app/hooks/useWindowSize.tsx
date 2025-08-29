@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react"
 
+interface windowSize {
+    width: number
+    height: number
+}
+
 /**
  * Hook for getting the window size.
  * This is basically stolen from stack overflow.
  * @returns The window size, width and height in pixels.
  */
-export const useWindowSize = () => {
+export const useWindowSize = (): windowSize => {
     const [windowSize, setWindowSize] = useState({
         width: 0,
         height: 0,

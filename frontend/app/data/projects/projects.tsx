@@ -1,6 +1,6 @@
 import { IconType } from "react-icons"
 
-import skills from "@/app/data/projects/skills"
+import { skills } from "@/app/data/projects/skills"
 
 interface Skill {
     name: string
@@ -25,7 +25,7 @@ interface Project {
 
 const map = new Map(skills.map((skill) => [skill.name, skill]))
 
-const projects: Project[] = [
+export const projects: Project[] = [
     {
         name: "Portfolio",
         date: new Date("2024-12-03"),
@@ -34,11 +34,12 @@ const projects: Project[] = [
         width: 768,
         height: 432,
         description:
-            "A Next.js application that uses TailwindCSS and Node.js on the backend to create a responsive and accessible portfolio, displaying projects, and more.",
+            "A Next.js application made with TailwindCSS and Node.js on the backend\t" +
+            "to create a simple and responsive portfolio, displaying projects, and more.",
         personal: true,
         url: "https://github.com/daFinndus/polaris",
         demo: "https://finnlucajensen.vercel.app",
-        skills: [map.get("Next.js")!, map.get("Node.js")!, map.get("TailwindCSS")!, map.get("MongoDB")!],
+        skills: [map.get("Next.js")!, map.get("Node.js")!, map.get("TailwindCSS")!],
     },
     {
         name: "Beerpong Tracker",
@@ -47,7 +48,9 @@ const projects: Project[] = [
         alt: "Beerpong Tracker",
         width: 630,
         height: 594,
-        description: "A python application that uses OpenCV, TKinter and a camera to track the cups and balls in a beerpong game.",
+        description:
+            "A python application that uses OpenCV's object detection,\t" +
+            "TKinter, a raspberry pi and a camera to track the cups and balls in a beerpong game.",
         personal: false,
         url: "https://github.com/daFinndus/beerpong",
         skills: [map.get("Python")!, map.get("OpenCV")!, map.get("TKinter")!],
@@ -60,7 +63,8 @@ const projects: Project[] = [
         width: 450,
         height: 450,
         description:
-            "A python application that uses vosk to create a voice assistant that can be used to control the motors and sensors of a raspberry pi.",
+            "A python application that uses vosk to create a voice assistant\t" +
+            "that can be used to control the motors and sensors of a raspberry pi.",
         personal: false,
         url: "https://github.com/daFinndus/voice_assistant/",
         skills: [map.get("Python")!, map.get("Raspberry Pi")!],
@@ -73,7 +77,8 @@ const projects: Project[] = [
         width: 802,
         height: 632,
         description:
-            "A python application that uses TKinter to create a GUI, to make it possible for easy password generation and strength checking.",
+            "A python application that uses TKinter to create a GUI,\t" +
+            "to make it possible for easy password generation and strength checking.",
         personal: true,
         url: "https://github.com/daFinndus/key_guardian",
         skills: [map.get("Python")!, map.get("TKinter")!],
@@ -106,8 +111,6 @@ const projects: Project[] = [
             "In the end, the robot should be used in a hospital to relieve the medical personal.",
         personal: false,
         demo: "https://www.instagram.com/p/DKZqmrkMHgC/",
-        skills: [map.get("Java")!, map.get("Python")!],
+        skills: [map.get("Java")!, map.get("Python")!, map.get("MongoDB")!],
     },
 ]
-
-export default projects

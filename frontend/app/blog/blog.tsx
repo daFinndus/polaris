@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react"
 import { notFound } from "next/navigation"
 
 import { blogs } from "@/app/data/articles/blogs"
+
 import { Button } from "@/components/ui/button"
 
 interface Blog {
@@ -14,7 +15,7 @@ interface Blog {
     content: React.ReactNode
 }
 
-export default function Blog() {
+export const Blog = () => {
     useEffect(() => {
         if (blogs.length <= 0) {
             notFound()

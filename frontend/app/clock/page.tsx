@@ -1,8 +1,7 @@
 "use client"
 
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 
-import { Projects } from "@/app/projects/projects"
 import { getColorMode } from "@/app/hooks/getColorMode"
 import { checkScreenValidity } from "@/app/hooks/checkScreenValidity"
 
@@ -17,14 +16,37 @@ const Unsupported = () => {
     )
 }
 
+/**
+ * Get the current time in HH:mm:ss format.
+ * @returns The current time in a formatted string.
+ */
+const getTime = () => {
+    const date = new Date()
+
+    const hours = date.getHours().toString().padStart(2, "0")
+    const minutes = date.getMinutes().toString().padStart(2, "0")
+    const seconds = date.getSeconds().toString().padStart(2, "0")
+
+    return `${hours}:${minutes}:${seconds}`
+}
+
 const Supported = () => {
+    const [time, setTime] = useState<string>(getTime())
+
     useEffect(() => {
         scrollTo(0, 0)
         getColorMode()
+
+        const interval = setInterval(() => {
+            setTime(getTime())
+        }, 1000)
+
+        return () => clearInterval(interval)
     }, [])
 
     return (
-        <div className={"relative flex w-screen flex-col items-center justify-center gap-y-8 font-sans"}>
+        <div className={"relative flex h-screen w-screen items-center justify-center text-center font-sans"}>
+            <span className="text-center text-8xl text-primary">{time}</span>
             <div className={"absolute right-4 top-4 hidden flex-col gap-y-2 tablet:flex"}>
                 <HomeButton />
                 <ColorModeButton />
@@ -32,9 +54,6 @@ const Supported = () => {
             <div className={"-mb-2 mt-4 flex w-[312px] items-center justify-center gap-x-2 tablet:hidden"}>
                 <HomeButton />
                 <ColorModeButton />
-            </div>
-            <div className={"flex items-center justify-center tablet:mt-20"}>
-                <Projects />
             </div>
         </div>
     )

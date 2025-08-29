@@ -1,12 +1,13 @@
 import React from "react"
 
+import "./globals.css"
+
 import type { Metadata } from "next"
 import localFont from "next/font/local"
 
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
-import "./globals.css"
 import { Toaster } from "@/components/ui/toaster"
 
 const geistSans = localFont({

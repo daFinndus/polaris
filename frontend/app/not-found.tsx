@@ -2,8 +2,8 @@
 
 import React, { useEffect, useRef, useState } from "react"
 
-import HomeButton from "@/components/home-button"
 import { Button } from "@/components/ui/button"
+import { HomeButton } from "@/components/home-button"
 import { getColorMode } from "@/app/hooks/getColorMode"
 
 import { RiVolumeMuteFill, RiVolumeUpFill } from "react-icons/ri"

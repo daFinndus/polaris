@@ -35,7 +35,7 @@ const Technology = ({ Icon, name, content, version, href }: TechnologyProps) => 
     )
 }
 
-export default function DevStack() {
+export const DevStack = () => {
     return (
         <div
             className={

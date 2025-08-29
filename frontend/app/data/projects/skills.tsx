@@ -13,7 +13,7 @@ interface Skill {
     color: string
 }
 
-const skills: Skill[] = [
+export const skills: Skill[] = [
     {
         name: "Python",
         background: "bg-cyan-800",
@@ -81,5 +81,3 @@ const skills: Skill[] = [
         color: "text-white",
     },
 ]
-
-export default skills

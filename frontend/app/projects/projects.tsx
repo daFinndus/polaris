@@ -3,8 +3,7 @@ import React, { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 
-import projects from "@/app/data/projects/projects"
-
+import { projects } from "@/app/data/projects/projects"
 import { SortFilter } from "@/app/projects/components/sortFilter"
 import { ResetFilter } from "@/app/projects/components/resetFilter"
 import { ProjectFilter } from "@/app/projects/components/projectFilter"
@@ -102,7 +101,7 @@ const Tile = ({ project }: { project: Project }) => {
     )
 }
 
-export default function Projects() {
+export const Projects = () => {
     const [open, setOpen] = useState<boolean>(false)
 
     const [demo, setDemo] = useState<boolean>(false)

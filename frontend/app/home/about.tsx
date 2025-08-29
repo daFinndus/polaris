@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 
 import Link from "next/link"
 
+import { useScramble } from "use-scramble"
+
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -9,15 +11,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { getNextWord } from "@/app/hooks/getNextWord"
 import { getRandomWord } from "@/app/hooks/getRandomWord"
 
-import { useScramble } from "use-scramble"
-
 import { IconType } from "react-icons"
 import { LuCake } from "react-icons/lu"
-import { BsBriefcase } from "react-icons/bs"
-import { IoGlobe, IoLanguage } from "react-icons/io5"
 import { SiGmail } from "react-icons/si"
-import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa"
+import { BsBriefcase } from "react-icons/bs"
 import { MdOutlineLocationOn } from "react-icons/md"
+import { IoGlobe, IoLanguage } from "react-icons/io5"
+import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa"
 
 const Tag = ({ Icon, name }: { Icon: IconType; name: string }) => {
     return (
@@ -28,7 +28,7 @@ const Tag = ({ Icon, name }: { Icon: IconType; name: string }) => {
     )
 }
 
-export default function About() {
+export const About = () => {
     const words = ["Developer", "Cybersecurity-Enthusiast", "Student"]
     const [word, setWord] = useState(getRandomWord(words))
 

@@ -2,13 +2,13 @@ import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
 
-import { TbError404 } from "react-icons/tb"
+import { FaClock } from "react-icons/fa6"
 
-export const ErrorPageButton = () => {
+export const ClockPageButton = () => {
     return (
-        <Link href={"/err"} className={"flex h-12 w-1/2 items-center notebook:w-12"}>
+        <Link href={"/clock"} className={"flex h-12 w-1/2 items-center notebook:w-12"}>
             <Button variant="secondary" className={"h-full w-full"} aria-label={"This will redirect to the error page."}>
-                <TbError404 />
+                <FaClock />
             </Button>
         </Link>
     )

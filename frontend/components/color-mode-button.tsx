@@ -16,7 +16,7 @@ import { getColorMode } from "@/app/hooks/getColorMode"
  * It stores the current color mode value in a cookie.
  * @constructor
  */
-export default function ColorModeButton() {
+export const ColorModeButton = () => {
     const [dark, setDark] = useState(false)
 
     useEffect(() => {
