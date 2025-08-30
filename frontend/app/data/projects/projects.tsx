@@ -111,6 +111,61 @@ export const projects: Project[] = [
             "In the end, the robot should be used in a hospital to relieve the medical personal.",
         personal: false,
         demo: "https://www.instagram.com/p/DKZqmrkMHgC/",
-        skills: [map.get("Java")!, map.get("Python")!, map.get("MongoDB")!],
+        skills: [map.get("Kotlin")!, map.get("Python")!, map.get("MongoDB")!],
+    },
+    {
+        name: "DiveVR",
+        date: new Date("2025-01-17"),
+        src: "https://placehold.co/600x400/png",
+        alt: "Placeholder",
+        width: 600,
+        height: 400,
+        description:
+            "This was a university virtual reality project.\t" +
+            "The user will be immersed in an underwater environment,\t" +
+            "where they can interact and explore the life forms within.",
+        personal: false,
+        skills: [map.get("Unity")!, map.get("C#")!],
+    },
+    {
+        name: "Bowl-A-Rama",
+        date: new Date("2025-01-17"),
+        src: "https://placehold.co/600x400/png",
+        alt: "Placeholder",
+        width: 600,
+        height: 400,
+        description:
+            "This was a university project focused on working with external controllers.\t" +
+            "The user can use the mobile phone as a remote controller,\t" +
+            "while a computer simulates the bowling environment.",
+        personal: false,
+        skills: [map.get("Unity")!, map.get("C#")!],
+    },
+    {
+        name: "EasyChat",
+        date: new Date("2023-08-16"),
+        src: "https://placehold.co/600x400/png",
+        alt: "Placeholder",
+        width: 600,
+        height: 400,
+        description:
+            "A mobile application with a chat interface and a news feed.\t" +
+            "Works in realtime and offers image sharing and more.",
+        personal: false,
+        skills: [map.get("Flutter")!, map.get("Firebase")!],
+    },
+    {
+        name: "Black Box Adventure",
+        date: new Date("2023-08-16"),
+        src: "https://placehold.co/600x400/png",
+        alt: "Placeholder",
+        width: 600,
+        height: 400,
+        description:
+            "This is a simple java game that offers wave-like gameplay.\t" +
+            "The user is able to upgrade the abilities of the protagonist,\t" +
+            "defeat enemies, and progress through various levels.",
+        personal: false,
+        skills: [map.get("Java")!],
     },
 ]

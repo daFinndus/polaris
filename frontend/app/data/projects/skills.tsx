@@ -1,10 +1,11 @@
 import { IconType } from "react-icons"
 
 import { RiInkBottleFill, RiNextjsFill, RiTailwindCssFill } from "react-icons/ri"
-import { SiGnubash, SiOpencv, SiPython } from "react-icons/si"
-import { FaJava, FaRaspberryPi } from "react-icons/fa6"
+import { FaJava, FaRaspberryPi, FaUnity, FaFlutter } from "react-icons/fa6"
+import { SiGnubash, SiOpencv, SiPython, SiKotlin } from "react-icons/si"
+import { IoLogoNodejs, IoLogoFirebase } from "react-icons/io5"
 import { DiLinux, DiMongodb } from "react-icons/di"
-import { IoLogoNodejs } from "react-icons/io5"
+import { TbBrandCSharp } from "react-icons/tb"
 
 interface Skill {
     name: string
@@ -79,5 +80,35 @@ export const skills: Skill[] = [
         background: "bg-amber-600",
         icon: FaJava,
         color: "text-white",
+    },
+    {
+        name: "Kotlin",
+        background: "bg-purple-600",
+        icon: SiKotlin,
+        color: "text-white",
+    },
+    {
+        name: "Unity",
+        background: "bg-black",
+        icon: FaUnity,
+        color: "text-white",
+    },
+    {
+        name: "C#",
+        background: "bg-blue-800",
+        icon: TbBrandCSharp,
+        color: "text-white",
+    },
+    {
+        name: "Flutter",
+        background: "bg-blue-400",
+        icon: FaFlutter,
+        color: "text-white",
+    },
+    {
+        name: "Firebase",
+        background: "bg-yellow-400",
+        icon: IoLogoFirebase,
+        color: "text-red",
     },
 ]
