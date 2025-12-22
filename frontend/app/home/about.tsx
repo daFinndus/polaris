@@ -66,7 +66,7 @@ export const About = () => {
                 <Avatar className={"size-16 rounded-xl smartphone:size-20 tablet:size-28"}>
                     <AvatarImage
                         className={"object-cover"}
-                        src="https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Miscellaneous/pose-rYj3rIYRrWtK759jsZFVIpmv7ohikY.jpg"
+                        src="https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Miscellaneous/pose.jpg"
                         alt="This is me."
                         width={400}
                         height={300}

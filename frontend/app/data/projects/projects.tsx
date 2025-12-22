@@ -29,7 +29,7 @@ export const projects: Project[] = [
     {
         name: "Portfolio",
         date: new Date("2024-12-03"),
-        src: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Projects/portfolio-BdRW0YtU2v1lCWy4urZkmsP8JV661a.webp",
+        src: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Projects/portfolio.webp",
         alt: "My Portfolio",
         width: 768,
         height: 432,
@@ -44,7 +44,7 @@ export const projects: Project[] = [
     {
         name: "Beerpong Tracker",
         date: new Date("2024-04-12"),
-        src: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Projects/beerpong_tracker-8UmAAr4rLY8XNUSvjgrLtrcjqQUCyU.webp",
+        src: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Projects/beerpong_tracker.webp",
         alt: "Beerpong Tracker",
         width: 630,
         height: 594,
@@ -58,7 +58,7 @@ export const projects: Project[] = [
     {
         name: "Voice Assistant",
         date: new Date("2023-10-19"),
-        src: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Projects/voice_assistant-yfCE4b98YafJ2CvvCrYO4AWokeCOJV.webp",
+        src: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Projects/voice_assistant.webp",
         alt: "Voice Assistant",
         width: 450,
         height: 450,
@@ -72,7 +72,7 @@ export const projects: Project[] = [
     {
         name: "Key Guardian",
         date: new Date("2023-08-10"),
-        src: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Projects/key_guardian-ZgU3XXToMCtfx7yQgNPC6oCrOqxTnE.webp",
+        src: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Projects/key_guardian.webp",
         alt: "Key Guardian",
         width: 802,
         height: 632,
@@ -86,7 +86,7 @@ export const projects: Project[] = [
     {
         name: "Honeypot by Cowrie",
         date: new Date("2025-06-19"),
-        src: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Projects/cowrie-3ZkRCuKP29qJR7UXOWGakReAkIgcgM.png",
+        src: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Projects/cowrie.png",
         alt: "Cowrie Honeypot",
         width: 317,
         height: 261,
@@ -101,7 +101,7 @@ export const projects: Project[] = [
     {
         name: "Working with Furhat",
         date: new Date("2025-03-15"),
-        src: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Projects/furhat-MhuaREb2gx43VttBVUe64l2N95FY09.jpeg",
+        src: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Projects/furhat.jpeg",
         alt: "Me and the Furhat robot",
         width: 434,
         height: 250,

@@ -1,0 +1,44 @@
+import { Bild } from "../components.tsx"
+
+Some time has passed since I first wrote about Arch Linux, and a lot has changed since then. What started as “just getting it to work” has slowly turned into a system that I actually trust and enjoy using every day, both as a workstation and as a personal playground.
+
+<br />
+
+One of the biggest changes was my hardware. I upgraded my CPU, changed to AM5, so new mobo and new RAM. My final upgrade was the RX 9070 XT. Compared to my earlier Nvidia setup, the experience on Linux is noticeably smoother. No proprietary drivers, no special boot parameters. The open-source AMD stack just works. Monitoring tools, Wayland support, and power management feel far more integrated than before.
+
+<br />
+
+With the hardware change came new challenges. I ran into unstable RAM sticks, boot delays caused by a half-dead HDD, and a few confusing black screens that turned out to be mislinked config files. Debugging these issues taught me one important lesson: Most problems lie in the configuration, not Arch itself. Once I slowed down and verified each component (RAM with memtest, disks via dmesg, configs via symlinks), everything worked as expected.
+
+<br />
+
+My desktop setup evolved as well. Waybar is still there, but improved. For quick system overviews, I am using fastfetch, customized to show only what I actually care about: hardware, kernel, uptime, and resource usage. No clutter, no filler.
+
+<Bild
+    src={"https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/waybar-fastfetch.jpg"}
+    alt={"This is my waybar and kitty configuration"}
+    width={1920}
+    height={1080}
+/>
+
+Instead of trying to cram everything into one bar, I split responsibilities: Waybar for workspaces and quick actions, eww for status and system context. This makes the UI cleaner and easier to reason about. I also wrote a script that toggles waybar and eww based on the current window amount and fullscreen state. When no windows are open, eww shows a clean overview of system stats. When I open an application, waybar takes over for workspace management. Fullscreen apps hide both for distraction-free use.
+
+<Bild
+    src={"https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/eww.jpg"}
+    alt={"My eww widget"}
+    width={1920}
+    height={1080}
+/>
+
+I also standardized my dotfiles. Shared configs live in one place, host-specific overrides in another. This allows me to sync my setup between my workstation and notebook without breaking either system. Monitors, sensors, and hardware-dependent scripts are handled per-host, everything else is shared.
+
+<br />
+
+Looking back, the biggest difference compared to my earlier Arch experience is confidence. I no longer blindly follow tutorials — I read logs, inspect sockets, check systemd units, and write small scripts when something annoys me. Arch didn't just give me a customizable system, it forced me to understand it.
+
+<br />
+
+<b>TL;DR</b>: Arch Linux is still challenging, but that challenge shifted from “why doesn't this boot?” to “how do I want this to
+behave?”. With newer hardware, better tooling, and a cleaner configuration approach, my system is faster, more stable, and far more
+personal than before. If you're willing to debug, read, and experiment, Arch remains one of the most rewarding Linux experiences out
+there.

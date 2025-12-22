@@ -3,6 +3,7 @@ import React from "react"
 import Passwords from "@/app/data/articles/markdown/passwords.mdx"
 import TwoFactorAuthentication from "@/app/data/articles/markdown/two-factor-authentication.mdx"
 import ArchLinux from "@/app/data/articles/markdown/arch-linux.mdx"
+import ArchLinuxTwo from "@/app/data/articles/markdown/arch-linux-two.mdx"
 
 interface Blog {
     title: string
@@ -12,6 +13,13 @@ interface Blog {
 }
 
 export const blogs: Blog[] = [
+    {
+        title: "Arch Linux after rougly half a year",
+        date: "21.12.2025",
+        description:
+            "After using Arch Linux for about six months, I've gathered some insights and experiences that I want to share. From installation challenges to daily usage tips, here's what I've learned.",
+        content: <ArchLinuxTwo />,
+    },
     {
         title: "Arch Linux",
         date: "13.07.2025",
