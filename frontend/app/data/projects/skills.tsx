@@ -5,6 +5,7 @@ import { FaJava, FaRaspberryPi, FaUnity, FaFlutter } from "react-icons/fa6"
 import { SiGnubash, SiOpencv, SiPython, SiKotlin } from "react-icons/si"
 import { IoLogoNodejs, IoLogoFirebase } from "react-icons/io5"
 import { DiLinux, DiMongodb } from "react-icons/di"
+import { MdOutlineSecurity } from "react-icons/md"
 import { TbBrandCSharp } from "react-icons/tb"
 
 interface Skill {
@@ -110,5 +111,11 @@ export const skills: Skill[] = [
         background: "bg-yellow-400",
         icon: IoLogoFirebase,
         color: "text-red",
+    },
+    {
+        name: "Cybersecurity",
+        background: "bg-gray-900",
+        icon: MdOutlineSecurity,
+        color: "text-green-400",
     },
 ]

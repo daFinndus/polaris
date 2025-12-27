@@ -27,6 +27,20 @@ const map = new Map(skills.map((skill) => [skill.name, skill]))
 
 export const projects: Project[] = [
     {
+        name: "IoT Smart Farm",
+        date: new Date("2025-12-15"),
+        src: "",
+        alt: "IoT Smart Farm",
+        width: 600,
+        height: 400,
+        description:
+            "This is a project I've done in an internship.\t" +
+            "It was focused on creating an IT, OT, and IoT network with various sensors and devices.\t" +
+            "The goal was to show the importance of network segmentation and security in such environments.",
+        personal: false,
+        skills: [map.get("Python")!, map.get("Bash")!, map.get("Cybersecurity")!],
+    },
+    {
         name: "Portfolio",
         date: new Date("2024-12-03"),
         src: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Projects/portfolio.webp",

@@ -14,7 +14,7 @@ interface Blog {
 
 export const blogs: Blog[] = [
     {
-        title: "Arch Linux after rougly half a year",
+        title: "Arch Linux after roughly half a year",
         date: "21.12.2025",
         description:
             "After using Arch Linux for about six months, I've gathered some insights and experiences that I want to share. From installation challenges to daily usage tips, here's what I've learned.",
