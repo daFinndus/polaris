@@ -19,13 +19,13 @@ const Unsupported = () => {
 
 const Supported = () => {
     return (
-        <div className={"m-4 flex justify-center font-sans notebook:my-8"}>
-            <div className={"right-4 top-4 hidden flex-col gap-y-2 notebook:fixed notebook:flex"}>
+        <div className={"notebook:my-8 m-4 flex justify-center font-sans"}>
+            <div className={"notebook:fixed notebook:flex top-4 right-4 hidden flex-col gap-y-2"}>
                 <HomeButton />
                 <ColorModeButton />
             </div>
             <div className={"grid grid-cols-1 gap-4"}>
-                <div className={"flex gap-x-2 notebook:hidden"}>
+                <div className={"notebook:hidden flex gap-x-2"}>
                     <HomeButton />
                     <ColorModeButton />
                 </div>

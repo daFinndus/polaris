@@ -40,7 +40,7 @@ export const ColorModeButton = () => {
             variant={"secondary"}
             onClick={changeMode}
             aria-label={"Change the color mode of the website"}
-            className={"flex h-12 w-1/2 min-w-12 items-center notebook:w-12"}
+            className={"notebook:w-12 flex h-12 w-1/2 min-w-12 items-center"}
         >
             {dark ? <MdLightMode /> : <MdDarkMode />}
         </Button>

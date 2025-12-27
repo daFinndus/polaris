@@ -14,10 +14,10 @@ import { FaCodepen } from "react-icons/fa"
 
 const Project = ({ src, alt, width, height }: { src: string; alt: string; width: number; height: number }) => {
     return (
-        <CarouselItem className={"basis-1/2 smartphone:basis-1/3"}>
+        <CarouselItem className={"smartphone:basis-1/3 basis-1/2"}>
             <Image
                 className={
-                    "m-0 flex h-24 w-[172px] items-center justify-center rounded-lg bg-background p-0 text-center text-xs font-bold blur-[2px]"
+                    "bg-background m-0 flex h-24 w-43 items-center justify-center rounded-lg p-0 text-center text-xs font-bold blur-[2px]"
                 }
                 src={src}
                 alt={alt}
@@ -33,14 +33,14 @@ export const Projects = () => {
     return (
         <div
             className={
-                "flex h-max flex-col rounded-xl border-2 border-background-lighter bg-background-light p-4 text-primary tablet:w-[526px]"
+                "border-background-lighter bg-background-light text-primary tablet:w-131.5 flex h-max flex-col rounded-xl border-2 p-4"
             }
         >
             <div className={"flex flex-row items-center"}>
-                <FaCodepen className={"size-6 text-color-light"} />
-                <p className={"ml-3 text-lg font-bold smartphone:text-xl"}>My Projects</p>
+                <FaCodepen className={"text-color-light size-6"} />
+                <p className={"smartphone:text-xl ml-3 text-lg font-bold"}>My Projects</p>
             </div>
-            <p className={"mt-1 text-sm text-primary-darker"}>These are some of the projects I&#39;ve been working on</p>
+            <p className={"text-primary-darker mt-1 text-sm"}>These are some of the projects I&#39;ve been working on</p>
             <div className={"flex flex-col items-center"}>
                 <div className={"flex w-full flex-row items-center justify-center overflow-hidden"}>
                     <Carousel

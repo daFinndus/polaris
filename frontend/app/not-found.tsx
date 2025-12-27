@@ -52,7 +52,7 @@ const AudioButton = () => {
     }
 
     return (
-        <div className="flex h-12 w-1/2 notebook:w-12">
+        <div className="notebook:w-12 flex h-12 w-1/2">
             <Button variant="secondary" className="h-full w-full" onClick={ToggleAudio}>
                 {isMuted ? <RiVolumeMuteFill /> : <RiVolumeUpFill />}
             </Button>
@@ -109,14 +109,14 @@ const VideoBackground = () => {
                 onEnded={() => setCurrentVideo(getNextVideo())}
                 onCanPlayThrough={() => setFade(false)}
                 ref={videoRef}
-                className={`brightness-60 h-full w-full rounded-2xl object-cover blur-[2px] transition-opacity duration-500 ${fade ? "opacity-0" : "opacity-100"}`}
+                className={`h-full w-full rounded-2xl object-cover blur-[2px] brightness-60 transition-opacity duration-500 ${fade ? "opacity-0" : "opacity-100"}`}
                 src={currentVideo}
                 autoPlay
                 muted
                 playsInline
             />
             <p
-                className={`absolute left-1/2 top-1/2 h-min -translate-x-1/2 -translate-y-1/2 text-center text-[25vw] font-bold opacity-100 drop-shadow-2xl transition-colors duration-500 ${fade ? "text-primary" : "text-background"}`}
+                className={`absolute top-1/2 left-1/2 h-min -translate-x-1/2 -translate-y-1/2 text-center text-[25vw] font-bold opacity-100 drop-shadow-2xl transition-colors duration-500 ${fade ? "text-primary" : "text-background"}`}
             >
                 404
             </p>
@@ -138,8 +138,8 @@ const Supported = () => {
     }, [])
 
     return (
-        <div className={"flex h-screen w-screen flex-col items-center justify-center bg-background font-sans"}>
-            <div className={"fixed right-4 top-4 flex items-center justify-center gap-x-2 notebook:w-min"}>
+        <div className={"bg-background flex h-screen w-screen flex-col items-center justify-center font-sans"}>
+            <div className={"notebook:w-min fixed top-4 right-4 flex items-center justify-center gap-x-2"}>
                 <HomeButton />
                 <AudioButton />
             </div>

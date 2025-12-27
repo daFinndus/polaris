@@ -26,7 +26,7 @@ export const development: Development[] = [
         name: "Node.js",
         content:
             "Node.js is a JavaScript runtime that I use to build robust backend APIs. It powers the backend of my projects, including data handling and server-side logic.",
-        version: "v14+",
+        version: "v18+",
         href: "https://nodejs.org",
     },
     {
@@ -34,7 +34,7 @@ export const development: Development[] = [
         name: "Next.js",
         content:
             "Next.js is my go-to React framework for building modern web applications with server-side rendering and optimized performance. I use it for my portfolio and other projects.",
-        version: "v15+",
+        version: "v16+",
         href: "https://nextjs.org",
     },
     {
@@ -50,7 +50,7 @@ export const development: Development[] = [
         name: "Tailwind",
         content:
             "Tailwind CSS is my preferred CSS framework for rapidly designing responsive and visually appealing user interfaces.",
-        version: "v3+",
+        version: "v4+",
         href: "https://tailwindcss.com",
     },
     {

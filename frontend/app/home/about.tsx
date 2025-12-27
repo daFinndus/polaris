@@ -21,8 +21,8 @@ import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa"
 
 const Tag = ({ Icon, name }: { Icon: IconType; name: string }) => {
     return (
-        <Badge variant={"about"} className={"h-[28px] px-2 py-1 text-xxs smartphone:w-max smartphone:text-xs"}>
-            <Icon className={"mr-2 size-4 text-color"} />
+        <Badge variant={"about"} className={"text-xxs smartphone:w-max smartphone:text-xs h-7 px-2 py-1"}>
+            <Icon className={"text-color mr-2 size-4"} />
             {name}
         </Badge>
     )
@@ -59,11 +59,11 @@ export const About = () => {
     return (
         <div
             className={
-                "flex h-max flex-col rounded-xl border-2 border-background-lighter bg-background-light p-4 text-primary tablet:w-[526px]"
+                "border-background-lighter bg-background-light text-primary tablet:w-131.5 flex h-max flex-col rounded-xl border-2 p-4"
             }
         >
             <div className={"flex flex-row"}>
-                <Avatar className={"size-16 rounded-xl smartphone:size-20 tablet:size-28"}>
+                <Avatar className={"smartphone:size-20 tablet:size-28 size-16 rounded-xl"}>
                     <AvatarImage
                         className={"object-cover"}
                         src="https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Miscellaneous/pose.jpg"
@@ -73,22 +73,22 @@ export const About = () => {
                     />
                     <AvatarFallback className={"rounded-xl"}>404</AvatarFallback>
                 </Avatar>
-                <div className={"ml-2 flex flex-col space-y-1 smartphone:ml-4"}>
-                    <Badge className={"mb-1 w-max text-xxs smartphone:text-xs"} variant={"color"}>
+                <div className={"smartphone:ml-4 ml-2 flex flex-col space-y-1"}>
+                    <Badge className={"text-xxs smartphone:text-xs mb-1 w-max"} variant={"color"}>
                         <p className={"text-white"}>Best experience on desktop!</p>
                     </Badge>
-                    <p className={"text-xs font-bold smartphone:text-sm tablet:text-lg"}>
+                    <p className={"smartphone:text-sm tablet:text-lg text-xs font-bold"}>
                         Finn Luca
                         <span className={"text-color-light"}> &#34;daFinndus&#34; </span>
                         Jensen
                     </p>
-                    <div className={"flex flex-row space-x-1 text-xxs font-bold smartphone:text-xs tablet:text-sm"}>
+                    <div className={"text-xxs smartphone:text-xs tablet:text-sm flex flex-row space-x-1 font-bold"}>
                         <p>I am a</p>
                         <span ref={ref} />
                     </div>
                 </div>
             </div>
-            <div className={"mt-4 flex h-auto flex-wrap items-center gap-2 rounded-lg border-none bg-background px-4 py-3"}>
+            <div className={"bg-background mt-4 flex h-auto flex-wrap items-center gap-2 rounded-lg border-none px-4 py-3"}>
                 <Tag Icon={IoLanguage} name={"German & English"} />
                 <Tag Icon={LuCake} name={`${getAge()} years old`} />
                 <Tag Icon={MdOutlineLocationOn} name={"Kiel"} />

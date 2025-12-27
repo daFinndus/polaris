@@ -34,7 +34,7 @@ export const LanguageFilter = ({ languages, setLanguages }: LanguageFilterProps)
     }
 
     return (
-        <div className={"flex flex-col gap-y-2 laptop:w-1/4"}>
+        <div className={"laptop:w-1/4 flex flex-col gap-y-2"}>
             <p className={"flex w-fit items-center gap-x-2 text-sm"}>
                 <CiFilter size={12} />
                 Select languages

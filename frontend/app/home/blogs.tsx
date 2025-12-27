@@ -12,12 +12,12 @@ const Preview = () => {
     const latest = blogs.slice(0, 2)
 
     return (
-        <div className="my-4 w-auto space-y-4 text-base tablet:min-w-[494px]">
+        <div className="tablet:min-w-123.5 my-4 w-auto space-y-4 text-base">
             {latest.map((blog, index) => (
-                <div key={index} className="rounded-md bg-background-lighter px-4 py-4">
-                    <p className="text-base font-semibold text-primary">{blog.title}</p>
-                    <p className="text-sm text-primary">{blog.date}</p>
-                    <p className="mt-2 whitespace-pre-line text-justify text-sm text-primary-dark">{blog.description}</p>
+                <div key={index} className="bg-background-lighter rounded-md px-4 py-4">
+                    <p className="text-primary text-base font-semibold">{blog.title}</p>
+                    <p className="text-primary text-sm">{blog.date}</p>
+                    <p className="text-primary-dark mt-2 text-justify text-sm whitespace-pre-line">{blog.description}</p>
                 </div>
             ))}
         </div>
@@ -30,12 +30,12 @@ export const Blogs = () => {
             {blogs.length > 0 ? (
                 <div
                     className={
-                        "flex h-max flex-col rounded-xl border-2 border-background-lighter bg-background-light p-4 text-primary tablet:w-[526px]"
+                        "border-background-lighter bg-background-light text-primary tablet:w-131.5 flex h-max flex-col rounded-xl border-2 p-4"
                     }
                 >
                     <div className={"flex flex-row items-center"}>
-                        <SiInoreader className={"size-6 text-color-light"} />
-                        <p className={"ml-3 text-lg font-bold smartphone:text-xl"}>Read my Blog</p>
+                        <SiInoreader className={"text-color-light size-6"} />
+                        <p className={"smartphone:text-xl ml-3 text-lg font-bold"}>Read my Blog</p>
                     </div>
                     <div className={"flex flex-col items-center"}>
                         <Preview />

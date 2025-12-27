@@ -27,14 +27,14 @@ const Unsupported = () => {
 
 const Supported = () => {
     return (
-        <div className="m-4 flex justify-center font-sans notebook:my-8">
+        <div className="notebook:my-8 m-4 flex justify-center font-sans">
             <PageHead />
-            <div className={"right-4 top-4 hidden flex-col gap-y-2 notebook:fixed notebook:flex"}>
+            <div className={"notebook:fixed notebook:flex top-4 right-4 hidden flex-col gap-y-2"}>
                 <ColorModeButton />
                 <ClockPageButton />
                 <ErrorPageButton />
             </div>
-            <div className="hidden gap-4 desktop:grid desktop:grid-cols-3">
+            <div className="desktop:grid desktop:grid-cols-3 hidden gap-4">
                 <div className={"space-y-4"}>
                     <About />
                     <DevStack />
@@ -45,7 +45,7 @@ const Supported = () => {
                     <Blogs />
                 </div>
             </div>
-            <div className="hidden gap-4 laptop:grid laptop:grid-cols-2 desktop:hidden">
+            <div className="laptop:grid laptop:grid-cols-2 desktop:hidden hidden gap-4">
                 <div className="space-y-4">
                     <About />
                     <DevStack />
@@ -56,8 +56,8 @@ const Supported = () => {
                     <Blogs />
                 </div>
             </div>
-            <div className="grid grid-cols-1 gap-4 laptop:hidden">
-                <div className={"flex gap-x-2 notebook:hidden"}>
+            <div className="laptop:hidden grid grid-cols-1 gap-4">
+                <div className={"notebook:hidden flex gap-x-2"}>
                     <ColorModeButton />
                     <ClockPageButton />
                     <ErrorPageButton />

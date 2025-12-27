@@ -19,13 +19,13 @@ const Technology = ({ Icon, name, content, version, href }: TechnologyProps) => 
         <HoverCard>
             <HoverCardTrigger href={href} target={"_blank"} className={"group"}>
                 <Badge variant={"secondary"} className={"flex h-auto flex-row items-center justify-start px-1"}>
-                    <div className={"mr-2 rounded-lg border-2 border-background-lighter bg-background-light"}>
-                        <Icon className={"size-10 p-2 text-color-light smartphone:size-12"} />
+                    <div className={"border-background-lighter bg-background-light mr-2 rounded-lg border-2"}>
+                        <Icon className={"text-color-light smartphone:size-12 size-10 p-2"} />
                     </div>
                     <div className={"flex w-full flex-row items-center"}>
                         <div className={"flex flex-col"}>
-                            <span className={"text-xxs font-bold smartphone:text-xs"}>{name}</span>
-                            {version && <p className={"overflow-hidden text-xs text-color-light"}>{version}</p>}
+                            <span className={"text-xxs smartphone:text-xs font-bold"}>{name}</span>
+                            {version && <p className={"text-color-light overflow-hidden text-xs"}>{version}</p>}
                         </div>
                     </div>
                 </Badge>
@@ -39,14 +39,14 @@ export const DevStack = () => {
     return (
         <div
             className={
-                "flex h-max flex-col rounded-xl border-2 border-background-lighter bg-background-light p-4 text-primary tablet:w-[526px]"
+                "border-background-lighter bg-background-light text-primary tablet:w-131.5 flex h-max flex-col rounded-xl border-2 p-4"
             }
         >
             <div className={"flex flex-row items-center"}>
-                <FaConnectdevelop className={"size-6 text-color-light"} />
-                <p className={"ml-3 text-lg font-bold smartphone:text-xl"}>My Development Stack</p>
+                <FaConnectdevelop className={"text-color-light size-6"} />
+                <p className={"smartphone:text-xl ml-3 text-lg font-bold"}>My Development Stack</p>
             </div>
-            <p className={"mb-4 mt-1 text-sm text-primary-darker"}>Here are some of the technologies I use to build my projects</p>
+            <p className={"text-primary-darker mt-1 mb-4 text-sm"}>Here are some of the technologies I use to build my projects</p>
             <div className={"grid grid-cols-2 gap-2"}>
                 {development.map((technology, index) => (
                     <Technology

@@ -15,7 +15,7 @@ interface projectFilterProps {
 
 export const ProjectFilter = ({ opensource, setOpensource, demo, setDemo, personal, setPersonal }: projectFilterProps) => {
     return (
-        <div className={"flex flex-col gap-y-2 laptop:w-1/4"}>
+        <div className={"laptop:w-1/4 flex flex-col gap-y-2"}>
             <p className={"flex w-fit items-center gap-x-2 text-sm"}>
                 <FaProjectDiagram size={12} />
                 Choose project criteria

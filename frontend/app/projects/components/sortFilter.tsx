@@ -11,13 +11,13 @@ interface sortFilterProps {
 
 export const SortFilter = ({ sort, setSort }: sortFilterProps) => {
     return (
-        <div className={"flex flex-col gap-y-2 laptop:w-1/4"}>
+        <div className={"laptop:w-1/4 flex flex-col gap-y-2"}>
             <p className={"flex w-fit items-center gap-x-2 text-sm"}>
                 <FaSort size={12} />
                 Sort by
             </p>
             <Select value={sort} onValueChange={(value) => setSort(value)}>
-                <SelectTrigger className="h-12 w-[180px] rounded-lg border-2">
+                <SelectTrigger className="h-12 w-45 rounded-lg border-2">
                     <SelectValue placeholder="Select sort mode" />
                 </SelectTrigger>
                 <SelectContent className={"font-sans"}>

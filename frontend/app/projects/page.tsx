@@ -25,15 +25,15 @@ const Supported = () => {
 
     return (
         <div className={"relative flex w-screen flex-col items-center justify-center gap-y-8 font-sans"}>
-            <div className={"absolute right-4 top-4 hidden flex-col gap-y-2 tablet:flex"}>
+            <div className={"tablet:flex absolute top-4 right-4 hidden flex-col gap-y-2"}>
                 <HomeButton />
                 <ColorModeButton />
             </div>
-            <div className={"-mb-2 mt-4 flex w-[312px] items-center justify-center gap-x-2 tablet:hidden"}>
+            <div className={"tablet:hidden mt-4 -mb-2 flex w-78 items-center justify-center gap-x-2"}>
                 <HomeButton />
                 <ColorModeButton />
             </div>
-            <div className={"flex items-center justify-center tablet:mt-20"}>
+            <div className={"tablet:mt-20 flex items-center justify-center"}>
                 <Projects />
             </div>
         </div>

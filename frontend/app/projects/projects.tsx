@@ -42,11 +42,11 @@ const Tile = ({ project }: { project: Project }) => {
     return (
         <div
             className={
-                "relative flex h-auto w-[312px] flex-col items-center justify-start rounded-lg border-2 border-background-lighter bg-background-light px-4"
+                "border-background-lighter bg-background-light relative flex h-auto w-78 flex-col items-center justify-start rounded-lg border-2 px-4"
             }
         >
             <CardContainer className={"py-4"}>
-                <CardBody className={"relative h-full w-full shadow-lg shadow-background-lighter"}>
+                <CardBody className={"shadow-background-lighter relative h-full w-full shadow-lg"}>
                     <CardItem translateZ={15} translateY={2.5}>
                         <Image
                             className={"h-44 rounded-lg"}
@@ -60,7 +60,7 @@ const Tile = ({ project }: { project: Project }) => {
             </CardContainer>
             <div className={"flex h-full w-full flex-col items-start justify-start text-start"}>
                 <p className={"mb-2 text-base font-bold"}>{project.name}</p>
-                <p className={"mb-2 text-justify text-sm text-primary-darker"}>{project.description}</p>
+                <p className={"text-primary-darker mb-2 text-justify text-sm"}>{project.description}</p>
                 <div className={"mb-8 flex h-fit w-full flex-wrap gap-x-2 gap-y-2"}>
                     {project.skills?.map((skill, index) => (
                         <Badge
@@ -72,26 +72,26 @@ const Tile = ({ project }: { project: Project }) => {
                         </Badge>
                     ))}
                 </div>
-                <div className={"mb-2 mt-auto flex w-full items-end gap-x-2"}>
+                <div className={"mt-auto mb-2 flex w-full items-end gap-x-2"}>
                     {project.url ? (
                         <Link href={project.url} className={"w-1/2"} target={"_blank"}>
-                            <Button className={"w-full bg-color-light text-background hover:bg-color/80 hover:text-primary"}>
+                            <Button className={"bg-color-light text-background hover:bg-color/80 hover:text-primary w-full"}>
                                 Sourcecode
                             </Button>
                         </Link>
                     ) : (
-                        <Button className={"w-1/2 bg-background-lighter text-primary-darker"} disabled>
+                        <Button className={"bg-background-lighter text-primary-darker w-1/2"} disabled>
                             No Sourcecode
                         </Button>
                     )}
                     {project.demo ? (
                         <Link href={project.demo} className={"w-1/2"} target={"_blank"}>
-                            <Button className={"w-full bg-primary text-background hover:bg-background hover:text-primary"}>
+                            <Button className={"bg-primary text-background hover:bg-background hover:text-primary w-full"}>
                                 Demo
                             </Button>
                         </Link>
                     ) : (
-                        <Button className={"w-1/2 bg-background-lighter text-primary-darker"} disabled>
+                        <Button className={"bg-background-lighter text-primary-darker w-1/2"} disabled>
                             No Demo
                         </Button>
                     )}
@@ -139,8 +139,8 @@ export const Projects = () => {
 
     const Filter = () => {
         return (
-            <Collapsible open={open} onOpenChange={() => setOpen(!open)} className="bg-background tablet:max-w-[964px]">
-                <div className="mb-4 flex items-center justify-between space-x-4 rounded-lg border-2 border-background-lighter bg-background-light px-2 py-1">
+            <Collapsible open={open} onOpenChange={() => setOpen(!open)} className="bg-background tablet:max-w-241">
+                <div className="border-background-lighter bg-background-light mb-4 flex items-center justify-between space-x-4 rounded-lg border-2 px-2 py-1">
                     <h4 className="ml-2 min-w-fit text-sm font-semibold">Set filters</h4>
                     <CollapsibleTrigger asChild className={"items-center justify-end"}>
                         <div className={"flex w-full items-end"}>
@@ -153,7 +153,7 @@ export const Projects = () => {
                 <CollapsibleContent className="mb-4 space-y-2">
                     <div
                         className={
-                            "flex w-auto max-w-[312px] flex-col gap-x-8 gap-y-8 rounded-lg border-2 border-background-lighter p-4 notebook:max-w-none laptop:flex-row laptop:gap-y-0"
+                            "border-background-lighter notebook:max-w-none laptop:flex-row laptop:gap-y-0 flex w-auto max-w-78 flex-col gap-x-8 gap-y-8 rounded-lg border-2 p-4"
                         }
                     >
                         <LanguageFilter languages={languages} setLanguages={setLanguages} />
@@ -186,7 +186,7 @@ export const Projects = () => {
                 <Filter />
                 <div
                     className={
-                        "grid grid-cols-1 justify-items-center gap-4 gap-x-4 gap-y-8 notebook:grid-cols-2 laptop:grid-cols-3"
+                        "notebook:grid-cols-2 laptop:grid-cols-3 grid grid-cols-1 justify-items-center gap-4 gap-x-4 gap-y-8"
                     }
                 >
                     {filtered.map((project, index) => {
