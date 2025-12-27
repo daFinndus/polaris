@@ -29,7 +29,7 @@ export const projects: Project[] = [
     {
         name: "IoT Smart Farm",
         date: new Date("2025-12-15"),
-        src: "",
+        src: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Projects/smart_farm.jpg",
         alt: "IoT Smart Farm",
         width: 600,
         height: 400,
