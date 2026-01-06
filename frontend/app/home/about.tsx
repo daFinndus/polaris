@@ -13,10 +13,10 @@ import { getRandomWord } from "@/app/hooks/getRandomWord"
 
 import { IconType } from "react-icons"
 import { LuCake } from "react-icons/lu"
-import { SiGmail } from "react-icons/si"
 import { BsBriefcase } from "react-icons/bs"
 import { MdOutlineLocationOn } from "react-icons/md"
 import { IoGlobe, IoLanguage } from "react-icons/io5"
+import { SiGmail, SiHackthebox } from "react-icons/si"
 import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa"
 
 const Tag = ({ Icon, name }: { Icon: IconType; name: string }) => {
@@ -99,6 +99,11 @@ export const About = () => {
                 <Button className={"w-full"} variant={"color"}>
                     <Link href={"mailto:finnlucajensen@proton.me"} target={"_blank"}>
                         <SiGmail />
+                    </Link>
+                </Button>
+                <Button className={"w-full"} variant={"secondary"}>
+                    <Link href={"https://app.hackthebox.com/public/users/1934765"} target={"_blank"}>
+                        <SiHackthebox />
                     </Link>
                 </Button>
                 <Button className={"w-full"} variant={"secondary"}>
