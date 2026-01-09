@@ -96,31 +96,31 @@ export const About = () => {
                 <Tag Icon={BsBriefcase} name={"Student"} />
             </div>
             <div className={"mt-4 flex w-full flex-row justify-center space-x-2"}>
-                <Button className={"w-full"} variant={"color"}>
-                    <Link href={"mailto:finnlucajensen@proton.me"} target={"_blank"}>
+                <Link href={"mailto:finnlucajensen@proton.me"} className={"w-full"} target={"_blank"}>
+                    <Button className={"w-full cursor-pointer"} variant={"color"}>
                         <SiGmail />
-                    </Link>
-                </Button>
-                <Button className={"w-full"} variant={"secondary"}>
-                    <Link href={"https://app.hackthebox.com/public/users/1934765"} target={"_blank"}>
+                    </Button>
+                </Link>
+                <Link href={"https://app.hackthebox.com/public/users/1934765"} className={"w-full"} target={"_blank"}>
+                    <Button className={"w-full cursor-pointer"} variant={"secondary"}>
                         <SiHackthebox />
-                    </Link>
-                </Button>
-                <Button className={"w-full"} variant={"secondary"}>
-                    <Link href={"https://github.com/daFinndus"} target={"_blank"}>
+                    </Button>
+                </Link>
+                <Link href={"https://github.com/daFinndus"} className={"w-full"} target={"_blank"}>
+                    <Button className={"w-full cursor-pointer"} variant={"secondary"}>
                         <FaGithub />
-                    </Link>
-                </Button>
-                <Button className={"w-full"} variant={"secondary"}>
-                    <Link href={"https://www.linkedin.com/in/finn-luca-jensen-98a839286/"} target={"_blank"}>
+                    </Button>
+                </Link>
+                <Link href={"https://www.linkedin.com/in/finn-luca-jensen-98a839286/"} className={"w-full"} target={"_blank"}>
+                    <Button className={"w-full cursor-pointer"} variant={"secondary"}>
                         <FaLinkedin />
-                    </Link>
-                </Button>
-                <Button className={"w-full"} variant={"secondary"}>
-                    <Link href={"https://x.com/dafinndus"} target={"_blank"}>
+                    </Button>
+                </Link>
+                <Link href={"https://x.com/dafinndus"} className={"w-full"} target={"_blank"}>
+                    <Button className={"w-full cursor-pointer"} variant={"secondary"}>
                         <FaTwitter />
-                    </Link>
-                </Button>
+                    </Button>
+                </Link>
             </div>
         </div>
     )
