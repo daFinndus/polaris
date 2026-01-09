@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 
 import Head from "next/head"
 
@@ -16,6 +16,7 @@ import { checkScreenValidity } from "@/app/hooks/checkScreenValidity"
 import { ColorModeButton } from "@/components/color-mode-button"
 import { ErrorPageButton } from "@/components/error-page-button"
 import { ClockPageButton } from "@/components/clock-page-button"
+import { ImprintPageButton } from "@/components/imprint-page-button"
 
 const Unsupported = () => {
     return (
@@ -29,18 +30,19 @@ const Supported = () => {
     return (
         <div className="notebook:my-8 m-4 flex justify-center">
             <PageHead />
-            <div className={"notebook:fixed notebook:flex top-4 right-4 hidden flex-col gap-y-2"}>
+            <div className="notebook:fixed notebook:flex top-4 right-4 hidden flex-col gap-y-2">
                 <ColorModeButton />
+                <ImprintPageButton />
                 <ClockPageButton />
                 <ErrorPageButton />
             </div>
             <div className="desktop:grid desktop:grid-cols-3 hidden gap-4">
-                <div className={"space-y-4"}>
+                <div className="space-y-4">
                     <About />
                     <DevStack />
                 </div>
                 <SecurityStack />
-                <div className={"space-y-4"}>
+                <div className="space-y-4">
                     <Projects />
                     <Blogs />
                 </div>
@@ -50,14 +52,14 @@ const Supported = () => {
                     <About />
                     <DevStack />
                 </div>
-                <div className={"space-y-4"}>
+                <div className="space-y-4">
                     <Projects />
                     <SecurityStack />
                     <Blogs />
                 </div>
             </div>
             <div className="laptop:hidden grid grid-cols-1 gap-4">
-                <div className={"notebook:hidden flex gap-x-2"}>
+                <div className="notebook:hidden flex gap-x-2">
                     <ColorModeButton />
                     <ClockPageButton />
                     <ErrorPageButton />
@@ -77,9 +79,9 @@ const PageHead = () => {
         <Head>
             <title>Finn Luca Jensen</title>
             <meta name="description" content="The portfolio of Finn Luca 'daFinndus' Jensen" />
-            <link rel="apple-touch-icon" sizes="180x180" href={"/favicon/apple-touch-icon.png"} />
-            <link rel="icon" type="image/png" sizes="32x32" href={"/favicon/favicon-32x32.png"} />
-            <link rel="manifest" href={"/favicon/site.webmanifest"} />
+            <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+            <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
+            <link rel="manifest" href="/favicon/site.webmanifest" />
         </Head>
     )
 }
