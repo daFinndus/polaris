@@ -126,7 +126,7 @@ const VideoBackground = () => {
 
 const Unsupported = () => {
     return (
-        <div className={"flex h-screen w-screen items-center justify-center font-sans text-xs"}>
+        <div className={"flex h-screen w-screen items-center justify-center text-xs"}>
             <p>Your device is not supported.</p>
         </div>
     )
@@ -138,7 +138,7 @@ const Supported = () => {
     }, [])
 
     return (
-        <div className={"bg-background flex h-screen w-screen flex-col items-center justify-center font-sans"}>
+        <div className={"bg-background flex h-screen w-screen flex-col items-center justify-center"}>
             <div className={"notebook:w-min fixed top-4 right-4 flex items-center justify-center gap-x-2"}>
                 <HomeButton />
                 <AudioButton />

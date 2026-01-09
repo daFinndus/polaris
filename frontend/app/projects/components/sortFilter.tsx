@@ -20,7 +20,7 @@ export const SortFilter = ({ sort, setSort }: sortFilterProps) => {
                 <SelectTrigger className="h-12 w-45 rounded-lg border-2">
                     <SelectValue placeholder="Select sort mode" />
                 </SelectTrigger>
-                <SelectContent className={"font-sans"}>
+                <SelectContent>
                     <SelectItem value="latest">Latest first</SelectItem>
                     <SelectItem value="oldest">Oldest first</SelectItem>
                     <SelectItem value="alphabetic">A-Z</SelectItem>

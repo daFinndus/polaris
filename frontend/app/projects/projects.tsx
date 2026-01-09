@@ -181,7 +181,7 @@ export const Projects = () => {
     }
 
     return (
-        <div className={"mb-4 flex w-auto font-sans text-xs"}>
+        <div className={"mb-4 flex w-auto text-xs"}>
             <div className={"flex flex-col"}>
                 <Filter />
                 <div

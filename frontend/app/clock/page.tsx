@@ -10,7 +10,7 @@ import { ColorModeButton } from "@/components/color-mode-button"
 
 const Unsupported = () => {
     return (
-        <div className={"flex h-screen w-screen items-center justify-center font-sans text-xs"}>
+        <div className={"flex h-screen w-screen items-center justify-center text-xs"}>
             <p>Your device is not supported.</p>
         </div>
     )
@@ -45,7 +45,7 @@ const Supported = () => {
     }, [])
 
     return (
-        <div className={"relative flex h-screen w-screen flex-col items-center justify-center text-center font-sans"}>
+        <div className={"relative flex h-screen w-screen flex-col items-center justify-center text-center"}>
             <div className={"tablet:flex absolute top-4 right-4 hidden flex-col gap-y-2"}>
                 <HomeButton />
                 <ColorModeButton />

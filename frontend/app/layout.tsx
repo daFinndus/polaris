@@ -3,24 +3,14 @@ import React from "react"
 import "./globals.css"
 
 import type { Metadata } from "next"
-import localFont from "next/font/local"
+
+import { GeistSans } from "geist/font/sans"
+import { GeistMono } from "geist/font/mono"
 
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
 import { Toaster } from "@/components/ui/toaster"
-
-const geistSans = localFont({
-    src: "./fonts/GeistVF.woff",
-    variable: "--font-geist-sans",
-    weight: "100 900",
-})
-
-const geistMono = localFont({
-    src: "./fonts/GeistMonoVF.woff",
-    variable: "--font-geist-mono",
-    weight: "100 900",
-})
 
 export const metadata: Metadata = {
     title: "Finn Luca Jensen",
@@ -45,7 +35,7 @@ export default function RootLayout({
                 <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
                 <link rel="manifest" href="/favicon/site.webmanifest" />
             </head>
-            <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+            <body className={`${GeistSans.className} antialiased`}>
                 {children}
                 <Toaster />
                 <Analytics />
