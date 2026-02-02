@@ -130,10 +130,10 @@ export const projects: Project[] = [
     {
         name: "DiveVR",
         date: new Date("2025-01-17"),
-        src: "https://placehold.co/600x400/png",
+        src: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Projects/dive_vr.png",
         alt: "Placeholder",
-        width: 600,
-        height: 400,
+        width: 756,
+        height: 406,
         description:
             "This was a university virtual reality project.\t" +
             "The user will be immersed in an underwater environment,\t" +
@@ -144,10 +144,10 @@ export const projects: Project[] = [
     {
         name: "Bowl-A-Rama",
         date: new Date("2025-01-17"),
-        src: "https://placehold.co/600x400/png",
+        src: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Projects/bowl_a_rama.png",
         alt: "Placeholder",
-        width: 600,
-        height: 400,
+        width: 696,
+        height: 374,
         description:
             "This was a university project focused on working with external controllers.\t" +
             "The user can use the mobile phone as a remote controller,\t" +
@@ -158,10 +158,10 @@ export const projects: Project[] = [
     {
         name: "EasyChat",
         date: new Date("2023-08-16"),
-        src: "https://placehold.co/600x400/png",
+        src: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Projects/easy_chat.jpg",
         alt: "Placeholder",
-        width: 600,
-        height: 400,
+        width: 800,
+        height: 450,
         description:
             "A mobile application with a chat interface and a news feed.\t" +
             "Works in realtime and offers image sharing and more.",
