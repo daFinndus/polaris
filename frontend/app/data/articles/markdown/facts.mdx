@@ -60,7 +60,7 @@ I also started up a http server on my local machine to transfer a linpeas script
 
 <br />
 
-A bit of research gave me a privilege escalation script <Marker content="privilege escalation script" link="https://github.com/ch3m1cl/Facter-PrivEsc" />. It works by creating a custom ruby configuration for <Code content="facter" /> that executes a reverse shell when the binary is run.
+A bit of research gave me a <Marker content="privilege escalation script" link="https://github.com/ch3m1cl/Facter-PrivEsc" />. It works by creating a custom ruby configuration for <Code content="facter" /> that executes a reverse shell when the binary is run.
 
 <Block language="Bash" content={"Facter.add(:pwn) do\n setcode do\n system('\''/bin/bash'\'')\n end\nend"} />
 
