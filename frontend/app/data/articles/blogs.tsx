@@ -22,7 +22,7 @@ export const blogs: Blog[] = [
         title: "Facts",
         date: "17.02.2025",
         description:
-            "This is a writeup of Facts, a easy machine by Hack the Box. Relevant for this machine was Fuzzing, the AWS CLI and sudo misconfigurations.",
+            "This is a writeup of Facts, an easy machine by Hack the Box. Relevant for this machine was Fuzzing, the AWS CLI and sudo misconfigurations.",
         content: <Facts />,
     },
 ]
