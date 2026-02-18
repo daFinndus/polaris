@@ -5,7 +5,6 @@ import "./globals.css"
 import type { Metadata } from "next"
 
 import { GeistSans } from "geist/font/sans"
-import { GeistMono } from "geist/font/mono"
 
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
@@ -15,20 +14,16 @@ import { Toaster } from "@/components/ui/toaster"
 export const metadata: Metadata = {
     title: {
         default: "Finn Luca Jensen",
-        template: "%s | Finn Luca Jensen", // subpages get "About | Finn Luca Jensen" etc.
+        template: "%s | Finn Luca Jensen",
     },
-    description: "Portfolio of Finn Luca 'daFinndus' Jensen — full-stack developer specializing in ...",
-    keywords: ["Finn Luca Jensen", "daFinndus", "portfolio", "web developer", "..."],
+    description: "Portfolio of Finn Luca 'daFinndus' Jensen",
+    keywords: ["Finn Luca Jensen", "daFinndus", "portfolio", "web developer", "htb enjoyer", "student", "..."],
     authors: [{ name: "Finn Luca Jensen" }],
     creator: "Finn Luca Jensen",
-
-    // Canonical URL — very important
     metadataBase: new URL("https://finnlucajensen.vercel.app"),
     alternates: {
         canonical: "/",
     },
-
-    // Open Graph — controls how your site looks when shared on Discord, Slack, etc.
     openGraph: {
         title: "Finn Luca Jensen",
         description: "Portfolio of Finn Luca 'daFinndus' Jensen",
@@ -36,13 +31,13 @@ export const metadata: Metadata = {
         siteName: "Finn Luca Jensen",
         images: [
             {
-                url: "/og-image.png", // 1200x630px image
-                width: 1200,
-                height: 630,
+                url: "/lucy.webp",
+                width: 735,
+                height: 413,
                 alt: "Finn Luca Jensen — Portfolio",
             },
         ],
-        locale: "en_DE",
+        locale: "de_DE",
         type: "website",
     },
     icons: {
