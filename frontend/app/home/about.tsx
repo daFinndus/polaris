@@ -14,9 +14,11 @@ import { getRandomWord } from "@/app/hooks/getRandomWord"
 import { IconType } from "react-icons"
 import { LuCake } from "react-icons/lu"
 import { BsBriefcase } from "react-icons/bs"
+import { GiGuitarHead } from "react-icons/gi"
 import { MdOutlineLocationOn } from "react-icons/md"
 import { IoGlobe, IoLanguage } from "react-icons/io5"
 import { SiGmail, SiHackthebox } from "react-icons/si"
+import { IoLogoGameControllerB } from "react-icons/io"
 import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa"
 
 const Tag = ({ Icon, name }: { Icon: IconType; name: string }) => {
@@ -94,6 +96,8 @@ export const About = () => {
                 <Tag Icon={MdOutlineLocationOn} name={"Kiel"} />
                 <Tag Icon={IoGlobe} name={"UTC+1"} />
                 <Tag Icon={BsBriefcase} name={"Student"} />
+                <Tag Icon={GiGuitarHead} name={"Learns guitar"} />
+                <Tag Icon={IoLogoGameControllerB} name={"Likes videogames"} />
             </div>
             <div className={"mt-4 flex w-full flex-row justify-center space-x-2"}>
                 <Link href={"mailto:finnlucajensen@proton.me"} className={"w-full"} target={"_blank"}>

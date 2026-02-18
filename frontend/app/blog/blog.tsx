@@ -4,38 +4,51 @@ import React, { useState, useEffect } from "react"
 
 import { notFound } from "next/navigation"
 
-import { blogs } from "@/app/data/articles/blogs"
+import { CiShare2 } from "react-icons/ci"
+import { Copy } from "lucide-react"
 
+import { blogs } from "@/app/data/articles/blogs"
 import { Button } from "@/components/ui/button"
 
 interface Blog {
+    ident: string
     title: string
     date: string
     description: string
     content: React.ReactNode
 }
 
-export const Blog = () => {
-    useEffect(() => {
-        if (blogs.length <= 0) {
-            notFound()
-        }
-    })
-
-    return (
-        <div className={"text-primary grid grid-cols-1 gap-4 text-justify"}>
-            {blogs.map((blog, index) => (
-                <Entry key={index} title={blog.title} date={blog.date} description={blog.description} content={blog.content} />
-            ))}
-        </div>
-    )
-}
-
-const Entry = ({ title, date, description, content }: Blog) => {
+const Entry = ({ ident, title, date, description, content }: Blog) => {
     const [showContent, toggleContent] = useState(false)
+    const [shared, setShared] = useState(false)
+
+    const handleShare = () => {
+        const url = `${window.location.origin}/blog#${ident}`
+
+        navigator.clipboard.writeText(url).then(() => {
+            setShared(true)
+            setTimeout(() => setShared(false), 1000)
+        })
+    }
 
     return (
-        <div className="border-background-lighter bg-background-light tablet:w-131.5 flex flex-col rounded-xl border-2 px-8 py-6">
+        <div
+            id={ident}
+            className="border-background-lighter bg-background-light tablet:w-131.5 relative flex flex-col rounded-xl border-2 p-6"
+        >
+            <button onClick={handleShare} title="Share blog" className={"absolute top-4 right-4 cursor-pointer font-mono text-xs"}>
+                {shared ? (
+                    <div className="flex items-center gap-1.5 text-green-400">
+                        <CiShare2 size={13} />
+                        <span>Copied URL!</span>
+                    </div>
+                ) : (
+                    <div className="text-primary/40 hover:text-primary/80 flex items-center gap-1.5 duration-300">
+                        <Copy size={13} />
+                        <span>Share</span>
+                    </div>
+                )}
+            </button>
             <p className="tablet:text-xl text-lg font-bold">{title}</p>
             <p className="text-primary-darker mb-4 text-sm">{date}</p>
             <p className={"text-sm"}>{description}</p>
@@ -50,6 +63,29 @@ const Entry = ({ title, date, description, content }: Blog) => {
                     <p>{showContent ? "Hide" : "Show"} content</p>
                 </Button>
             </div>
+        </div>
+    )
+}
+
+export const Blog = () => {
+    useEffect(() => {
+        if (blogs.length <= 0) {
+            notFound()
+        }
+    })
+
+    return (
+        <div className={"text-primary grid grid-cols-1 gap-4 text-justify"}>
+            {blogs.map((blog, index) => (
+                <Entry
+                    key={index}
+                    ident={blog.ident}
+                    title={blog.title}
+                    date={blog.date}
+                    description={blog.description}
+                    content={blog.content}
+                />
+            ))}
         </div>
     )
 }

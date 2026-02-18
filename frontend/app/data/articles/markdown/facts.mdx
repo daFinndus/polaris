@@ -1,0 +1,67 @@
+import { Bild, Code, Block, Marker } from "../components.tsx"
+
+Starting off with an `nmap` scan reveals three open ports:
+
+<Block language="Bash" content={"22 - SSH\n80 - HTTP\n54321 - (unknown service)"} />
+
+Adding `facts.htb` to `/etc/hosts` and browsing to the web server on port 80 returns a fairly bare site, nothing immediately useful. That's wenn I decided to use `ffuf` to fuzz for hidden directories:
+
+<Block language="Bash" content="ffuf -u http://facts.htb/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/common.txt" />
+
+That surfaces <Code content="/admin/login" />, a Camaleon CMS login panel. After registering a new account, the dashboard reveals the version: <Code content="1.9.0" />. Two public exploits exist for this version <Marker content="CVE-2025-2304" link="https://github.com/d3vn0mi/cve-2025-2304-poc" />, which allows privilege escalation from low-privilege users to admin, and <Marker content="CVE-2024-46987" link="https://github.com/Goultarde/CVE-2024-46987" />, which allows arbitrary file read with admin privileges.
+
+<br />
+
+First, the privilege escalation exploit is used to promote the newly registered account to admin.
+
+<Block language="Bash" content={"python CVE-2025-2304.py http://facts.htb/admin/login -u user -p password"} />
+
+Then I searched through the newly available admin features. One configuration page revealed an AWS service running locally on port <Code content="54321" />, along with the credentials needed to interact with it.
+
+<Bild
+    src={"https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/facts-admin-dashboard.png"}
+    alt={"AWS CLI configuration page in the Camaleon dashboard"}
+    width={1920}
+    height={938}
+/>
+
+After configuring the AWS CLI, I listed available S3 buckets and found one named `internal`.
+
+<Block language="Bash" content="aws --endpoint-url http://facts.htb:54321 s3 ls" />
+
+Downloading its contents revealed a lot of noisy stuff, but one file stood out: <Code content="id_ed25519" />, a private SSH key. To test it out, I need a username.
+
+<br />
+
+Via the <Code content="CVE-2024-46987" /> file read exploit, I can read arbitrary files on the system, which I used to find out users of the target system.
+
+<Block language="Bash" content={"python3 CVE-2024-46987.py -u http://facts.htb/ -l user -p password /etc/passwd"} />
+
+Reading <Code content="/etc/passwd" /> reveals two local users of interest: <Code content="trivia" /> and <Code content="william" />. The private key is tried against the <Code content="trivia" /> user:
+
+<Block language="Bash" content="ssh -i id_ed25519 trivia@facts.htb" />
+
+It's passphrase protected. To crack it, the private key is converted to a hash with <Code content="ssh2john" /> and then fed to John the Ripper:
+
+<Block
+    language="Bash"
+    content={"ssh2john id_ed25519 > id_ed25519.hash\njohn --wordlist=/usr/share/wordlists/rockyou.txt id_ed25519.hash"}
+/>
+
+The cracked passphrase can be used to log in as <Code content="trivia" />. The user flag can be retrieved from <Code content="/home/william/user.txt" />.
+
+<br />
+
+The next step is a privilege escalation to root. First thing I do is checking the sudo rights by running <Code content="sudo -l" />. The output reveals something interesting:
+
+<Block language="Bash" content={"User trivia may run the following commands on facts:\n\t(ALL) NOPASSWD: /usr/bin/facter"} />
+
+I also started up a http server on my local machine to transfer a linpeas script to the target system for further enumeration. Linpeas told me that there's a 95% privilege escalation factor via <Marker content="writable PATH abuses" link="https://book.hacktricks.wiki/en/linux-hardening/privilege-escalation/index.html#writable-path-abuses" />. The page explained that it has something to do with running commands as sudo without a password, like the <Code content="facter" /> binary in this case.
+
+<br />
+
+A bit of research gave me a privilege escalation script <Marker content="privilege escalation script" link="https://github.com/ch3m1cl/Facter-PrivEsc" />. It works by creating a custom ruby configuration for <Code content="facter" /> that executes a reverse shell when the binary is run.
+
+<Block language="Bash" content={"Facter.add(:pwn) do\n setcode do\n system('\''/bin/bash'\'')\n end\nend"} />
+
+Since <Code content="facter" /> can be run with sudo without a password, executing the exploit yields a root shell. The root flag is retrieved from <Code content="/root/root.txt" />.

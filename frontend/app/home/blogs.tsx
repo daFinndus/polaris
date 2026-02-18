@@ -7,6 +7,7 @@ import { blogs } from "@/app/data/articles/blogs"
 import { Button } from "@/components/ui/button"
 
 import { SiInoreader, SiReadthedocs } from "react-icons/si"
+import Image from "next/image"
 
 const Preview = () => {
     const latest = blogs.slice(0, 2)
@@ -14,9 +15,22 @@ const Preview = () => {
     return (
         <div className="tablet:min-w-123.5 my-4 w-auto space-y-4 text-base">
             {latest.map((blog, index) => (
-                <div key={index} className="bg-background-lighter rounded-md px-4 py-4">
-                    <p className="text-primary text-base font-semibold">{blog.title}</p>
-                    <p className="text-primary text-sm">{blog.date}</p>
+                <div key={index} className="bg-background-lighter rounded-md p-4">
+                    <div className="flex h-auto">
+                        <div className="bg-background-light mr-2 w-fit rounded-xl p-2">
+                            <Image
+                                className="h-8 w-8"
+                                src={blog.thumbnail}
+                                width={blog.width}
+                                height={blog.height}
+                                alt={`${blog.title} thumbnail`}
+                            />
+                        </div>
+                        <div className="flex h-auto flex-col justify-center">
+                            <p className="text-primary text-base font-semibold">{blog.title}</p>
+                            <p className="text-primary text-sm">{blog.date}</p>
+                        </div>
+                    </div>
                     <p className="text-primary-dark mt-2 text-justify text-sm whitespace-pre-line">{blog.description}</p>
                 </div>
             ))}
