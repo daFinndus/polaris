@@ -35,11 +35,7 @@ export const Marker = ({ content, link }: { content: string; link?: string }) =>
 }
 
 export const Code = ({ content }: { content: string }) => {
-    return (
-        <div className="bg-background-lighter text-primary inline-block rounded border px-1">
-            <span className="font-mono">{content}</span>
-        </div>
-    )
+    return <span className="bg-background-lighter text-primary inline-block rounded border px-1 font-mono">{content}</span>
 }
 
 export const Block = ({ content, language }: { content: string; language?: string }) => {

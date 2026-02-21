@@ -1,0 +1,69 @@
+import { Bild, Code, Block, Marker } from "../components.tsx"
+
+<Code content="nmap" /> reveals a web server and SSH:
+
+<Block language="Bash" content={"22 - SSH\n80 - HTTP"} />
+
+After adding the hostnames to <Code content="/etc/hosts" />, the main site is reachable. It reveals that the website is running a file transfer service.
+
+<Bild
+    src={"https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/wingdata-website.png"}
+    alt={"Homepage of the Wing FTP Server"}
+    width={1920}
+    height={924}
+/>
+
+Client portal stands out and redirects to <Code content="http://ftp.wingdata.htb" />. After adding this subdomain to the hosts file, reveals a Wing FTP login interface.
+
+<Bild
+    src={"https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/wingdata-login.png"}
+    alt={"Wing FTP Server login page"}
+    width={565}
+    height={530}
+/>
+
+Researching the Wing FTP Server version <Code content="v7.4.3" /> shows: A public exploit exists. <Marker content="CVE-2025-47812" link="https://github.com/4m3rr0r/CVE-2025-47812-poc" /> can be used to abuse Wing FTP's improper handling of NULL bytes in the username parameter during authentication. This allows direct injection of malicious Lua-files, which are executed when a valid session is loaded.
+
+<br />
+
+The exploit is used to establish a reverse shell as the low-privilege service user <Code content="wingftp" />.
+
+<br />
+
+The exploit drops me into <Code content="/opt/wingftp" />. The directory holds a lot of information and searching through it also reveals different XML files containing unsalted-looking 64-hex strings which resemble SHA-256. Using <Code content="hashcat" /> on them didn't do anything though.
+
+<br />
+
+After some research, I found out that Wing FTP uses a static salt for hashing the passwords, which is <Code content="WingFTP" />. After converting the hashes to the correct format (<Code content="<HASH>:WingFTP" />) for cracking and using hashcat with salted SHA-256 mode, the password for the user <Code content="wacky" /> is recovered.
+
+<Block language="Bash" content={"hashcat -m 1410 salts.hash /usr/share/wordlists/rockyou.txt"} />
+
+This password was usable to login via SSH and retrieve the user flag.
+
+<br />
+
+The next step is privilege escalation. First action is checking sudo permissions via <Code content="sudo -l" />:
+
+<Block
+    language="Bash"
+    content={
+        "User wacky may run the following commands on wingdata:\n\t(root) NOPASSWD: /usr/local/bin/python3 /opt/backup_clients/restore_backup_clients.py *"
+    }
+/>
+
+The sudo-allowed script restores backups by extracting a validated tar file as root, which screamed privilege escalation to me:
+
+<Block
+    language="Python"
+    content={'with tarfile.open(backup_path, "r") as tar:\n\ttar.extractall(path=staging_dir, filter="data")'}
+/>
+
+I searched around and found a proof of concept for <Marker content="CVE-2025-4138" link="https://github.com/kyakei/CVE-2025-4138-poc/tree/main" />. This script creates a malicious tarball, which basically bypasses normal tar filters, enabling arbitrary file writes during extractions. This is used to add a specific user to the sudoers file of the system.
+
+<Block language="Bash" content={"python3 CVE-2025-4138.py -u wacky -o backup_1011.tar"} />
+
+The backup script has a strict filename validation, which only allows <Code content="backup_<ID>.tar" /> files under the <Code content="/opt/backup_clients/backups" /> directory. Then the following can be executed to add <Code content="wacky" /> to the sudoers file:
+
+<Block language="Bash" content={"sudo python3 /opt/backup_clients/restore_backup_clients.py -b backup_1011.tar -r restore_wacky"} />
+
+After the payload lands, <Code content="sudo su" /> can be used to switch to root and retrieve the root flag.

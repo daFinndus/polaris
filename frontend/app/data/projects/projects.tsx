@@ -43,10 +43,10 @@ export const projects: Project[] = [
     {
         name: "Portfolio",
         date: new Date("2024-12-03"),
-        src: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Projects/portfolio.webp",
+        src: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Projects/portfolio.png",
         alt: "My Portfolio",
-        width: 768,
-        height: 432,
+        width: 1920,
+        height: 995,
         description:
             "A Next.js application made with TailwindCSS and Node.js on the backend\t" +
             "to create a simple and responsive portfolio, displaying projects, and more.",

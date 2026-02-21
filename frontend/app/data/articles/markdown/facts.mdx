@@ -1,10 +1,10 @@
 import { Bild, Code, Block, Marker } from "../components.tsx"
 
-Starting off with an `nmap` scan reveals three open ports:
+Starting off with a <Code content="nmap" /> scan reveals three open ports:
 
 <Block language="Bash" content={"22 - SSH\n80 - HTTP\n54321 - (unknown service)"} />
 
-Adding `facts.htb` to `/etc/hosts` and browsing to the web server on port 80 returns a fairly bare site, nothing immediately useful. That's when I decided to use `ffuf` to fuzz for hidden directories:
+Adding <Code content="facts.htb" /> to <Code content="/etc/hosts" /> and browsing to the web server on port 80 returns a fairly bare site, nothing immediately useful. That's when I decided to use <Code content="ffuf" /> to fuzz for hidden directories:
 
 <Block language="Bash" content="ffuf -u http://facts.htb/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/common.txt" />
 
