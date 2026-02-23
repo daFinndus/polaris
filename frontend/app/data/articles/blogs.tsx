@@ -2,6 +2,7 @@ import React from "react"
 
 import Facts from "@/app/data/articles/markdown/facts.mdx"
 import WingData from "@/app/data/articles/markdown/wingdata.mdx"
+import Interpreter from "@/app/data/articles/markdown/interpreter.mdx"
 
 interface Blog {
     ident: string
@@ -15,6 +16,17 @@ interface Blog {
 }
 
 export const blogs: Blog[] = [
+    {
+        ident: "interpreter",
+        thumbnail: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/interpreter.png",
+        width: 300,
+        height: 300,
+        title: "Interpreter",
+        date: "24.02.2025",
+        description:
+            "This is a writeup of Interpreter, an easy machine by Hack the Box. This machine mainly worked with Mirth Connect, a healthcare integration engine.",
+        content: <Interpreter />,
+    },
     {
         ident: "wingdata",
         thumbnail: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/wingdata.png",

