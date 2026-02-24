@@ -64,7 +64,8 @@ const Tile = ({ project }: { project: Project }) => {
                 <div className={"mb-8 flex h-fit w-full flex-wrap gap-x-2 gap-y-2"}>
                     {project.skills?.map((skill, index) => (
                         <Badge
-                            className={`${skill.background} flex min-h-6 items-center justify-center gap-x-2 pl-2 font-bold hover:opacity-70 ${skill.color}`}
+                            className={`bg-${skill.background} flex min-h-6 items-center justify-center gap-x-2 pl-2 font-bold text-${skill.color}`}
+                            variant={"outline"}
                             key={index}
                         >
                             {skill.name}
@@ -75,9 +76,7 @@ const Tile = ({ project }: { project: Project }) => {
                 <div className={"mt-auto mb-2 flex w-full items-end gap-x-2"}>
                     {project.url ? (
                         <Link href={project.url} className={"w-1/2"} target={"_blank"}>
-                            <Button className={"bg-color-light text-background hover:bg-color/80 hover:text-primary w-full"}>
-                                Sourcecode
-                            </Button>
+                            <Button className={"bg-color text-primary hover:bg-primary hover:text-color w-full"}>Sourcecode</Button>
                         </Link>
                     ) : (
                         <Button className={"bg-background-lighter text-primary-darker w-1/2"} disabled>
