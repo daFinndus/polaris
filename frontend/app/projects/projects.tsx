@@ -64,8 +64,7 @@ const Tile = ({ project }: { project: Project }) => {
                 <div className={"mb-8 flex h-fit w-full flex-wrap gap-x-2 gap-y-2"}>
                     {project.skills?.map((skill, index) => (
                         <Badge
-                            className={`bg-${skill.background} flex min-h-6 items-center justify-center gap-x-2 pl-2 font-bold text-${skill.color}`}
-                            variant={"outline"}
+                            className={`${skill.background} hover:${skill.background} flex min-h-6 cursor-default items-center justify-center gap-x-2 pl-2 font-bold ${skill.color}`}
                             key={index}
                         >
                             {skill.name}
@@ -141,7 +140,7 @@ export const Projects = () => {
             <Collapsible
                 open={open}
                 onOpenChange={() => setOpen(!open)}
-                className="bg-background tablet:max-w-160 laptop:max-w-246.5"
+                className="bg-background tablet:max-w-160 laptop:max-w-242"
             >
                 <div className="border-background-lighter bg-background-light mb-4 flex items-center justify-between space-x-4 rounded-lg border-2 px-2 py-1">
                     <h4 className="ml-2 min-w-fit text-sm font-semibold">Set filters</h4>

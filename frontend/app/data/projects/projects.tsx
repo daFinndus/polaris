@@ -48,12 +48,12 @@ export const projects: Project[] = [
         width: 1920,
         height: 995,
         description:
-            "A Next.js application made with TailwindCSS and Node.js on the backend\t" +
+            "A Next.js application made with TailwindCSS\t" +
             "to create a simple and responsive portfolio, displaying projects, and more.",
         personal: true,
         url: "https://github.com/daFinndus/polaris",
         demo: "https://finnlucajensen.vercel.app",
-        skills: [map.get("Next.js")!, map.get("Node.js")!, map.get("TailwindCSS")!],
+        skills: [map.get("Next.js")!, map.get("React")!],
     },
     {
         name: "Beerpong Tracker",
@@ -67,7 +67,7 @@ export const projects: Project[] = [
             "TKinter, a raspberry pi and a camera to track the cups and balls in a beerpong game.",
         personal: false,
         url: "https://github.com/daFinndus/beerpong",
-        skills: [map.get("Python")!, map.get("OpenCV")!, map.get("TKinter")!],
+        skills: [map.get("Python")!],
     },
     {
         name: "Voice Assistant",
@@ -81,7 +81,7 @@ export const projects: Project[] = [
             "that can be used to control the motors and sensors of a raspberry pi.",
         personal: false,
         url: "https://github.com/daFinndus/voice_assistant/",
-        skills: [map.get("Python")!, map.get("Raspberry Pi")!],
+        skills: [map.get("Python")!],
     },
     {
         name: "Key Guardian",
@@ -95,7 +95,7 @@ export const projects: Project[] = [
             "to make it possible for easy password generation and strength checking.",
         personal: true,
         url: "https://github.com/daFinndus/key_guardian",
-        skills: [map.get("Python")!, map.get("TKinter")!],
+        skills: [map.get("Python")!],
     },
     {
         name: "Honeypot by Cowrie",
@@ -110,7 +110,7 @@ export const projects: Project[] = [
             "I receive probably around 80 attacks per day.\t" +
             "With the received logs it is possible to view entered usernames, passwords, commands, and where the attackers are from.\t",
         personal: true,
-        skills: [map.get("Bash")!, map.get("Linux")!, map.get("Raspberry Pi")!],
+        skills: [map.get("Bash")!, map.get("Cybersecurity")!],
     },
     {
         name: "Working with Furhat",
@@ -120,12 +120,12 @@ export const projects: Project[] = [
         width: 434,
         height: 250,
         description:
-            "Currently I am working in a group of five friends on the Furhat robot.\t" +
-            "We are testing how the robot is being interacted with and how users react to it.\t" +
-            "In the end, the robot should be used in a hospital to relieve the medical personal.",
+            "In a group of five friends we were working with the Furhat robot.\t" +
+            "We were testing how the robot is being interacted with and how users react to it.\t" +
+            "The goal was to use the robot in a hospital to relieve the medical personal.",
         personal: false,
         demo: "https://www.instagram.com/p/DKZqmrkMHgC/",
-        skills: [map.get("Kotlin")!, map.get("Python")!, map.get("MongoDB")!],
+        skills: [map.get("Kotlin")!, map.get("Python")!],
     },
     {
         name: "DiveVR",
@@ -167,19 +167,5 @@ export const projects: Project[] = [
             "Works in realtime and offers image sharing and more.",
         personal: false,
         skills: [map.get("Flutter")!, map.get("Firebase")!],
-    },
-    {
-        name: "Black Box Adventure",
-        date: new Date("2023-08-16"),
-        src: "https://placehold.co/600x400/png",
-        alt: "Placeholder",
-        width: 600,
-        height: 400,
-        description:
-            "This is a simple java game that offers wave-like gameplay.\t" +
-            "The user is able to upgrade the abilities of the protagonist,\t" +
-            "defeat enemies, and progress through various levels.",
-        personal: false,
-        skills: [map.get("Java")!],
     },
 ]

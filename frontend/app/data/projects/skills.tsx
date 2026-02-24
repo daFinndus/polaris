@@ -1,10 +1,9 @@
 import { IconType } from "react-icons"
 
-import { RiInkBottleFill, RiNextjsFill, RiTailwindCssFill } from "react-icons/ri"
-import { FaJava, FaRaspberryPi, FaUnity, FaFlutter } from "react-icons/fa6"
-import { SiGnubash, SiOpencv, SiPython, SiKotlin } from "react-icons/si"
-import { IoLogoNodejs, IoLogoFirebase } from "react-icons/io5"
-import { DiLinux, DiMongodb } from "react-icons/di"
+import { RiNextjsFill } from "react-icons/ri"
+import { FaReact, FaUnity, FaFlutter } from "react-icons/fa6"
+import { SiGnubash, SiPython, SiKotlin } from "react-icons/si"
+import { IoLogoFirebase } from "react-icons/io5"
 import { MdOutlineSecurity } from "react-icons/md"
 import { TbBrandCSharp } from "react-icons/tb"
 
@@ -18,104 +17,62 @@ interface Skill {
 export const skills: Skill[] = [
     {
         name: "Python",
-        background: "cyan-800",
+        background: "bg-blue-800",
         icon: SiPython,
-        color: "yellow-400",
+        color: "text-yellow-400",
     },
     {
         name: "Next.js",
-        background: "black",
+        background: "bg-black",
         icon: RiNextjsFill,
-        color: "white",
+        color: "text-white",
     },
     {
-        name: "Node.js",
-        background: "green-600",
-        icon: IoLogoNodejs,
-        color: "gray-800",
-    },
-    {
-        name: "TailwindCSS",
-        background: "cyan-700",
-        icon: RiTailwindCssFill,
-        color: "white",
-    },
-    {
-        name: "MongoDB",
-        background: "green-300",
-        icon: DiMongodb,
-        color: "green-700",
-    },
-    {
-        name: "OpenCV",
-        background: "green-800",
-        icon: SiOpencv,
-        color: "cyan-400",
-    },
-    {
-        name: "TKinter",
-        background: "red-800",
-        icon: RiInkBottleFill,
-        color: "white",
-    },
-    {
-        name: "Raspberry Pi",
-        background: "purple-700",
-        icon: FaRaspberryPi,
-        color: "red-300",
+        name: "React",
+        background: "bg-blue-600",
+        icon: FaReact,
+        color: "text-white",
     },
     {
         name: "Bash",
-        background: "gray-800",
+        background: "bg-gray-800",
         icon: SiGnubash,
-        color: "white",
-    },
-    {
-        name: "Linux",
-        background: "blue-800",
-        icon: DiLinux,
-        color: "yellow-400",
-    },
-    {
-        name: "Java",
-        background: "amber-600",
-        icon: FaJava,
-        color: "white",
+        color: "text-white",
     },
     {
         name: "Kotlin",
-        background: "purple-600",
+        background: "bg-purple-600",
         icon: SiKotlin,
-        color: "white",
+        color: "text-red-200",
     },
     {
         name: "Unity",
-        background: "black",
+        background: "bg-gray-800",
         icon: FaUnity,
-        color: "white",
+        color: "text-white",
     },
     {
         name: "C#",
-        background: "blue-800",
+        background: "bg-purple-800",
         icon: TbBrandCSharp,
-        color: "white",
+        color: "text-white",
     },
     {
         name: "Flutter",
-        background: "blue-400",
+        background: "bg-blue-400",
         icon: FaFlutter,
-        color: "white",
+        color: "text-white",
     },
     {
         name: "Firebase",
-        background: "yellow-400",
+        background: "bg-yellow-400",
         icon: IoLogoFirebase,
-        color: "red-500",
+        color: "text-red-500",
     },
     {
         name: "Cybersecurity",
-        background: "gray-900",
+        background: "bg-gray-900",
         icon: MdOutlineSecurity,
-        color: "green-400",
+        color: "text-green-400",
     },
 ]
