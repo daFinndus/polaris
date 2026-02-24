@@ -64,7 +64,7 @@ const Tile = ({ project }: { project: Project }) => {
                 <div className={"mb-8 flex h-fit w-full flex-wrap gap-x-2 gap-y-2"}>
                     {project.skills?.map((skill, index) => (
                         <Badge
-                            className={`${skill.background} hover:${skill.background}/70 flex min-h-6 items-center justify-center gap-x-2 pl-2 font-bold ${skill.color}`}
+                            className={`${skill.background} flex min-h-6 items-center justify-center gap-x-2 pl-2 font-bold hover:opacity-70 ${skill.color}`}
                             key={index}
                         >
                             {skill.name}
@@ -133,13 +133,17 @@ export const Projects = () => {
             if (sort === "latest") return b.date.getTime() - a.date.getTime()
             else if (sort === "oldest") return a.date.getTime() - b.date.getTime()
             else if (sort === "alphabetic") return a.name.localeCompare(b.name)
-            else if (sort === "alphabetic-reverse") return b.name.localeCompare(b.name)
+            else if (sort === "alphabetic-reverse") return b.name.localeCompare(a.name)
             return 0
         })
 
     const Filter = () => {
         return (
-            <Collapsible open={open} onOpenChange={() => setOpen(!open)} className="bg-background tablet:max-w-241">
+            <Collapsible
+                open={open}
+                onOpenChange={() => setOpen(!open)}
+                className="bg-background tablet:max-w-160 laptop:max-w-246.5"
+            >
                 <div className="border-background-lighter bg-background-light mb-4 flex items-center justify-between space-x-4 rounded-lg border-2 px-2 py-1">
                     <h4 className="ml-2 min-w-fit text-sm font-semibold">Set filters</h4>
                     <CollapsibleTrigger asChild className={"items-center justify-end"}>

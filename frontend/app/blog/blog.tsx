@@ -9,16 +9,20 @@ import { Copy } from "lucide-react"
 
 import { blogs } from "@/app/data/articles/blogs"
 import { Button } from "@/components/ui/button"
+import Image from "next/image"
 
 interface Blog {
     ident: string
+    thumbnail: string
+    width: number
+    height: number
     title: string
     date: string
     description: string
     content: React.ReactNode
 }
 
-const Entry = ({ ident, title, date, description, content }: Blog) => {
+const Entry = ({ ident, thumbnail, width, height, title, date, description, content }: Blog) => {
     const [showContent, toggleContent] = useState(false)
     const [shared, setShared] = useState(false)
 
@@ -49,8 +53,15 @@ const Entry = ({ ident, title, date, description, content }: Blog) => {
                     </div>
                 )}
             </button>
-            <p className="tablet:text-xl text-lg font-bold">{title}</p>
-            <p className="text-primary-darker mb-4 text-sm">{date}</p>
+            <div className="flex">
+                <div className="bg-background mr-2 h-fit w-fit rounded-xl p-2">
+                    <Image className="h-8 w-8" src={thumbnail} width={width} height={height} alt={`${title} thumbnail`} />
+                </div>
+                <div className="flex-col">
+                    <p className="tablet:text-xl text-lg font-bold">{title}</p>
+                    <p className="text-primary-darker mb-4 text-sm">{date}</p>
+                </div>
+            </div>
             <p className={"text-sm"}>{description}</p>
             <div className="flex flex-col items-center">
                 {showContent && <div className={"mt-4 w-full text-sm"}>{content}</div>}
@@ -80,6 +91,9 @@ export const Blog = () => {
                 <Entry
                     key={index}
                     ident={blog.ident}
+                    thumbnail={blog.thumbnail}
+                    width={blog.width}
+                    height={blog.height}
                     title={blog.title}
                     date={blog.date}
                     description={blog.description}
