@@ -1,5 +1,9 @@
 import { Bild, Code, Block, Marker } from "../components.tsx"
 
+**Disclaimer**: The steps for this writeup are based on my notes and memory, so they might not be 100% accurate. Additionally, I have changed the flags for this writeup, so they won't match the ones on the machine.
+
+<br />
+
 Starting off with a <Code content="nmap" /> scan reveals four open ports:
 
 <Block language="Bash" content={"22 - SSH\n80 - HTTP\n443 - HTTPS\n6661 - HTTP (Mirth Connect)"} />
@@ -139,4 +143,6 @@ Then I used a simple payload to test if the eval can be abused for reading files
     }
 />
 
-The output was satisfying:
+The output did indeed contain the root flag:
+
+<Block language="Text" content={"Patient 364e620f177768216a478d2fc5a95f7c a (M), 26 years old, received from a at 1"} />
