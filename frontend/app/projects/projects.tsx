@@ -75,7 +75,7 @@ const Tile = ({ project }: { project: Project }) => {
                 <div className={"mt-auto mb-2 flex w-full items-end gap-x-2"}>
                     {project.url ? (
                         <Link href={project.url} className={"w-1/2"} target={"_blank"}>
-                            <Button className={"bg-color text-primary hover:bg-primary hover:text-color w-full"}>Sourcecode</Button>
+                            <Button className={"bg-color hover:text-color w-full text-white hover:bg-white"}>Sourcecode</Button>
                         </Link>
                     ) : (
                         <Button className={"bg-background-lighter text-primary-darker w-1/2"} disabled>
@@ -84,9 +84,7 @@ const Tile = ({ project }: { project: Project }) => {
                     )}
                     {project.demo ? (
                         <Link href={project.demo} className={"w-1/2"} target={"_blank"}>
-                            <Button className={"bg-primary text-background hover:bg-background hover:text-primary w-full"}>
-                                Demo
-                            </Button>
+                            <Button className={"h w-full bg-black text-white hover:bg-white hover:text-black"}>Demo</Button>
                         </Link>
                     ) : (
                         <Button className={"bg-background-lighter text-primary-darker w-1/2"} disabled>

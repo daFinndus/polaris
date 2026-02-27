@@ -81,6 +81,7 @@ export const projects: Project[] = [
             "that can be used to control the motors and sensors of a raspberry pi.",
         personal: false,
         url: "https://github.com/daFinndus/voice_assistant/",
+        demo: "https://youtu.be/YrqET2Mh_ic",
         skills: [map.get("Python")!],
     },
     {
