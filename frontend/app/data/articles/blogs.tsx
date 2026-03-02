@@ -24,7 +24,7 @@ export const blogs: Blog[] = [
         title: "Interpreter",
         date: "24.02.2025",
         description:
-            "This is a writeup of Interpreter, an easy machine by Hack the Box. This machine mainly worked with Mirth Connect, a healthcare integration engine.",
+            "This is a writeup of Interpreter, a medium machine by Hack the Box. This machine mainly worked with Mirth Connect, a healthcare integration engine.",
         content: <Interpreter />,
     },
     {
