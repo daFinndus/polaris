@@ -24,7 +24,7 @@ export const blogs: Blog[] = [
         title: "Interpreter",
         date: "24.02.2025",
         description:
-            "This is a writeup of Interpreter, a medium machine by Hack the Box. This machine mainly worked with Mirth Connect, a healthcare integration engine.",
+            "This is a writeup of Interpreter, a medium linux machine by Hack the Box. This machine mainly worked with Mirth Connect, a healthcare integration engine.",
         content: <Interpreter />,
     },
     {
@@ -35,7 +35,7 @@ export const blogs: Blog[] = [
         title: "WingData",
         date: "21.02.2025",
         description:
-            "This is a writeup of WingData, an easy machine by Hack the Box. This machine mainly worked with Wing FTP and a vulnerable version of the python library tarfile.",
+            "This is a writeup of WingData, an easy linux machine by Hack the Box. This machine mainly worked with Wing FTP and a vulnerable version of the python library tarfile.",
         content: <WingData />,
     },
     {
@@ -46,7 +46,7 @@ export const blogs: Blog[] = [
         title: "Facts",
         date: "17.02.2025",
         description:
-            "This is a writeup of Facts, an easy machine by Hack the Box. Relevant for this machine was Fuzzing, the AWS CLI and sudo misconfigurations.",
+            "This is a writeup of Facts, an easy linux machine by Hack the Box. Relevant for this machine was Fuzzing, the AWS CLI and sudo misconfigurations.",
         content: <Facts />,
     },
 ]

@@ -53,7 +53,7 @@ export const Blogs = () => {
                     </div>
                     <div className={"flex flex-col items-center"}>
                         <Preview />
-                        <Button asChild variant={"color"} className={"w-56"}>
+                        <Button asChild variant={"color"} className={"px-4"}>
                             <Link href={"/blog"}>
                                 <SiReadthedocs />
                                 Let's go to the blog

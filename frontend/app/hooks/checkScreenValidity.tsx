@@ -10,6 +10,6 @@ import { useWindowSize } from "@/app/hooks/useWindowSize"
 export const checkScreenValidity = (Supported: React.JSX.Element, Unsupported: React.JSX.Element) => {
     const size = useWindowSize()
 
-    if (size.width! >= 328) return Supported
+    if (size.width! >= 328 && size.height! >= 256) return Supported
     else if (size.width! > 0) return Unsupported
 }

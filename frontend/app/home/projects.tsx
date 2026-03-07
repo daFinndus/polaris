@@ -68,7 +68,7 @@ export const Projects = () => {
                         </CarouselContent>
                     </Carousel>
                 </div>
-                <Button asChild variant={"color"} className={"w-56"}>
+                <Button asChild variant={"color"} className={"px-4"}>
                     <Link href={"/projects"}>
                         <GrCubes />
                         View all my projects

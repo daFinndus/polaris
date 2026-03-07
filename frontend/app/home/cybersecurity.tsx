@@ -1,9 +1,13 @@
+import Link from "next/link"
+
 import { IconType } from "react-icons"
 import { MdSecurity } from "react-icons/md"
+import { SiHackthebox } from "react-icons/si"
 
 import { cybersecurity } from "@/app/data/knowledge"
 
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 
 interface MethodsProps {
@@ -46,10 +50,21 @@ export const SecurityStack = () => {
                 <p className={"smartphone:text-xl ml-3 text-lg font-bold"}>My Cybersecurity Stack</p>
             </div>
             <p className={"text-primary-darker mt-1 mb-4 text-sm"}>These are my go to tools and forums for cybersecurity</p>
-            <div className={"grid grid-cols-2 gap-2"}>
+            <div className={"mb-4 grid grid-cols-2 gap-2"}>
                 {cybersecurity.map((technology, index) => (
                     <Method key={index} Icon={technology.Icon} name={technology.name} content={technology.content} related={[]} />
                 ))}
+            </div>
+            <div className={"flex flex-col items-center"}>
+                <Button asChild variant={"color"} className={"px-4"}>
+                    <Link
+                        href={"https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Miscellaneous/student-transcript.pdf"}
+                        target={"_blank"}
+                    >
+                        <SiHackthebox />
+                        View my HTB Student Transcript
+                    </Link>
+                </Button>
             </div>
         </div>
     )
