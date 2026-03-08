@@ -38,9 +38,9 @@ export const Projects = () => {
         >
             <div className={"flex flex-row items-center"}>
                 <FaCodepen className={"text-color-light size-6"} />
-                <p className={"smartphone:text-xl ml-3 text-lg font-bold"}>My Projects</p>
+                <p className={"smartphone:text-xl ml-3 text-lg font-bold"}>Projects</p>
             </div>
-            <p className={"text-primary-darker mt-1 text-sm"}>These are some of the projects I&#39;ve been working on</p>
+            <p className={"text-primary-darker mt-1 text-sm"}>Projects I&#39;ve been working on</p>
             <div className={"flex flex-col items-center"}>
                 <div className={"flex w-full flex-row items-center justify-center overflow-hidden"}>
                     <Carousel

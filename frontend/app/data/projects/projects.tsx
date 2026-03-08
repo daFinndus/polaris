@@ -38,7 +38,7 @@ export const projects: Project[] = [
             "It was focused on creating an IT, OT, and IoT network with various sensors and devices.\t" +
             "The goal was to show the importance of network segmentation and security in such environments.",
         personal: false,
-        skills: [map.get("Python")!, map.get("Bash")!, map.get("Cybersecurity")!],
+        skills: [map.get("Python")!, map.get("Bash")!, map.get("Security")!],
     },
     {
         name: "Portfolio",
@@ -111,7 +111,7 @@ export const projects: Project[] = [
             "I receive probably around 80 attacks per day.\t" +
             "With the received logs it is possible to view entered usernames, passwords, commands, and where the attackers are from.\t",
         personal: true,
-        skills: [map.get("Bash")!, map.get("Cybersecurity")!],
+        skills: [map.get("Bash")!, map.get("Security")!],
     },
     {
         name: "Working with Furhat",

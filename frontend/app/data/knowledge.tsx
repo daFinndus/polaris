@@ -1,103 +1,91 @@
-import { GiBreakingChain, GiBrute, GiCrackedDisc } from "react-icons/gi"
-import { RiNextjsFill, RiTailwindCssFill } from "react-icons/ri"
-import { DiMongodb, DiPython } from "react-icons/di"
-import { FaEye, FaNodeJs } from "react-icons/fa6"
-import { BiLogoReact } from "react-icons/bi"
-import { SiBurpsuite } from "react-icons/si"
+import { FaEye } from "react-icons/fa6"
+import { MdDeveloperMode } from "react-icons/md"
 import { VscTerminalBash } from "react-icons/vsc"
+import { DiMongodb, DiPython } from "react-icons/di"
+import { SiBurpsuite, SiDocker, SiHackster, SiLinux } from "react-icons/si"
+import { GiBreakingChain, GiBrute, GiClick, GiCrackedDisc } from "react-icons/gi"
 
-interface Development {
+export interface Stack {
     Icon: any
     name: string
-    content: string
-    version?: string
-    href: string
+    content?: string
+    description?: string
 }
 
-export const development: Development[] = [
+export const Engineering: Stack[] = [
+    {
+        Icon: GiClick,
+        name: "Click me",
+        content: "For a detailed description",
+        description:
+            "This is just a dummy. I really didn't know how to fit a explanation for the stacks into this grid component. You can also click the other stacks and the stacks in the toolkit section.",
+    },
+    {
+        Icon: MdDeveloperMode,
+        name: "Web Development",
+        content: "React and Tailwind CSS",
+        description:
+            "I have experience building web applications with Next.js. I love to use ShadCN components for my projects, as they are well-designed and easy to use. Of course I know my way around vanilla web development as well. HTML, JavaScript, CSS and also PHP are all technologies I am comfortable working with.",
+    },
     {
         Icon: DiPython,
-        name: "Python",
-        content: "Python is a versatile programming language I use for scripting, data analysis, and building prototypes.",
-        href: "https://python.org",
-    },
-    {
-        Icon: FaNodeJs,
-        name: "Node.js",
-        content:
-            "Node.js is a JavaScript runtime that I use to build robust backend APIs. It powers the backend of my projects, including data handling and server-side logic.",
-        version: "v18+",
-        href: "https://nodejs.org",
-    },
-    {
-        Icon: RiNextjsFill,
-        name: "Next.js",
-        content:
-            "Next.js is my go-to React framework for building modern web applications with server-side rendering and optimized performance. I use it for my portfolio and other projects.",
-        version: "v16+",
-        href: "https://nextjs.org",
-    },
-    {
-        Icon: BiLogoReact,
-        name: "React",
-        content:
-            "React is central to my frontend development. I use it to create dynamic, component-based user interfaces in web applications.",
-        version: "v19+",
-        href: "https://reactjs.org",
-    },
-    {
-        Icon: RiTailwindCssFill,
-        name: "Tailwind",
-        content:
-            "Tailwind CSS is my preferred CSS framework for rapidly designing responsive and visually appealing user interfaces.",
-        version: "v4+",
-        href: "https://tailwindcss.com",
+        name: "Automation & Scripting",
+        content: "Python, Bash, PowerShell",
+        description:
+            "I mainly use Python for scripting, but the efficiency of Bash and PowerShell for quick tasks and system administration is undeniable, so I use them as well.",
     },
     {
         Icon: DiMongodb,
-        name: "MongoDB",
-        content:
-            "MongoDB is a NoSQL database I use to store and manage data in my projects. It's particularly helpful for handling flexible, document-based data.",
-        href: "https://mongodb.com",
+        name: "Backend",
+        content: "Node.js and MongoDB",
+        description:
+            "I am familar with backend development concepts, RESTful API design, and working with databases to support application functionality and data management. I have some projects using SQL databases, but I prefer MongoDB for its flexibility and ease of use in my projects.",
+    },
+    {
+        Icon: SiLinux,
+        name: "Operating Systems",
+        content: "Linux, Windows, macOS",
+        description:
+            "I currently use Arch on my notebook, Windows 11 on my workstation and used to use macOS for development as well. I know my way around all three and am comfortable working in any of them. Linux is my absolute favorite though, and I use it for most of my projects and work.",
+    },
+    {
+        Icon: SiDocker,
+        name: "Virtualization",
+        content: "Docker, Proxmox and KVM",
+        description:
+            "I use Proxmox with multiple LXC containers for my own homelab, KVM on my notebook and VMWare on my workstation. Docker is around in all environments, but I prefer using the CLI version instead of the GUI.",
     },
 ]
 
-interface Method {
-    Icon: any
-    name: string
-    content: string
-}
-
-export const cybersecurity: Method[] = [
+export const Tools: Stack[] = [
     {
         Icon: FaEye,
-        name: "Network Scanning",
-        content: "I am able to identify open ports, services, and vulnerabilities on networked systems using tools like Nmap.",
+        name: "Reconnaissance",
+        description:
+            "I know how to do basic reconnaissance, system and social wise. I use OSINT techniques to gather information about targets, and I am familiar with tools like Nmap for network scanning and enumeration.",
     },
     {
         Icon: GiBrute,
-        name: "Directory Fuzzing",
-        content: "I can discover hidden directories and files on web servers using tools like DirBuster, Gobuster or Ffuf.",
-    },
-    {
-        Icon: SiBurpsuite,
-        name: "Web Application Testing",
-        content: "I know how to analyze web applications for security vulnerabilities using tools like Burp Suite.",
+        name: "Fuzzing",
+        description:
+            "I know how to use fuzzing tools to identify unwanted public endpoints, unsecure parameter values or sub-domains. I have experience with tools like ffuf and wfuzz for web application fuzzing, and I am familiar with the concept of mutation-based fuzzing for more complex targets.",
     },
     {
         Icon: GiBreakingChain,
-        name: "Exploitation and Validation",
-        content:
-            "I know how to search for CVEs and exploit vulnerabilities to gain access to systems, then validate the exploit to ensure it works.",
+        name: "Exploitation",
+        description:
+            "I analyze known weaknesses, adapt public research where appropriate, and validate exploitability in controlled environments. Currently I am not really able to craft exploits on my own, but I know where to find them and how to use them.",
     },
     {
         Icon: GiCrackedDisc,
-        name: "Password Cracking",
-        content: "I can crack hashed passwords using tools like John the Ripper and Hashcat.",
+        name: "Hash and Pass Cracking",
+        description:
+            "I know how to brute-force passwords, execute dictionary attacks, and use rainbow tables to crack hashes. I have experience with tools like Hashcat and John the Ripper for password cracking, and I am familiar with the concept of salting and peppering and its impact on hash cracking.",
     },
     {
-        Icon: VscTerminalBash,
-        name: "Scripting",
-        content: "I now my way around Bash and PowerShell for automating tasks, monitoring systems, and more.",
+        Icon: SiHackster,
+        name: "Post-Exploitation",
+        description:
+            "I know where to find common privilege escalation vectors and where to search for insecure configurations and credentials. I am familiar with the concept of lateral movement and persistence techniques.",
     },
 ]

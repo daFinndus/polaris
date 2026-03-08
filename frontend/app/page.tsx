@@ -8,8 +8,8 @@ import { About } from "@/app/home/about"
 
 import { Blogs } from "@/app/home/blogs"
 import { Projects } from "@/app/home/projects"
-import { DevStack } from "@/app/home/development"
-import { SecurityStack } from "@/app/home/cybersecurity"
+import { Application } from "@/app/home/engineering"
+import { Toolkit } from "@/app/home/tooling"
 import { getColorMode } from "@/app/hooks/getColorMode"
 import { checkScreenValidity } from "@/app/hooks/checkScreenValidity"
 
@@ -29,7 +29,6 @@ const Unsupported = () => {
 const Supported = () => {
     return (
         <div className="notebook:my-8 m-4 flex justify-center">
-            <PageHead />
             <div className="notebook:fixed notebook:flex top-4 right-4 hidden flex-col gap-y-2">
                 <ColorModeButton />
                 <ImprintPageButton />
@@ -39,9 +38,9 @@ const Supported = () => {
             <div className="desktop:grid desktop:grid-cols-3 hidden gap-4">
                 <div className="space-y-4">
                     <About />
-                    <DevStack />
+                    <Application />
                 </div>
-                <SecurityStack />
+                <Toolkit />
                 <div className="space-y-4">
                     <Projects />
                     <Blogs />
@@ -50,11 +49,11 @@ const Supported = () => {
             <div className="laptop:grid laptop:grid-cols-2 desktop:hidden hidden gap-4">
                 <div className="space-y-4">
                     <About />
-                    <DevStack />
+                    <Application />
                 </div>
                 <div className="space-y-4">
                     <Projects />
-                    <SecurityStack />
+                    <Toolkit />
                     <Blogs />
                 </div>
             </div>
@@ -65,24 +64,12 @@ const Supported = () => {
                     <ErrorPageButton />
                 </div>
                 <About />
-                <DevStack />
-                <SecurityStack />
+                <Application />
+                <Toolkit />
                 <Projects />
                 <Blogs />
             </div>
         </div>
-    )
-}
-
-const PageHead = () => {
-    return (
-        <Head>
-            <title>Finn Luca Jensen</title>
-            <meta name="description" content="The portfolio of Finn Luca 'daFinndus' Jensen" />
-            <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
-            <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
-            <link rel="manifest" href="/favicon/site.webmanifest" />
-        </Head>
     )
 }
 

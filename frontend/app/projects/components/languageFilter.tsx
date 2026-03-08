@@ -39,14 +39,14 @@ export const LanguageFilter = ({ languages, setLanguages }: LanguageFilterProps)
                 <CiFilter size={12} />
                 Select languages
             </p>
-            <div className={"flex flex-row flex-wrap gap-x-2 gap-y-2"}>
+            <div className={"notebook:grid-cols-3 grid grid-cols-2 gap-2"}>
                 {sprachen.map((sprache) => {
                     return (
                         <Button
                             key={sprache}
                             size={"sm"}
                             variant={"secondary"}
-                            className={`text-xs transition-colors duration-300 ${languages.includes(sprache) ? "bg-primary text-background-light hover:bg-primary/80" : "bg-background-light text-primary hover:bg-background-lighter"}`}
+                            className={`text-xs transition-colors duration-300 ${languages.includes(sprache) ? "bg-primary text-background-light hover:bg-primary/80" : "bg-background-lighter text-primary hover:bg-background-lightest"}`}
                             onClick={() => toggleLanguage(sprache)}
                         >
                             {sprache}

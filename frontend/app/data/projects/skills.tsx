@@ -70,7 +70,7 @@ export const skills: Skill[] = [
         color: "text-red-500",
     },
     {
-        name: "Cybersecurity",
+        name: "Security",
         background: "bg-gray-900",
         icon: MdOutlineSecurity,
         color: "text-green-400",

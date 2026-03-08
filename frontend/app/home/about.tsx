@@ -23,7 +23,7 @@ import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa"
 
 const Tag = ({ Icon, name }: { Icon: IconType; name: string }) => {
     return (
-        <Badge variant={"about"} className={"text-xxs smartphone:w-max smartphone:text-xs h-7 px-2 py-1"}>
+        <Badge variant={"about"} className={"text-xxs smartphone:text-xs h-7 px-2 py-1"}>
             <Icon className={"text-color mr-2 size-4"} />
             {name}
         </Badge>
@@ -76,8 +76,8 @@ export const About = () => {
                     <AvatarFallback className={"rounded-xl"}>404</AvatarFallback>
                 </Avatar>
                 <div className={"smartphone:ml-4 ml-2 flex flex-col space-y-1"}>
-                    <Badge className={"text-xxs smartphone:text-xs mb-1 w-max"} variant={"color"}>
-                        <p className={"text-white"}>Best experience on desktop!</p>
+                    <Badge className={"text-xxs smartphone:text-xs mb-1 w-max text-white"} variant={"color"}>
+                        Best experience on desktop!
                     </Badge>
                     <p className={"smartphone:text-sm tablet:text-lg text-xs font-bold"}>
                         Finn Luca
@@ -90,7 +90,11 @@ export const About = () => {
                     </div>
                 </div>
             </div>
-            <div className={"bg-background mt-4 flex h-auto flex-wrap items-center gap-2 rounded-lg border-none px-4 py-3"}>
+            <div
+                className={
+                    "bg-background tablet:grid-cols-3 smartphone:grid-cols-2 mt-4 grid h-auto grid-cols-1 items-center gap-2 rounded-lg border-none px-4 py-3"
+                }
+            >
                 <Tag Icon={IoLanguage} name={"German & English"} />
                 <Tag Icon={LuCake} name={`${getAge()} years old`} />
                 <Tag Icon={MdOutlineLocationOn} name={"Kiel"} />
