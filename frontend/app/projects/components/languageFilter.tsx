@@ -39,7 +39,7 @@ export const LanguageFilter = ({ languages, setLanguages }: LanguageFilterProps)
                 <CiFilter size={12} />
                 Select languages
             </p>
-            <div className={"notebook:grid-cols-3 grid grid-cols-2 gap-2"}>
+            <div className={"laptop:grid-cols-1 tablet:grid-cols-2 notebook:grid-cols-3 grid grid-cols-2 gap-2"}>
                 {sprachen.map((sprache) => {
                     return (
                         <Button
