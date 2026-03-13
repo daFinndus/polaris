@@ -34,12 +34,12 @@ export const LanguageFilter = ({ languages, setLanguages }: LanguageFilterProps)
     }
 
     return (
-        <div className={"laptop:w-1/4 flex flex-col gap-y-2"}>
+        <div className={"laptop:w-auto flex flex-col gap-y-2"}>
             <p className={"flex w-fit items-center gap-x-2 text-sm"}>
                 <CiFilter size={12} />
                 Select languages
             </p>
-            <div className={"laptop:grid-cols-1 tablet:grid-cols-2 notebook:grid-cols-3 grid grid-cols-2 gap-2"}>
+            <div className={"laptop:grid-cols-2 notebook:grid-cols-3 grid grid-cols-2 gap-2"}>
                 {sprachen.map((sprache) => {
                     return (
                         <Button

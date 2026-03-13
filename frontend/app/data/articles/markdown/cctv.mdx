@@ -1,0 +1,122 @@
+import { Bild, Code, Block, Marker } from "../components.tsx"
+
+**Disclaimer**: The steps for this writeup are based on my notes and memory, so they might not be 100% accurate. Additionally, I have changed the flags for this writeup, so they won't match the ones on the machine.
+
+<br />
+
+Starting off with a <Code content="nmap" /> scan reveals a few open ports:
+
+<Block language="Bash" content={"22 - SSH\n80 - HTTP"} />
+
+Browsing to port <Code content="80" /> reveals a website from SecureVision. The site contains some information about the company and its products, but nothing immediately useful.
+
+<Bild
+    src="https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/cctv-full.png"
+    alt="CCTV Web Interface"
+    width={1920}
+    height={1122}
+/>
+
+More interesting is the red button on the top right. It reveals a login form for ZoneMinder. Before trying to brute-force anything I researched the default credentials for ZoneMinder:
+
+<Block language="Bash" content={"admin : admin"} />
+
+Those worked immediately and granted access to the dashboard.
+
+<br />
+
+After logging in, I checked the installed version and noticed it was vulnerable to <Marker content="CVE-2024-51482" link="https://github.com/plur1bu5/CVE-2024-51482-PoC" />. A public proof-of-concept exploit exists that allows extracting credential material from the backend database. The creator explained very well how it works:
+
+<br />
+
+Basically the exploit passes <Code content="SLEEP" /> in a vulnerable SQL query. In this exploit, <Code content="SLEEP" /> is only executed, when the condition is true. By measuring the response time, it's possible to get information about the database content. By iterating over the possible values, the correct ones can be extracted one by one. <Marker content="This" link="https://github.com/plur1bu5/CVE-2024-51482-PoC" /> is a great resource if you want to understand the exploit in more detail.
+
+<br />
+
+By default the exploit targets the <Code content="zm.Users" /> table and dumps the stored password hashes.
+
+<br />
+
+The output initially looks messy because some values appear duplicated, but the final summary table contains the correct hashes. From there, I recovered bcrypt hashes for three users:
+
+<Block
+    language="Text"
+    content={
+        "admin:$2y$10$cmytVWFRnt1XfqsItsJRMe/ApxWxcIFQcURnm5N.rhlULwM0jrtbm\nmark:$2y$10$prZGnazejKcuTh5bKNexXOgLyQaok0hq07LW7AJ/QNqZolbXKfFG.\nsuperad:$2y$10$t5z8uIT.n9uCdHCNidqLf.39T1Ui9nrlCkdXrzJMnJgkTiAvRUM6m"
+    }
+/>
+
+The hashes are written to a file and cracked with <Code content="john" />:
+
+<Block language="Bash" content={"john --format=bcrypt hashes.txt --wordlist=/usr/share/wordlists/rockyou.txt"} />
+
+This reveals valid credentials for the system user <Code content="mark" />. The credentials for the other two users weren't necessary for my approach, so I didn't investigate them further.
+
+<br />
+
+Using those credentials, SSH access to the target is possible. After logging in, the expected next step would be privilege escalation.
+
+<br />
+
+However, the system initially appears unusually sparse. The home directory does not immediately reveal the user flag, <Code content="sudo -l" /> does not show any useful permissions, and even <Code content="ps aux" /> lists very few processes. To continue enumeration, I checked listening ports locally. I used <Code content="awk" /> to filter the output, don't worry about that.
+
+<Block language="Bash" content={"ss -tlnp | awk '{print $1, $4}'"} />
+
+This reveals several services bound to localhost.
+
+<Block
+    language="Bash"
+    content={
+        "State  Local\nLISTEN 127.0.0.1:8888\nLISTEN 127.0.0.1:8765\nLISTEN 127.0.0.1:9081\nLISTEN 127.0.0.1:33060\nLISTEN 127.0.0.1:8554\nLISTEN 0.0.0.0:22\nLISTEN 127.0.0.1:1935\nLISTEN 127.0.0.1:7999\nLISTEN 127.0.0.54:53\nLISTEN 127.0.0.1:3306\nLISTEN 127.0.0.53%lo:53\nLISTEN *:80\nLISTEN [::]:22"
+    }
+/>
+
+After forwarding multiple boring services via SSH, I forwarded port <Code content="8765" /> to the attacking machine, it exposes another web interface: motionEye, another camera management platform.
+
+<Bild
+    src="https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/cctv-motioneye.png"
+    alt="motionEye Web Interface"
+    width={1920}
+    height={924}
+/>
+
+To find hints for authentication, I searched for readable configuration files and found that files inside <Code content="/etc/motioneye/" /> are accessible for <Code content="mark" />. The directory contains a file named <Code content="motion.conf" />, which is the main configuration file for motionEye.
+
+<br />
+
+Reading it reveals the stored credentials for the admin user:
+
+<Block
+    language="Text"
+    content={"# @admin_username admin\n# @normal_username user\n# @admin_password 989c5a8ee87a0e9521ec81a79187d162109282f0"}
+/>
+
+The stored admin password is a SHA-1 hash.
+
+<br />
+
+Initially, I assumed the hash needed to be cracked. However, motionEye accepts the stored SHA-1 value directly during authentication. Using the hash itself as the password allows logging in as the admin user.
+
+<br />
+
+After gaining access to motionEye, the next step is to look for a path to code execution. But I really didn't find anything on the web interface, so I went back into path enumeration.
+
+<br />
+
+Further configuration enumeration reveals that logs are written to: <Code content="/var/log/motioneye/" />.
+
+<br />
+
+Reading the motion log file reveals the exact version of motionEye running on the system: <Code content="4.7.1" />.
+
+<br />
+
+With the exact version identified, I searched for a matching exploit and found <Marker content="CVE-2025-60787" link="https://github.com/gunzf0x/CVE-2025-60787" />.
+
+<br />
+
+This exploit bypasses local client-side validation to modify configuration parameters like <Code content="image_file_name" />. Unsanitized input is then written to motionEye's configuration files, allowing arbitrary file write.
+
+<br />
+
+Because motionEye is only reachable locally, the service is first forwarded to the attacking machine. The exploit is then executed against the forwarded port, which successfully returns a reverse shell. The shell runs as <Code content="root" />, giving full control of the system. The root flag can be retrieved from <Code content="/root/root.txt" /> and the user flag lies under <Code content="/home/sa-mark/user.txt" />.

@@ -151,29 +151,51 @@ export const Projects = () => {
                     </CollapsibleTrigger>
                 </div>
                 <CollapsibleContent className="mb-4 space-y-2">
-                    <div
-                        className={
-                            "border-background-lighter notebook:max-w-none laptop:flex-row laptop:gap-y-0 flex w-auto max-w-78 flex-col gap-x-8 gap-y-8 rounded-lg border-2 p-4"
-                        }
-                    >
-                        <LanguageFilter languages={languages} setLanguages={setLanguages} />
-                        <ProjectFilter
-                            opensource={opensource}
-                            setOpensource={setOpensource}
-                            demo={demo}
-                            setDemo={setDemo}
-                            personal={personal}
-                            setPersonal={setPersonal}
-                        />
-                        <SortFilter sort={sort} setSort={setSort} />
-                        <ResetFilter
-                            projectCount={filtered.length}
-                            setLanguages={setLanguages}
-                            setOpensource={setOpensource}
-                            setDemo={setDemo}
-                            setPersonal={setPersonal}
-                            setSort={setSort}
-                        />
+                    <div className={"notebook:max-w-none w-auto max-w-78 rounded-lg border-2 p-4"}>
+                        <div className="flex flex-row justify-between">
+                            <div className={"laptop:flex hidden w-1/2"}>
+                                <LanguageFilter languages={languages} setLanguages={setLanguages} />
+                            </div>
+                            <div className="laptop:flex hidden w-1/2 flex-col gap-y-8">
+                                <ProjectFilter
+                                    opensource={opensource}
+                                    setOpensource={setOpensource}
+                                    demo={demo}
+                                    setDemo={setDemo}
+                                    personal={personal}
+                                    setPersonal={setPersonal}
+                                />
+                                <SortFilter sort={sort} setSort={setSort} />
+                                <ResetFilter
+                                    projectCount={filtered.length}
+                                    setLanguages={setLanguages}
+                                    setOpensource={setOpensource}
+                                    setDemo={setDemo}
+                                    setPersonal={setPersonal}
+                                    setSort={setSort}
+                                />
+                            </div>
+                        </div>
+                        <div className={"laptop:hidden laptop:w-0 flex w-full flex-col gap-y-8"}>
+                            <LanguageFilter languages={languages} setLanguages={setLanguages} />
+                            <ProjectFilter
+                                opensource={opensource}
+                                setOpensource={setOpensource}
+                                demo={demo}
+                                setDemo={setDemo}
+                                personal={personal}
+                                setPersonal={setPersonal}
+                            />
+                            <SortFilter sort={sort} setSort={setSort} />
+                            <ResetFilter
+                                projectCount={filtered.length}
+                                setLanguages={setLanguages}
+                                setOpensource={setOpensource}
+                                setDemo={setDemo}
+                                setPersonal={setPersonal}
+                                setSort={setSort}
+                            />
+                        </div>
                     </div>
                 </CollapsibleContent>
             </Collapsible>

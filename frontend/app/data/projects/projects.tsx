@@ -33,8 +33,9 @@ export const projects: Project[] = [
         width: 1920,
         height: 1032,
         description:
-            "Reconnoisseur is a reconnaissance automation tool built in Bash to support the early phases of penetration testing. " +
-            "It currently streamlines Nmap-based scanning workflows and is designed to integrate additional tooling such as ffuf for broader attack surface discovery.",
+            "Reconnoisseur is a reconnaissance automation tool built in Bash to support the early phases of penetration testing." +
+            "It currently does automated port scanning and service detection of hosts and subnets." +
+            "Soon it will also support web enumeration and vulnerability scanning.",
         personal: true,
         url: "https://github.com/daFinndus/reconnoisseur",
         skills: [map.get("Reconnaissance")!, map.get("Automation")!, map.get("Offensive Security")!],

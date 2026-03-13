@@ -1,5 +1,6 @@
 import React from "react"
 
+import CCTV from "@/app/data/articles/markdown/cctv.mdx"
 import Facts from "@/app/data/articles/markdown/facts.mdx"
 import WingData from "@/app/data/articles/markdown/wingdata.mdx"
 import Interpreter from "@/app/data/articles/markdown/interpreter.mdx"
@@ -16,6 +17,17 @@ interface Blog {
 }
 
 export const blogs: Blog[] = [
+    {
+        ident: "cctv",
+        thumbnail: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/cctv.png",
+        width: 300,
+        height: 300,
+        title: "CCTV",
+        date: "13.03.2026",
+        description:
+            "This is a writeup of CCTV, an easy linux machine by Hack the Box. This machine mainly worked with ZoneMinder and motionEye.",
+        content: <CCTV />,
+    },
     {
         ident: "interpreter",
         thumbnail: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/interpreter.png",

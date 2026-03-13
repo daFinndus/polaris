@@ -25,7 +25,7 @@ export const ResetFilter = ({ projectCount, setLanguages, setOpensource, setDemo
     }
 
     return (
-        <div className={"laptop:w-1/4 flex flex-col gap-y-2"}>
+        <div className={"laptop:w-max flex w-auto flex-col gap-y-2"}>
             <p className={"flex w-fit items-center gap-x-2 text-sm"}>
                 <RiEqualizerFill size={12} />
                 Showing {projectCount}/{projects.length} projects

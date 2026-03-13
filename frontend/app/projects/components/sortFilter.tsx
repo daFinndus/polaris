@@ -11,7 +11,7 @@ interface sortFilterProps {
 
 export const SortFilter = ({ sort, setSort }: sortFilterProps) => {
     return (
-        <div className={"laptop:w-1/4 flex flex-col gap-y-2"}>
+        <div className={"laptop:w-auto flex flex-col gap-y-2"}>
             <p className={"flex w-fit items-center gap-x-2 text-sm"}>
                 <FaSort size={12} />
                 Sort by
