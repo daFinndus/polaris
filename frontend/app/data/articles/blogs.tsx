@@ -27,7 +27,7 @@ export const blogs: Blog[] = [
         title: "Kobold",
         date: "26.03.2026",
         description:
-            "This is a writeup of Kobold, an easy linux machine by Hack the Box. This machine mainly worked with a vulnerable version of Arcane-Web and MCPJam.",
+            "This is a writeup of Kobold, an easy linux machine by Hack the Box. This machine mainly worked with a vulnerable version of MCPJam and abusing docker.",
         content: <Kobold />,
     },
     {
