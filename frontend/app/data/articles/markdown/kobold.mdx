@@ -1,0 +1,118 @@
+import { Code, Block, Marker, Bild } from "../components.tsx"
+
+**Disclaimer**: The steps for this writeup are based on my notes and memory, so they might not be 100% accurate. Additionally, I have changed the flags for this writeup, so they won't match the ones on the machine.
+
+<br />
+
+Starting off with a <Code content="nmap" /> scan. At first I only scanned the top 1k ports, then I re-ran it with a full port scan after finding the interesting service on port <Code content="3552" />:
+
+<Block language="Bash" content={"22  - SSH\n80  - HTTP\n443 - HTTPS\n3552 - taserver"} />
+
+Port <Code content="80" /> and <Code content="443" /> serve a pretty much useless static webpage. Nothing interesting there. Port <Code content="3552" /> is where things get interesting. It runs <Code content="Arcane 1.13.0" />, which is visible both on the login page footer and confirmed via the <Code content="/api/version" /> endpoint.
+
+<Bild
+    src="https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/kobold-arcane.png"
+    alt="Arcane login page"
+    width="1920"
+    height="929"
+/>
+
+I did the usual enumeration on both web services: directory, file, VHost and subdomain fuzzing. The VHost fuzzing on port <Code content="3552" /> returned nothing. However, fuzzing against port <Code content="80" /> and <Code content="443" /> uncovers two subdomains:
+
+<Block
+    language="Bash"
+    content={
+        "ffuf -w subdomains-top1million-110000.txt:FUZZ \\\n\t-H 'Host: FUZZ.kobold.htb' \\\n\t-u http://kobold.htb/ \\\n\t-fs 154"
+    }
+/>
+
+<Block language="Bash" content={"bin.kobold.htb\nmcp.kobold.htb"} />
+
+Both get added to <Code content="/etc/hosts" />. One of them is a <Code content="PrivateBin 2.0.2" /> instance, and the other is running <Code content="MCPJam 1.4.2" />.
+
+<br />
+
+Checking for CVEs against <Code content="Arcane 1.13.0" /> turns up <Marker content="CVE-2026-23520" link="https://nvd.nist.gov/vuln/detail/CVE-2026-23520" />, but it is patched in version <Code content="1.13.0" />, it was a dead end. <Code content="MCPJam 1.4.2" /> however is vulnerable to <Marker content="CVE-2026-23744" link="https://nvd.nist.gov/vuln/detail/CVE-2026-23744" />. Found a public <Marker content="exploit" link="https://github.com/z4yd3/PoC-CVE-2026-23744" /> for it as well.
+
+<br />
+
+Combined with a netcat listener, this establishes the initial foothold on the machine as <Code content="ben" />. The user flag is found under <Code content="/home/ben/user.txt" />.
+
+<br />
+
+Moving on to privilege escalation. This one was tough for me.
+
+<br />
+
+I checked running services, listening ports, sudo permissions, nothing really stood out. Further enumeration reveals a Docker proxy running as root on localhost:
+
+<Block
+    language="Bash"
+    content={"/usr/bin/docker-proxy -proto tcp -host-ip 127.0.0.1 -host-port 8080 -container-ip 172.17.0.2 -container-port 8080"}
+/>
+
+Port <Code content="8080" /> is forwarded via SSH and turns out to be the same <Code content="PrivateBin" /> instance as <Code content="bin.kobold.htb" />, running inside a Docker container.
+
+<Bild
+    src="https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/kobold-privatebin.png"
+    alt="PrivateBin running in Docker"
+    width="1920"
+    height="929"
+/>
+
+Then I did the thing I should've done from the start: <Code content="id" />.
+
+<Block language="Bash" content={"uid=1001(ben) gid=1001(ben) groups=1001(ben),37(operator)"} />
+
+The <Code content="operator" /> group immediately stands out since it is non-standard. Checking what it owns:
+
+<Block language="Bash" content={"find / -group operator 2>/dev/null"} />
+
+This reveals <Code content="/privatebin-data/" /> including some interesting PHP files:
+
+<Block
+    language="Bash"
+    content={
+        "-rwxrwxrwx 1 root operator  47 Mar 26 22:00 /privatebin-data/data/purge_limiter.php\n-rwxrwxrwx 1 root operator 522 Feb 16 08:29 /privatebin-data/data/salt.php\n-rw-r----- 1 root operator 132 Feb 16 08:34 /privatebin-data/data/traffic_limiter.php"
+    }
+/>
+
+<Code content="purge_limiter.php" /> is world-writable and owned by root, and its timestamp updates regularly. Spent some time going
+down this rabbit hole trying to find what executes it, but couldn't locate a cron job or timer responsible. This seemed like a dead
+end or possibly an unintended path.
+
+<br />
+
+A little nudge from a writeup made me go back to <Code content="docker" />: At first glance <Code content="ben" /> is not in the <Code content="docker" /> group. However, running <Code content="newgrp docker" /> does not prompt for a password, meaning ben's primary group is implicitly allowed into Docker. This is the actual privilege escalation vector.
+
+<br />
+
+I found a classic <Code content="docker" /> privilege <Marker content="escalation" href="https://www.offensivecyberprofessional.com/docker-privesc/" /> writeup and tried it out: With Docker access, the host filesystem is mounted into a container and chrooted into:
+
+<Block language="Bash" content={"docker run -it -v /:/mnt --rm mysql chroot /mnt"} />
+
+Note: The writeup I followed used <Code content="ubuntu" /> as the base image, but this machine does not have it. I listed available images with <Code content="docker image ls" /> and found <Code content="mysql" /> which worked just fine.
+
+<br />
+
+Root shell obtained. The root flag is retrieved from <Code content="/root/root.txt" />.
+
+<br />
+
+In this machine I have learned a lot of new things, and embraced some old ones that I had forgotten. Here are the main takeaways:
+
+<br />
+
+**VHost fuzzing**: I wasted a lot of time because my ffuf command was wrong. FUZZ belongs in the <Code content="Host" /> header only, the <Code content="-u" /> flag points to the static base URL.
+
+<br />
+
+**Fuzz every service independently**: The relevant VHosts were on port <Code content="80/443" />, not on port <Code content="3552" /> where Arcane lived.
+
+<br />
+
+**Docker can be a privesc vector**: I shall always check <Code content="newgrp" /> and <Code content="docker" /> permissions when I see Docker installed. This was the simplest privilege escalation I have overlooked.
+
+<br />
+
+**Find is underrated as hell**: The <Code content="-group" /> flag on <Code content="find" /> surfaces files owned by a specific group instantly. Paired with <Code content="-writable" /> and <Code content="-executable" /> it can be a powerful tool to find privesc vectors. Never knew that <Code content="find" /> is that powerful until now.

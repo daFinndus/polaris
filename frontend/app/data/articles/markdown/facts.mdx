@@ -69,3 +69,23 @@ A bit of research gave me a <Marker content="privilege escalation script" link="
 <Block language="Bash" content={"Facter.add(:pwn) do\n setcode do\n system('\''/bin/bash'\'')\n end\nend"} />
 
 Since <Code content="facter" /> can be run with sudo without a password, executing the exploit yields a root shell. The root flag is retrieved from <Code content="/root/root.txt" />.
+
+<br />
+
+This box was a good reminder that enumeration and chaining are everything. Nothing here was particularly hard in isolation, but connecting everything together was the key.
+
+<br />
+
+**Chain your exploits logically**: The CMS had two CVEs. One for privesc within the app, one for file read. Neither was useful alone. Using them in sequence is what unlocked the path forward. Sometimes one CVE just needs another CVE to be useful.
+
+<br />
+
+**<Code content="sudo -l" /> is always the first thing after getting a shell**: On this box it immediately handed the privesc vector. This needs to be muscle memory.
+
+<br />
+
+**Linpeas flags writable PATH abuses for a reason**: A 95% confidence flag is not noise. In this case it pointed directly to the <Code content="facter" /> binary and the actual root path.
+
+<br />
+
+**Passphrase-protected SSH keys are crackable**: <Code content="ssh2john" /> converts the key to a crackable hash, then john does the rest. That is absolutely huge.

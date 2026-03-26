@@ -2,6 +2,7 @@ import React from "react"
 
 import CCTV from "@/app/data/articles/markdown/cctv.mdx"
 import Facts from "@/app/data/articles/markdown/facts.mdx"
+import Kobold from "@/app/data/articles/markdown/kobold.mdx"
 import WingData from "@/app/data/articles/markdown/wingdata.mdx"
 import VariaType from "@/app/data/articles/markdown/variatype.mdx"
 import Interpreter from "@/app/data/articles/markdown/interpreter.mdx"
@@ -19,6 +20,17 @@ interface Blog {
 
 export const blogs: Blog[] = [
     {
+        ident: "Kobold",
+        thumbnail: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/kobold.png",
+        width: 300,
+        height: 300,
+        title: "Kobold",
+        date: "26.03.2026",
+        description:
+            "This is a writeup of Kobold, an easy linux machine by Hack the Box. This machine mainly worked with a vulnerable version of Arcane-Web and MCPJam.",
+        content: <Kobold />,
+    },
+    {
         ident: "variatype",
         thumbnail: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/variatype.png",
         width: 300,
@@ -26,7 +38,7 @@ export const blogs: Blog[] = [
         title: "VariaType",
         date: "19.03.2026",
         description:
-            "This is a writeup of VariaType, an medium linux machine by Hack the Boxk. This machine mainly worked with a vulnerable version of fontTools and setuptools.",
+            "This is a writeup of VariaType, a medium linux machine by Hack the Boxk. This machine mainly worked with a vulnerable version of fontTools and setuptools.",
         content: <VariaType />,
     },
     {

@@ -151,3 +151,23 @@ The public key is written to <Code content="/root/.ssh/authorized_keys" /> as ro
 <Block language="Bash" content={"ssh -i /tmp/root.key root@variatype.htb"} />
 
 The root flag is retrieved from <Code content="/root/root.txt" />.
+
+<br />
+
+This box taught me a lot about thinking beyond the obvious. Here are the main takeaways:
+
+<br />
+
+**VHost fuzzing unblocked the whole foothold**: The exploit was targeting the wrong webroot and failing silently with a <Code content="404" />.
+
+<br />
+
+**Upgrade shell immediately**: An unstable shell mid-exploit is painful. As soon as a shell lands, upgrading it is such a quality of life improvement for the rest of the box.
+
+<br />
+
+**Credentials hide in config files**: <Code content="auth.php" /> was sitting there with plaintext creds. Always grep around the webroot and service directories for <Code content=".php" />, <Code content=".conf" />, <Code content=".env" />, and <Code content=".bak" /> files after getting a shell.
+
+<br />
+
+**Zip filenames bypass regex**: The zip format stores filenames as raw bytes in its header, completely outside filesystem restrictions. Application-layer regex validation does nothing to stop a malicious zip entry.

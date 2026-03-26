@@ -119,4 +119,28 @@ This exploit bypasses local client-side validation to modify configuration param
 
 <br />
 
-Because motionEye is only reachable locally, the service is first forwarded to the attacking machine. The exploit is then executed against the forwarded port, which successfully returns a reverse shell. The shell runs as <Code content="root" />, giving full control of the system. The root flag can be retrieved from <Code content="/root/root.txt" /> and the user flag lies under <Code content="/home/sa-mark/user.txt" />.
+Because motionEye is only reachable locally, the service is first forwarded to the attacking machine. The exploit is then executed against the forwarded port, which successfully returns a reverse shell. The shell runs as <Code content="root" />, giving full control of the system.
+
+<br />
+
+The root flag can be retrieved from <Code content="/root/root.txt" /> and the user flag lies under <Code content="/home/sa-mark/user.txt" />.
+
+<br />
+
+Honestly this one humbled me a bit. Some of the lessons here are embarrassingly basic, but that's exactly why they're worth writing down.
+
+<br />
+
+**Try default credentials before anything else**: <Code content="admin:admin" /> got straight into ZoneMinder. In the rush to find vulns, I just overlooked the possibility of default credentials.
+
+<br />
+
+**Stored hashes can sometimes be used directly**: The motionEye SHA-1 hash didn't need cracking, it worked as the password itself. Would've never thought of that.
+
+<br />
+
+**<Code content="ss -tlnp" /> when the surface looks sparse**: The box looked almost empty until local port enumeration revealed a whole bunch of internal services.
+
+<br />
+
+**Service config files contain credentials**: <Code content="/etc/motioneye/motion.conf" /> had the admin hash sitting right there. That's crazy.

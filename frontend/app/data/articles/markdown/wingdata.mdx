@@ -71,3 +71,19 @@ The backup script has a strict filename validation, which only allows <Code cont
 <Block language="Bash" content={"sudo python3 /opt/backup_clients/restore_backup_clients.py -b backup_1011.tar -r restore_wacky"} />
 
 After the payload lands, <Code content="sudo su" /> can be used to switch to root and retrieve the root flag.
+
+<br />
+
+Short box, but with some solid lessons baked in, especially around how software handles secrets and archive extraction.
+
+<br />
+
+**Static salts are as good as no salt**: Wing FTP used <Code content="WingFTP" /> as a hardcoded salt for every password hash. When hashcat doesn't crack unsalted hashes, I should remember to check for static salts. If the salt is static and known, cracking is just as easy as with unsalted hashes.
+
+<br />
+
+**The exploit directory is worth digging through**: Landing in <Code content="/opt/wingftp" /> and finding XML files with hashes wasn't immediately obvious, but taking the time to search through the installation directory paid off directly.
+
+<br />
+
+**Filename validation can be bypassed at the tar level**: Just like zip files, tar archives can contain entries that bypass application-layer filename checks. Whenever I see a root-executed script extracting archives, I should look for a tarball path traversal CVE.

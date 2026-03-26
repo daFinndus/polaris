@@ -146,3 +146,23 @@ Then I used a simple payload to test if the eval can be abused for reading files
 The output did indeed contain the root flag:
 
 <Block language="Text" content={"Patient 364e620f177768216a478d2fc5a95f7c a (M), 26 years old, received from a at 1"} />
+
+<br />
+
+Probably the most technical box of the bunch at this time. A few things here I genuinely didn't know before going in.
+
+<br />
+
+**Payload choice in Metasploit matters**: The module reported success but no shell came back until the right payload was selected. A successful exploit doesn't mean a successful shell. I need to try different payloads until something gets established.
+
+<br />
+
+**Database credentials live in service config files**: <Code content="mirth.properties" /> had them in plaintext. Checking the <Code content="config" /> folder of a service is always a good move after landing a shell.
+
+<br />
+
+**<Code content="ps aux" /> is a privesc technique**: When <Code content="sudo -l" /> fails and linpeas can't run, I should go through the process list manually. A Python script running as root was the entire privesc path here.
+
+<br />
+
+**<Code content="eval()" /> on user input is almost always a vulnerability**: The moment I see user-controlled data flowing into <Code content="eval()" />, that's the vector. Even with regex validation in front of it, it's worth probing hard.
