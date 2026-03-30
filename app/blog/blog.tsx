@@ -239,7 +239,9 @@ export const Blog = () => {
           .join(" ")
           .toLowerCase();
 
-        return keywords.every((keyword) => searchable.includes(keyword));
+        if (!keywords.every((keyword) => searchable.includes(keyword))) {
+          return false;
+        }
       }
 
       return true;

@@ -49,7 +49,7 @@ export const blogs: Blog[] = [
       "This is a writeup of VariaType, a medium linux machine by Hack the Boxk. This machine mainly worked with a vulnerable version of fontTools and setuptools.",
     system: "Linux",
     difficulty: "Medium",
-    keywords: ["fonttools", "setuptools"],
+    keywords: ["fonttools", "setuptools", "python"],
     content: <VariaType />,
   },
   {

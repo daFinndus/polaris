@@ -7,7 +7,12 @@ import { CiFilter } from "react-icons/ci";
 import { IconType } from "react-icons";
 import { BiWindows } from "react-icons/bi";
 import { GrSolaris } from "react-icons/gr";
-import { SiLinux, SiMacos } from "react-icons/si";
+import { SiEasyeda, SiLinux, SiMacos } from "react-icons/si";
+import { BsMedium } from "react-icons/bs";
+import { FaBaby, FaChild } from "react-icons/fa";
+import { IoIosMan } from "react-icons/io";
+import { GiGingerbreadMan } from "react-icons/gi";
+import { Icon } from "lucide-react";
 
 export interface Difficulty {
   name: string;
@@ -20,25 +25,25 @@ export const difficulties: Difficulty[] = [
   {
     name: "Easy",
     background: "bg-green-600/10",
-    icon: BiWindows,
+    icon: FaBaby,
     color: "text-green-600",
   },
   {
     name: "Medium",
     background: "bg-yellow-600/10",
-    icon: SiLinux,
+    icon: FaChild,
     color: "text-yellow-600",
   },
   {
     name: "Hard",
     background: "bg-red-600/10",
-    icon: SiMacos,
+    icon: IoIosMan,
     color: "text-red-600",
   },
   {
     name: "Insane",
     background: "bg-gray-600/10",
-    icon: GrSolaris,
+    icon: GiGingerbreadMan,
     color: "text-gray-600",
   },
 ];
@@ -71,16 +76,17 @@ export const DifficultyFilter = ({
         Select difficulties
       </p>
       <div className={"notebook:grid-cols-2 grid grid-cols-2 gap-2"}>
-        {schwierigkeiten.map((schwierigkeit) => {
+        {difficulties.map((schwierigkeit, index) => {
           return (
             <Button
-              key={schwierigkeit}
+              key={index}
               size={"sm"}
               variant={"secondary"}
-              onClick={() => toggleDifficulty(schwierigkeit)}
-              className={`text-xs transition-colors duration-300 ${difficulty === schwierigkeit ? "bg-primary text-background-light hover:bg-primary/80" : "bg-background-lighter text-primary hover:bg-background-lightest"}`}
+              onClick={() => toggleDifficulty(schwierigkeit.name)}
+              className={`text-xs transition-colors justify-between duration-300 ${difficulty === schwierigkeit.name ? `${schwierigkeit.color} ${schwierigkeit.background}` : "bg-background-lighter text-primary hover:bg-background-lightest"}`}
             >
-              {schwierigkeit}
+              {schwierigkeit.name}
+              <schwierigkeit.icon size={12} />
             </Button>
           );
         })}

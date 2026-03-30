@@ -2,44 +2,34 @@ import React from "react";
 
 import { Button } from "@/components/ui/button";
 
-import { CiFilter } from "react-icons/ci";
-
 import { IconType } from "react-icons";
-import { BiWindows } from "react-icons/bi";
+
+import { CiFilter } from "react-icons/ci";
 import { GrSolaris } from "react-icons/gr";
-import { SiLinux, SiMacos } from "react-icons/si";
+import { SiLinux } from "react-icons/si";
+import { FaWindows, FaApple } from "react-icons/fa";
 
 export interface System {
   name: string;
-  background: string;
   icon: IconType;
-  color: string;
 }
 
 export const systems: System[] = [
   {
     name: "Windows",
-    background: "bg-blue-600/10",
-    icon: BiWindows,
-    color: "text-blue-600",
+    icon: FaWindows,
   },
   {
     name: "Linux",
-    background: "bg-green-600/10",
     icon: SiLinux,
-    color: "text-green-600",
   },
   {
     name: "macOS",
-    background: "bg-gray-600/10",
-    icon: SiMacos,
-    color: "text-gray-600",
+    icon: FaApple,
   },
   {
     name: "Solaris",
-    background: "bg-yellow-600/10",
     icon: GrSolaris,
-    color: "text-yellow-600",
   },
 ];
 
@@ -68,16 +58,17 @@ export const SystemFilter = ({ device, setDevice }: SystemProps) => {
         Select systems
       </p>
       <div className={"notebook:grid-cols-2   grid grid-cols-2 gap-2"}>
-        {systeme.map((system) => {
+        {systems.map((system, index) => {
           return (
             <Button
-              key={system}
+              key={index}
               size={"sm"}
               variant={"secondary"}
-              className={`text-xs transition-colors duration-300 ${device === system ? "bg-primary text-background-light hover:bg-primary/80" : "bg-background-lighter text-primary hover:bg-background-lightest"}`}
-              onClick={() => toggleSystem(system)}
+              className={`text-xs transition-colors duration-300 justify-between ${device === system.name ? "bg-primary text-background-light hover:bg-primary/80" : "bg-background-lighter text-primary hover:bg-background-lightest"}`}
+              onClick={() => toggleSystem(system.name)}
             >
-              {system}
+              {system.name}
+              <system.icon size={12} />
             </Button>
           );
         })}
