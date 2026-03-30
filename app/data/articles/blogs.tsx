@@ -13,8 +13,11 @@ interface Blog {
   width: number;
   height: number;
   title: string;
-  date: string;
+  date: Date;
   description: string;
+  system: string;
+  difficulty: string;
+  keywords: string[];
   content: React.ReactNode;
 }
 
@@ -26,9 +29,12 @@ export const blogs: Blog[] = [
     width: 300,
     height: 300,
     title: "Kobold",
-    date: "26.03.2026",
+    date: new Date("2026-03-26"),
     description:
       "This is a writeup of Kobold, an easy linux machine by Hack the Box. This machine mainly worked with a vulnerable version of MCPJam and abusing docker.",
+    system: "Linux",
+    difficulty: "Easy",
+    keywords: ["mcpjam", "docker"],
     content: <Kobold />,
   },
   {
@@ -38,9 +44,12 @@ export const blogs: Blog[] = [
     width: 300,
     height: 300,
     title: "VariaType",
-    date: "19.03.2026",
+    date: new Date("2026-03-19"),
     description:
       "This is a writeup of VariaType, a medium linux machine by Hack the Boxk. This machine mainly worked with a vulnerable version of fontTools and setuptools.",
+    system: "Linux",
+    difficulty: "Medium",
+    keywords: ["fonttools", "setuptools"],
     content: <VariaType />,
   },
   {
@@ -50,9 +59,12 @@ export const blogs: Blog[] = [
     width: 300,
     height: 300,
     title: "CCTV",
-    date: "13.03.2026",
+    date: new Date("2026-03-13"),
     description:
       "This is a writeup of CCTV, an easy linux machine by Hack the Box. This machine mainly worked with ZoneMinder and motionEye.",
+    system: "Linux",
+    difficulty: "Easy",
+    keywords: ["zoneminder", "motioneye"],
     content: <CCTV />,
   },
   {
@@ -62,9 +74,12 @@ export const blogs: Blog[] = [
     width: 300,
     height: 300,
     title: "Interpreter",
-    date: "24.02.2025",
+    date: new Date("2025-02-24"),
     description:
       "This is a writeup of Interpreter, a medium linux machine by Hack the Box. This machine mainly worked with Mirth Connect, a healthcare integration engine.",
+    system: "Linux",
+    difficulty: "Medium",
+    keywords: ["mirth", "connect", "healthcare"],
     content: <Interpreter />,
   },
   {
@@ -74,9 +89,12 @@ export const blogs: Blog[] = [
     width: 300,
     height: 300,
     title: "WingData",
-    date: "21.02.2025",
+    date: new Date("2025-02-21"),
     description:
       "This is a writeup of WingData, an easy linux machine by Hack the Box. This machine mainly worked with Wing FTP and a vulnerable version of the python library tarfile.",
+    system: "Linux",
+    difficulty: "Easy",
+    keywords: ["wing", "ftp", "tarfile"],
     content: <WingData />,
   },
   {
@@ -86,9 +104,12 @@ export const blogs: Blog[] = [
     width: 300,
     height: 300,
     title: "Facts",
-    date: "17.02.2025",
+    date: new Date("2025-02-17"),
     description:
       "This is a writeup of Facts, an easy linux machine by Hack the Box. Relevant for this machine was Fuzzing, the AWS CLI and sudo misconfigurations.",
+    system: "Linux",
+    difficulty: "Easy",
+    keywords: ["fuzzing", "aws", "sudo"],
     content: <Facts />,
   },
 ];

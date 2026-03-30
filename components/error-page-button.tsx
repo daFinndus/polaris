@@ -11,7 +11,7 @@ export const ErrorPageButton = () => {
       className={"notebook:w-12 flex h-12 w-1/2 items-center"}
     >
       <Button
-        variant="secondary"
+        variant={"secondary"}
         className={"h-full w-full"}
         aria-label={"This will redirect to the error page."}
       >

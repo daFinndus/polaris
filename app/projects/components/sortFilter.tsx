@@ -23,14 +23,14 @@ export const SortFilter = ({ sort, setSort }: sortFilterProps) => {
         Sort by
       </p>
       <Select value={sort} onValueChange={(value) => setSort(value)}>
-        <SelectTrigger className="h-12 w-45 rounded-lg border-2">
-          <SelectValue placeholder="Select sort mode" />
+        <SelectTrigger className={"h-12 w-45 rounded-lg border-2"}>
+          <SelectValue placeholder={"Select sort mode"} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="latest">Latest first</SelectItem>
-          <SelectItem value="oldest">Oldest first</SelectItem>
-          <SelectItem value="alphabetic">A-Z</SelectItem>
-          <SelectItem value="alphabetic-reverse">Z-A</SelectItem>
+          <SelectItem value={"latest"}>Latest first</SelectItem>
+          <SelectItem value={"oldest"}>Oldest first</SelectItem>
+          <SelectItem value={"alphabetic"}>A-Z</SelectItem>
+          <SelectItem value={"alphabetic-reverse"}>Z-A</SelectItem>
         </SelectContent>
       </Select>
     </div>

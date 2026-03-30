@@ -36,10 +36,10 @@ export const Marker = ({
   return (
     <Link
       href={link || ""}
-      target="_blank"
-      className="text-primary hover:text-primary/80"
+      target={"_blank"}
+      className={"text-primary hover:text-primary/80"}
     >
-      <span className="inline-block text-blue-300">
+      <span className={"inline-block text-blue-300"}>
         <span>{content}</span>
       </span>
     </Link>
@@ -48,7 +48,7 @@ export const Marker = ({
 
 export const Code = ({ content }: { content: string }) => {
   return (
-    <span className="bg-background-lighter text-primary inline-block rounded border px-1 font-mono">
+    <span className={"bg-background-lighter text-primary inline-block rounded border px-1 font-mono"}>
       {content}
     </span>
   );
@@ -71,23 +71,23 @@ export const Block = ({
   };
 
   return (
-    <div className="border-primary/10 bg-background-lighter my-4 w-full max-w-full overflow-hidden rounded border">
-      <div className="border-primary/10 flex items-center justify-between border-b px-4 py-2">
-        <span className="text-primary/40 font-mono text-xs tracking-widest uppercase">
+    <div className={"border-primary/10 bg-background-lighter my-4 w-full max-w-full overflow-hidden rounded border"}>
+      <div className={"border-primary/10 flex items-center justify-between border-b px-4 py-2"}>
+        <span className={"text-primary/40 font-mono text-xs tracking-widest uppercase"}>
           {language}
         </span>
         <button
           onClick={handleCopy}
-          title="Copy code"
+          title={"Copy code"}
           className={"cursor-pointer font-mono text-xs"}
         >
           {copied ? (
-            <div className="flex items-center gap-1.5 text-green-400">
+            <div className={"flex items-center gap-1.5 text-green-400"}>
               <Check size={13} />
               <span>Copied!</span>
             </div>
           ) : (
-            <div className="text-primary/40 hover:text-primary/80 flex items-center gap-1.5 duration-300">
+            <div className={"text-primary/40 hover:text-primary/80 flex items-center gap-1.5 duration-300"}>
               <Copy size={13} />
               <span>Copy</span>
             </div>
@@ -95,8 +95,8 @@ export const Block = ({
         </button>
       </div>
 
-      <div className="max-w-full overflow-x-auto overflow-y-visible">
-        <pre className="text-primary min-w-0 px-4 py-3 font-mono text-sm leading-relaxed whitespace-pre">
+      <div className={"max-w-full overflow-x-auto overflow-y-visible"}>
+        <pre className={"text-primary min-w-0 px-4 py-3 font-mono text-sm leading-relaxed whitespace-pre"}>
           {content}
         </pre>
       </div>

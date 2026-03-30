@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { projects } from "@/app/data/projects/projects";
+
 import { SortFilter } from "@/app/projects/components/sortFilter";
 import { ResetFilter } from "@/app/projects/components/resetFilter";
 import { ProjectFilter } from "@/app/projects/components/projectFilter";
@@ -164,10 +165,14 @@ const Filter = ({
     <Collapsible
       open={open}
       onOpenChange={() => setOpen(!open)}
-      className="bg-background tablet:w-160 laptop:w-242"
+      className={"bg-background w-78 notebook:w-160 laptop:min-w-242"}
     >
-      <div className="border-background-lighter bg-background-light mb-4 flex items-center justify-between space-x-4 rounded-lg border-2 px-2 py-1">
-        <h4 className="ml-2 min-w-fit text-sm font-semibold">Set filters</h4>
+      <div
+        className={
+          "border-background-lighter bg-background-light mb-4 flex items-center justify-between space-x-4 rounded-lg border-2 px-2 py-1 w-auto"
+        }
+      >
+        <h4 className={"ml-2 min-w-fit text-sm font-semibold"}>Set filters</h4>
         <CollapsibleTrigger asChild className={"items-center justify-end"}>
           <div className={"flex w-full items-end"}>
             <Button variant={"ghost"}>
@@ -176,20 +181,20 @@ const Filter = ({
           </div>
         </CollapsibleTrigger>
       </div>
-      <CollapsibleContent className="mb-4 space-y-2">
+      <CollapsibleContent className={"mb-4 space-y-2"}>
         <div
           className={
             "notebook:max-w-none w-auto max-w-78 rounded-lg border-2 p-4"
           }
         >
-          <div className="flex flex-row justify-between">
+          <div className={"flex flex-row justify-between"}>
             <div className={"laptop:flex hidden w-1/2"}>
               <LanguageFilter
                 languages={languages}
                 setLanguages={setLanguages}
               />
             </div>
-            <div className="laptop:flex hidden w-1/2 flex-col gap-y-8">
+            <div className={"laptop:flex hidden w-1/2 flex-col gap-y-8"}>
               <ProjectFilter
                 opensource={opensource}
                 setOpensource={setOpensource}

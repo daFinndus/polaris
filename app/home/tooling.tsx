@@ -57,7 +57,7 @@ const Entry = ({ Icon, name, content, description }: Stack) => {
         </Badge>
       </PopoverTrigger>
       {description && (
-        <PopoverContent className="border-background-lightest text-primary max-w-full text-justify text-xs shadow-2xl">
+        <PopoverContent className={"border-background-lightest text-primary max-w-full text-justify text-xs shadow-2xl"}>
           {description}
         </PopoverContent>
       )}

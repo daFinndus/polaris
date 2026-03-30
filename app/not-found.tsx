@@ -64,10 +64,10 @@ const AudioButton = () => {
   };
 
   return (
-    <div className="notebook:w-12 flex h-12 w-1/2">
+    <div className={"notebook:w-12 flex h-12 w-1/2"}>
       <Button
-        variant="secondary"
-        className="h-full w-full"
+        variant={"secondary"}
+        className={"h-full w-full"}
         onClick={ToggleAudio}
       >
         {isMuted ? <RiVolumeMuteFill /> : <RiVolumeUpFill />}
@@ -75,7 +75,7 @@ const AudioButton = () => {
       <audio
         muted={isMuted}
         ref={audioRef}
-        preload="auto"
+        preload={"auto"}
         onEnded={NextAudio}
       />
     </div>

@@ -1,22 +1,14 @@
 import React from "react";
 
-import { skills } from "@/app/data/projects/skills";
+import { skills, Skill } from "@/app/data/projects/skills";
 
 import { Button } from "@/components/ui/button";
 
 import { CiFilter } from "react-icons/ci";
-import { IconType } from "react-icons";
 
 interface LanguageFilterProps {
   languages: string[];
   setLanguages: React.Dispatch<React.SetStateAction<string[]>>;
-}
-
-interface Skill {
-  name: string;
-  background: string;
-  icon: IconType;
-  color: string;
 }
 
 /**

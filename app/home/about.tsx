@@ -76,8 +76,8 @@ export const About = () => {
         >
           <AvatarImage
             className={"object-cover"}
-            src="https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Miscellaneous/pose.jpg"
-            alt="This is me."
+            src={"https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Miscellaneous/pose.jpg"}
+            alt={"This is me."}
             width={400}
             height={300}
           />

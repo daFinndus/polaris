@@ -29,27 +29,27 @@ export const ProjectFilter = ({
       </p>
       <div className={"flex gap-x-2"}>
         <Checkbox
-          id="opensource"
+          id={"opensource"}
           checked={opensource}
           onCheckedChange={() => setOpensource(!opensource)}
         />
-        <label htmlFor="opensource">Opensource</label>
+        <label htmlFor={"opensource"}>Opensource</label>
       </div>
       <div className={"flex gap-x-2"}>
         <Checkbox
-          id="demo"
+          id={"demo"}
           checked={demo}
           onCheckedChange={() => setDemo(!demo)}
         />
-        <label htmlFor="demo">Demo available</label>
+        <label htmlFor={"demo"}>Demo available</label>
       </div>
       <div className={"flex gap-x-2"}>
         <Checkbox
-          id="personal"
+          id={"personal"}
           checked={personal}
           onCheckedChange={() => setPersonal(!personal)}
         />
-        <label htmlFor="personal">Personal project</label>
+        <label htmlFor={"personal"}>Personal project</label>
       </div>
     </div>
   );

@@ -24,13 +24,13 @@ const Unsupported = () => {
 const Supported = () => {
   return (
     <div>
-      <div className="notebook:fixed notebook:flex top-4 right-4 hidden flex-col gap-y-2">
+      <div className={"notebook:fixed notebook:flex top-4 right-4 hidden flex-col gap-y-2"}>
         <ColorModeButton />
         <HomeButton />
         <ClockPageButton />
         <ErrorPageButton />
       </div>
-      <div className="bg-background text-primary flex h-screen w-screen flex-col items-center justify-center text-sm">
+      <div className={"bg-background text-primary flex h-screen w-screen flex-col items-center justify-center text-sm"}>
         <p>Finn Luca Jensen</p>
         <p>Waitzstraße 47</p>
         <p className={"mb-4"}>24105 Kiel</p>

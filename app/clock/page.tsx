@@ -66,7 +66,7 @@ const Supported = () => {
         <HomeButton />
         <ColorModeButton />
       </div>
-      <span className="text-primary smartphone:text-6xl tablet:text-8xl flex h-full items-center text-center text-4xl">
+      <span className={"text-primary smartphone:text-6xl tablet:text-8xl flex h-full items-center text-center text-4xl"}>
         {time}
       </span>
     </div>
