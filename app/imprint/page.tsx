@@ -45,5 +45,5 @@ export default function Page() {
     getColorMode();
   }, []);
 
-  return checkScreenValidity(Supported(), Unsupported());
+  return checkScreenValidity({ Supported, Unsupported });
 }

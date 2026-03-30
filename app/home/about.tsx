@@ -21,6 +21,8 @@ import { SiGmail, SiHackthebox } from "react-icons/si";
 import { IoLogoGameControllerB } from "react-icons/io";
 import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
 
+const WORDS = ["Developer", "Cybersecurity-Enthusiast", "Student"];
+
 const Tag = ({ Icon, name }: { Icon: IconType; name: string }) => {
   return (
     <Badge
@@ -34,8 +36,7 @@ const Tag = ({ Icon, name }: { Icon: IconType; name: string }) => {
 };
 
 export const About = () => {
-  const words = ["Developer", "Cybersecurity-Enthusiast", "Student"];
-  const [word, setWord] = useState(getRandomWord(words));
+  const [word, setWord] = useState(getRandomWord(WORDS));
 
   const { ref } = useScramble({
     text: word,
@@ -57,11 +58,11 @@ export const About = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setWord(getNextWord(words, word));
+      setWord((currentWord) => getNextWord(WORDS, currentWord));
     }, 2500);
 
     return () => clearInterval(interval);
-  }, [word]);
+  }, []);
 
   return (
     <div

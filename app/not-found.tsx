@@ -9,40 +9,46 @@ import { getColorMode } from "@/app/hooks/getColorMode";
 import { RiVolumeMuteFill, RiVolumeUpFill } from "react-icons/ri";
 import { checkScreenValidity } from "@/app/hooks/checkScreenValidity";
 
+const AUDIO_LIST = [
+  "/audios/been_good_to_know_ya.mp3",
+  "/audios/crustpunk.mp3",
+  "/audios/phantom_liberty.mp3",
+];
+
+const VIDEO_WHITELIST = Array.from(
+  { length: 46 },
+  (_, i) => `/videos/cyberpunk_clip_${String(i).padStart(2, "0")}.mp4`,
+);
+
 /**
  * This function is responsible for rendering the audio button.
  * It will loop through one audio file and play it in the background.
  */
 const AudioButton = () => {
-  const audioList = [
-    "/audios/been_good_to_know_ya.mp3",
-    "/audios/crustpunk.mp3",
-    "/audios/phantom_liberty.mp3",
-  ];
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const [isMuted, setIsMuted] = React.useState(true);
 
   useEffect(() => {
     if (audioRef.current) {
-      // Set a random audio file from the list
+      // Set a random audio file from the list.
       audioRef.current.src =
-        audioList[Math.floor(Math.random() * audioList.length)];
+        AUDIO_LIST[Math.floor(Math.random() * AUDIO_LIST.length)];
 
       audioRef.current.volume = 0.1;
       audioRef.current.play().catch((error) => console.error(error));
     }
   }, []);
 
-  // Function to play the next audio file from the list
+  // Function to play the next audio file from the list.
   const NextAudio = () => {
     if (audioRef.current) {
-      // Pause the current audio
+      // Pause the current audio.
       audioRef.current.pause();
 
-      // Set a new audio file which is not the current one
+      // Set a new audio file which is not the current one.
       const current = audioRef.current.src;
-      let tempAudioList = audioList.filter((i) => i !== current);
+      const tempAudioList = AUDIO_LIST.filter((i) => i !== current);
 
       audioRef.current.src =
         tempAudioList[Math.floor(Math.random() * tempAudioList.length)];
@@ -50,7 +56,7 @@ const AudioButton = () => {
     }
   };
 
-  // This function is self-explanatory, it toggles the audio on and off
+  // This function is self-explanatory, it toggles the audio on and off.
   const ToggleAudio = () => {
     if (audioRef.current) {
       setIsMuted(!isMuted);
@@ -83,13 +89,9 @@ const AudioButton = () => {
 const VideoBackground = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Executing the script under ~/frontend/public/scripts/video-clip-count.py will count the number of clips, basically the whitelist array length.
-  const whitelist = Array.from(
-    { length: 46 },
-    (_, i) => `/videos/cyberpunk_clip_${String(i).padStart(2, "0")}.mp4`,
-  );
-
-  const [currentVideo, setCurrentVideo] = useState(whitelist[0]);
+  // Executing the script under ~/frontend/public/scripts/video-clip-count.py will count the number of clips.
+  // Has to be manually updated if the number of clips changes.
+  const [currentVideo, setCurrentVideo] = useState(VIDEO_WHITELIST[0]);
   const [blacklist, setBlacklist] = useState<string[]>([]);
   const [fade, setFade] = useState(true);
 
@@ -106,18 +108,28 @@ const VideoBackground = () => {
   };
 
   const getNextVideo = () => {
-    const available = whitelist.filter((video) => !blacklist.includes(video));
+    const available = VIDEO_WHITELIST.filter(
+      (video) => !blacklist.includes(video),
+    );
 
     if (available.length === 0) {
       setBlacklist([]);
-      return whitelist[Math.floor(Math.random() * whitelist.length)];
+      return VIDEO_WHITELIST[
+        Math.floor(Math.random() * VIDEO_WHITELIST.length)
+      ];
     }
 
     return available[Math.floor(Math.random() * available.length)];
   };
 
   useEffect(() => {
-    if (videoRef.current) setCurrentVideo(getNextVideo());
+    const timeout = setTimeout(() => {
+      setCurrentVideo(
+        VIDEO_WHITELIST[Math.floor(Math.random() * VIDEO_WHITELIST.length)],
+      );
+    }, 0);
+
+    return () => clearTimeout(timeout);
   }, []);
 
   return (
@@ -177,5 +189,5 @@ const Supported = () => {
 };
 
 export default function Page() {
-  return checkScreenValidity(Supported(), Unsupported());
+  return checkScreenValidity({ Supported, Unsupported });
 }

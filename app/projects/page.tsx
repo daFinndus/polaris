@@ -4,7 +4,8 @@ import React, { useEffect } from "react";
 
 import { Projects } from "@/app/projects/projects";
 import { getColorMode } from "@/app/hooks/getColorMode";
-import { checkScreenValidity } from "@/app/hooks/checkScreenValidity";
+
+import { checkScreenValidity } from "../hooks/checkScreenValidity";
 
 import { HomeButton } from "@/components/home-button";
 import { ColorModeButton } from "@/components/color-mode-button";
@@ -57,5 +58,5 @@ export default function Page() {
     getColorMode();
   }, []);
 
-  return checkScreenValidity(Supported(), Unsupported());
+  return checkScreenValidity({ Supported, Unsupported });
 }

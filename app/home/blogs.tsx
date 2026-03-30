@@ -62,7 +62,7 @@ export const Blogs = () => {
             <Button asChild variant={"color"} className={"px-4"}>
               <Link href={"/blog"}>
                 <SiReadthedocs />
-                Let's go to the Blog
+                Let&apos;s go to the Blog
               </Link>
             </Button>
           </div>

@@ -33,4 +33,4 @@ export const useWindowSize = (): windowSize => {
   return windowSize;
 };
 
-// Stolen from here: https://stackoverflow.com/questions/73070114/i-want-to-change-style-according-to-window-width-using-states
+// Stolen from here: https://stackoverflow.com/questions/73070114/i-want-to-change-style-according-to-window-width-using-states.

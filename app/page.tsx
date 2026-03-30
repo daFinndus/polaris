@@ -83,5 +83,5 @@ export default function Page() {
     }
   }, []);
 
-  return checkScreenValidity(Supported(), Unsupported());
+  return checkScreenValidity({ Supported, Unsupported });
 }

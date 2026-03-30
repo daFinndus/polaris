@@ -129,6 +129,114 @@ const Tile = ({ project }: { project: Project }) => {
   );
 };
 
+interface FilterProps {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  languages: string[];
+  setLanguages: React.Dispatch<React.SetStateAction<string[]>>;
+  opensource: boolean;
+  setOpensource: React.Dispatch<React.SetStateAction<boolean>>;
+  demo: boolean;
+  setDemo: React.Dispatch<React.SetStateAction<boolean>>;
+  personal: boolean;
+  setPersonal: React.Dispatch<React.SetStateAction<boolean>>;
+  sort: string;
+  setSort: React.Dispatch<React.SetStateAction<string>>;
+  filteredCount: number;
+}
+
+const Filter = ({
+  open,
+  setOpen,
+  languages,
+  setLanguages,
+  opensource,
+  setOpensource,
+  demo,
+  setDemo,
+  personal,
+  setPersonal,
+  sort,
+  setSort,
+  filteredCount,
+}: FilterProps) => {
+  return (
+    <Collapsible
+      open={open}
+      onOpenChange={() => setOpen(!open)}
+      className="bg-background tablet:w-160 laptop:w-242"
+    >
+      <div className="border-background-lighter bg-background-light mb-4 flex items-center justify-between space-x-4 rounded-lg border-2 px-2 py-1">
+        <h4 className="ml-2 min-w-fit text-sm font-semibold">Set filters</h4>
+        <CollapsibleTrigger asChild className={"items-center justify-end"}>
+          <div className={"flex w-full items-end"}>
+            <Button variant={"ghost"}>
+              <IoFilter />
+            </Button>
+          </div>
+        </CollapsibleTrigger>
+      </div>
+      <CollapsibleContent className="mb-4 space-y-2">
+        <div
+          className={
+            "notebook:max-w-none w-auto max-w-78 rounded-lg border-2 p-4"
+          }
+        >
+          <div className="flex flex-row justify-between">
+            <div className={"laptop:flex hidden w-1/2"}>
+              <LanguageFilter
+                languages={languages}
+                setLanguages={setLanguages}
+              />
+            </div>
+            <div className="laptop:flex hidden w-1/2 flex-col gap-y-8">
+              <ProjectFilter
+                opensource={opensource}
+                setOpensource={setOpensource}
+                demo={demo}
+                setDemo={setDemo}
+                personal={personal}
+                setPersonal={setPersonal}
+              />
+              <SortFilter sort={sort} setSort={setSort} />
+              <ResetFilter
+                projectCount={filteredCount}
+                setLanguages={setLanguages}
+                setOpensource={setOpensource}
+                setDemo={setDemo}
+                setPersonal={setPersonal}
+                setSort={setSort}
+              />
+            </div>
+          </div>
+          <div
+            className={"laptop:hidden laptop:w-0 flex w-full flex-col gap-y-8"}
+          >
+            <LanguageFilter languages={languages} setLanguages={setLanguages} />
+            <ProjectFilter
+              opensource={opensource}
+              setOpensource={setOpensource}
+              demo={demo}
+              setDemo={setDemo}
+              personal={personal}
+              setPersonal={setPersonal}
+            />
+            <SortFilter sort={sort} setSort={setSort} />
+            <ResetFilter
+              projectCount={filteredCount}
+              setLanguages={setLanguages}
+              setOpensource={setOpensource}
+              setDemo={setDemo}
+              setPersonal={setPersonal}
+              setSort={setSort}
+            />
+          </div>
+        </div>
+      </CollapsibleContent>
+    </Collapsible>
+  );
+};
+
 export const Projects = () => {
   const [open, setOpen] = useState<boolean>(false);
 
@@ -144,15 +252,15 @@ export const Projects = () => {
    */
   const filtered = projects
     .filter((project) => {
-      // Filter for the project types
+      // Filter for the project types.
       if (opensource && !project.url) return false;
       if (demo && !project.demo) return false;
       if (personal && !project.personal) return false;
 
-      // Filter by selected languages
+      // Filter by selected languages.
       if (languages.length > 0) {
         const sprachen = project.skills?.map((skill) => skill.name) || [];
-        return languages.some((sprache) => sprachen.includes(sprache));
+        return languages.every((sprache) => sprachen.includes(sprache));
       }
 
       return true;
@@ -166,93 +274,24 @@ export const Projects = () => {
       return 0;
     });
 
-  const Filter = () => {
-    return (
-      <Collapsible
-        open={open}
-        onOpenChange={() => setOpen(!open)}
-        className="bg-background tablet:max-w-160 laptop:max-w-242"
-      >
-        <div className="border-background-lighter bg-background-light mb-4 flex items-center justify-between space-x-4 rounded-lg border-2 px-2 py-1">
-          <h4 className="ml-2 min-w-fit text-sm font-semibold">Set filters</h4>
-          <CollapsibleTrigger asChild className={"items-center justify-end"}>
-            <div className={"flex w-full items-end"}>
-              <Button variant={"ghost"}>
-                <IoFilter />
-              </Button>
-            </div>
-          </CollapsibleTrigger>
-        </div>
-        <CollapsibleContent className="mb-4 space-y-2">
-          <div
-            className={
-              "notebook:max-w-none w-auto max-w-78 rounded-lg border-2 p-4"
-            }
-          >
-            <div className="flex flex-row justify-between">
-              <div className={"laptop:flex hidden w-1/2"}>
-                <LanguageFilter
-                  languages={languages}
-                  setLanguages={setLanguages}
-                />
-              </div>
-              <div className="laptop:flex hidden w-1/2 flex-col gap-y-8">
-                <ProjectFilter
-                  opensource={opensource}
-                  setOpensource={setOpensource}
-                  demo={demo}
-                  setDemo={setDemo}
-                  personal={personal}
-                  setPersonal={setPersonal}
-                />
-                <SortFilter sort={sort} setSort={setSort} />
-                <ResetFilter
-                  projectCount={filtered.length}
-                  setLanguages={setLanguages}
-                  setOpensource={setOpensource}
-                  setDemo={setDemo}
-                  setPersonal={setPersonal}
-                  setSort={setSort}
-                />
-              </div>
-            </div>
-            <div
-              className={
-                "laptop:hidden laptop:w-0 flex w-full flex-col gap-y-8"
-              }
-            >
-              <LanguageFilter
-                languages={languages}
-                setLanguages={setLanguages}
-              />
-              <ProjectFilter
-                opensource={opensource}
-                setOpensource={setOpensource}
-                demo={demo}
-                setDemo={setDemo}
-                personal={personal}
-                setPersonal={setPersonal}
-              />
-              <SortFilter sort={sort} setSort={setSort} />
-              <ResetFilter
-                projectCount={filtered.length}
-                setLanguages={setLanguages}
-                setOpensource={setOpensource}
-                setDemo={setDemo}
-                setPersonal={setPersonal}
-                setSort={setSort}
-              />
-            </div>
-          </div>
-        </CollapsibleContent>
-      </Collapsible>
-    );
-  };
-
   return (
     <div className={"mb-4 flex w-auto text-xs"}>
       <div className={"flex flex-col"}>
-        <Filter />
+        <Filter
+          open={open}
+          setOpen={setOpen}
+          languages={languages}
+          setLanguages={setLanguages}
+          opensource={opensource}
+          setOpensource={setOpensource}
+          demo={demo}
+          setDemo={setDemo}
+          personal={personal}
+          setPersonal={setPersonal}
+          sort={sort}
+          setSort={setSort}
+          filteredCount={filtered.length}
+        />
         <div
           className={
             "notebook:grid-cols-2 laptop:grid-cols-3 grid grid-cols-1 justify-items-center gap-4 gap-x-4 gap-y-8"

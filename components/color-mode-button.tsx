@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 
@@ -17,11 +17,7 @@ import { getColorMode } from "@/app/hooks/getColorMode";
  * @constructor
  */
 export const ColorModeButton = () => {
-  const [dark, setDark] = useState(false);
-
-  useEffect(() => {
-    setDark(getColorMode());
-  }, []);
+  const [dark, setDark] = useState(getColorMode());
 
   const changeMode = () => {
     setDark(!dark);

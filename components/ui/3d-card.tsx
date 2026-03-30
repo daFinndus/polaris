@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import React, {
+  useCallback,
   createContext,
   useContext,
   useEffect,
@@ -112,18 +113,26 @@ export const CardItem = ({
   const ref = useRef<HTMLDivElement>(null);
   const [isMouseEntered] = useMouseEnter();
 
-  useEffect(() => {
-    handleAnimations();
-  }, [isMouseEntered]);
-
-  const handleAnimations = () => {
+  const handleAnimations = useCallback(() => {
     if (!ref.current) return;
     if (isMouseEntered) {
       ref.current.style.transform = `translateX(${translateX}px) translateY(${translateY}px) translateZ(${translateZ}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`;
     } else {
       ref.current.style.transform = `translateX(0px) translateY(0px) translateZ(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)`;
     }
-  };
+  }, [
+    isMouseEntered,
+    rotateX,
+    rotateY,
+    rotateZ,
+    translateX,
+    translateY,
+    translateZ,
+  ]);
+
+  useEffect(() => {
+    handleAnimations();
+  }, [handleAnimations]);
 
   return (
     <Tag
@@ -136,7 +145,7 @@ export const CardItem = ({
   );
 };
 
-// Create a hook to use the context
+// Create a hook to use the context.
 export const useMouseEnter = () => {
   const context = useContext(MouseEnterContext);
   if (context === undefined) {
