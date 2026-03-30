@@ -47,6 +47,9 @@
 # CMake
 cmake-build-*/
 
+# Next.js
+.next/
+
 # Mongo Explorer plugin
 .idea/**/mongoSettings.xml
 
