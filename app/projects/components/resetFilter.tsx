@@ -1,38 +1,45 @@
-import React from "react"
+import React from "react";
 
-import { projects } from "@/app/data/projects/projects"
+import { projects } from "@/app/data/projects/projects";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 
-import { RiEqualizerFill } from "react-icons/ri"
+import { RiEqualizerFill } from "react-icons/ri";
 
 interface resetFilterProps {
-    projectCount: number
-    setLanguages: React.Dispatch<React.SetStateAction<string[]>>
-    setOpensource: React.Dispatch<React.SetStateAction<boolean>>
-    setDemo: React.Dispatch<React.SetStateAction<boolean>>
-    setPersonal: React.Dispatch<React.SetStateAction<boolean>>
-    setSort: React.Dispatch<React.SetStateAction<string>>
+  projectCount: number;
+  setLanguages: React.Dispatch<React.SetStateAction<string[]>>;
+  setOpensource: React.Dispatch<React.SetStateAction<boolean>>;
+  setDemo: React.Dispatch<React.SetStateAction<boolean>>;
+  setPersonal: React.Dispatch<React.SetStateAction<boolean>>;
+  setSort: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const ResetFilter = ({ projectCount, setLanguages, setOpensource, setDemo, setPersonal, setSort }: resetFilterProps) => {
-    const resetFilter = () => {
-        setLanguages([])
-        setOpensource(false)
-        setDemo(false)
-        setPersonal(false)
-        setSort("latest")
-    }
+export const ResetFilter = ({
+  projectCount,
+  setLanguages,
+  setOpensource,
+  setDemo,
+  setPersonal,
+  setSort,
+}: resetFilterProps) => {
+  const resetFilter = () => {
+    setLanguages([]);
+    setOpensource(false);
+    setDemo(false);
+    setPersonal(false);
+    setSort("latest");
+  };
 
-    return (
-        <div className={"laptop:w-max flex w-auto flex-col gap-y-2"}>
-            <p className={"flex w-fit items-center gap-x-2 text-sm"}>
-                <RiEqualizerFill size={12} />
-                Showing {projectCount}/{projects.length} projects
-            </p>
-            <Button variant={"secondary"} onClick={resetFilter}>
-                Reset filters
-            </Button>
-        </div>
-    )
-}
+  return (
+    <div className={"laptop:w-max flex w-auto flex-col gap-y-2"}>
+      <p className={"flex w-fit items-center gap-x-2 text-sm"}>
+        <RiEqualizerFill size={12} />
+        Showing {projectCount}/{projects.length} projects
+      </p>
+      <Button variant={"secondary"} onClick={resetFilter}>
+        Reset filters
+      </Button>
+    </div>
+  );
+};

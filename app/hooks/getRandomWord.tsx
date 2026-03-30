@@ -4,5 +4,5 @@
  * @returns A random selected word in the provided array of words.
  */
 export const getRandomWord = (words: string[]): string => {
-    return words[Math.floor(Math.random() * words.length)]
-}
+  return words[Math.floor(Math.random() * words.length)];
+};
