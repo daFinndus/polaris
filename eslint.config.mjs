@@ -7,6 +7,14 @@ const eslintConfig = defineConfig([
   {
     rules: {
       "react-hooks/rules-of-hooks": "off",
+      "react/jsx-curly-brace-presence": [
+        "warn",
+        {
+          props: "always",
+          children: "ignore",
+          propElementValues: "always",
+        },
+      ],
     },
   },
   // Override default ignores of eslint-config-next.
