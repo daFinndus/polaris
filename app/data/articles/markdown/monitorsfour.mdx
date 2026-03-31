@@ -1,0 +1,150 @@
+import { Code, Block, Marker, Bild } from "../components.tsx";
+
+**Disclaimer**: The steps for this writeup are based on my notes and memory, so they might not be 100% accurate. Additionally, I have changed the flags for this writeup, so they won't match the ones on the machine.
+
+<br />
+
+Starting off with a <Code content="nmap" /> scan against MonitorsFour. Two services stood out immediately:
+
+<Block
+  language="Bash"
+  content={"80   - HTTP\n5985 - WinRM (Windows Remote Management)"}
+/>
+
+Since WinRM requires valid credentials, it was set aside for later. The web application on port <Code content="80" /> became the focus.
+
+<br />
+
+At first I did the typical enumeration. Checking out the website itself, nothing obvious stood out. Then I did enumeration in terms of subdomains, directories, and endpoints.
+
+<br />
+
+Subdomain enumeration uncovered <Code content="cacti.monitorsfour.htb" />. The login page itself offered nothing obvious, so endpoint fuzzing was started instead.
+
+<Bild
+  src="https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/monitorsfour-cacti.png"
+  alt="The cacti login page of monitorsfour."
+  width={1920}
+  height={1080}
+/>
+
+This uncovered a <Code content="/user" /> endpoint. Parameter fuzzing revealed the <Code content="token" /> parameter.
+
+<br />
+
+Testing simple edge cases revealed that <Code content="token=0" /> returned a full unauthenticated dump of all user accounts. Usernames, emails, roles, and bcrypt password hashes. A clean logic flaw with no authentication required.
+
+<Block
+  language="JSON"
+  content={
+    '[\n\t{\n\t"id": 2,\n\t"username": "admin",\n\t"email": "admin@monitorsfour.htb",\n\t"password": "56b32eb43e6f15395f6c46c1c9e1cdXX",\n\t"role": "super user",\n\t"name": "Marcus Higgins",\n\t"position": "System Administrator"\n\t},\n\t{\n\t"id": 5,\n\t"username": "mwatson",\n\t"email": "mwatson@monitorsfour.htb",\n\t"password": "69196959c16b26ef00b77d82cf6ebXXX",\n\t"role": "user",\n\t"name": "Michael Watson",\n\t"position": "Website Administrator"\n\t},\n\t{\n\t"id": 6,\n\t"username": "janderson",\n\t"email": "janderson@monitorsfour.htb",\n\t"password": "2a22dcf99190c322d974c8df5ba32XXX",\n\t"role": "user",\n\t"name": "Jennifer Anderson",\n\t"position": "Network Engineer"\n\t},\n\t{\n\t"id": 7,\n\t"username": "dthompson",\n\t"email": "dthompson@monitorsfour.htb",\n\t"password": "8d4a7e7fd08555133e056d9aacb1eXXX",\n\t"role": "user",\n\t"name": "David Thompson",\n\t"position": "Database Manager"\n\t}\n]'
+  }
+/>
+
+The hashes were cracked offline against <Code content="rockyou.txt" />, yielding only the password <Code content="wonderful1" /> for the <Code content="admin" /> user. This granted access to the Cacti dashboard. Credential reuse was attempted against both Cacti and WinRM. Didn't work.
+
+<br />
+
+A detour followed into username enumeration against the Cacti login. <Code content="Hydra" /> was the first tool attempted, but malformed POST data and false positives caused by identical success and failure responses made it unreliable. A real login request was captured via Burp Suite.
+
+<Block
+  language="HTTP"
+  content={
+    "POST /cacti/index.php HTTP/1.1\n\nHost: cacti.monitorsfour.htb\nContent-Type: application/x-www-form-urlencoded\nCookie: Cacti=5b0e5f3625e1f648fa6820d3dd4f0959\n\n__csrf_magic=sid%3A04007d55b1d9cb2e2a90bd1581d33c4255c52d9d%2C1774979128&action=login&login_username=admin&login_password=admin"
+  }
+/>
+
+I replicated POST requests with correct headers, cookies, and the <Code content="__csrf_magic" /> token. Switching to <Code content="curl" /> and <Code content="ffuf" /> gave more visibility, but the application simply did not leak any signal. Response size, status code, and headers were identical regardless of input. Stopped wasting time on that and went back to the data already in hand.
+
+<br />
+
+I'm gonna be honest, I got a bit lost here. I needed help from another writeup to check how to proceed. Seems I should've just used the username <Code content="marcus" /> derived from the real name of the admin, Marcus Haynes. So I used it against Cacti, which worked with the password <Code content="wonderful1" />. Did not work against WinRM though.
+
+<br />
+
+Back on track with valid admin credentials, the Cacti version was checked against known CVEs. Version <Code content="1.2.28" /> is vulnerable to <Marker content="CVE-2025-24367" link="https://github.com/SoftAndoWetto/CVE-2025-24367-PoC-Cacti" />, an authenticated RCE exploiting an arbitrary file write to drop a PHP webshell into the web root. The public PoC worked cleanly and produced a shell as <Code content="www-data" />. The user flag was readable directly from <Code content="/home/marcus/user.txt" /> due to misconfigured home directory permissions.
+
+<br />
+
+The environment was immediately unusual: no <Code content="netstat" />, no <Code content="ps" />, no <Code content="ssh" />. Manual checks confirmed something interesting: <Code content="uname" /> reported Linux, but the HTB machine was labelled Windows. Checking <Code content="/proc/mounts" /> revealed an overlay filesystem managed by <Code content="desktop-containerd" />, confirming the shell was inside a Linux container serving as the attack surface for the Windows host.
+
+<br />
+
+<Code content="LinPeas" /> was uploaded to <Code content="/tmp" /> and executed.
+It flagged PID 1, which was <Code content="start.sh" />,
+<Code content="php-fpm" />, and
+<Code content="nginx" /> all running as root with a broad capability set:
+
+<Block
+  language="Bash"
+  content={
+    "cap_chown, cap_dac_override, cap_fowner, cap_fsetid, cap_kill,\ncap_setgid, cap_setuid, cap_setpcap, cap_net_bind_service,\ncap_net_raw, cap_sys_chroot, cap_mknod, cap_audit_write, cap_setfcap"
+  }
+/>
+
+SUID binaries were checked, <Code content="newgrp" /> was attempted to pivot into a more privileged group, but <Code content="www-data" /> had no useful group memberships and the attempts failed.
+
+<br />
+
+Credential harvesting from within the container proved more fruitful. Cacti's <Code content="include/config.php" /> contained database credentials:
+
+<Block
+  language="PHP"
+  content={
+    "$database_hostname = 'mariadb';\n$database_username = 'cactidbuser';\n$database_password = '7pyrf6ly8qx4';"
+  }
+/>
+
+A direct query against the <Code content="user_auth" /> table returned three accounts: Administrator, Guest, and Marcus Haynes. The guest hash cracked to <Code content="admin" /> and Marcus Haynes's bcrypt hash cracked to <Code content="wonderful1" />. All recovered passwords were tried against WinRM as <Code content="marcus" />. All failed.
+
+<br />
+
+While reviewing the container's network configuration, <Code content="resolv.conf" /> revealed a nameserver at <Code content="192.168.65.7" />, which is the Docker host's internal gateway. The Docker daemon's default unauthenticated port was probed on a hunch:
+
+<Block language="Bash" content={"curl 192.168.65.7:2375/version"} />
+
+This returned a full Docker Engine version response. The daemon was completely unauthenticated and exposed to the container. This was the escape vector.
+
+<br />
+
+Available images were queried and <Code content="alpine:latest" /> was present on the host. A container was created via the API with the host root filesystem mounted at <Code content="/mnt/root" />, running <Code content="sleep infinity" /> to keep it alive:
+
+<Block
+  language="Bash"
+  content={
+    'curl -s -X POST 192.168.65.7:2375/containers/create \\\n  -H "Content-Type: application/json" \\\n  -d \'{"Image":"alpine:latest","Cmd":["sleep","infinity"],"HostConfig":{"Binds":["/:/mnt/root"]},"Tty":true,"OpenStdin":true}\''
+  }
+/>
+
+The exec API was used to run commands inside the container. A <Code content="find" /> command located the root flag at:
+
+<Block
+  language="Bash"
+  content={"/mnt/root/mnt/host/c/Users/Administrator/Desktop/root.txt"}
+/>
+
+A final exec call catted the file and captured the root flag.
+
+<br />
+
+In this machine I learned a lot and reinforced some things I already knew. Here are the main takeaways:
+
+<br />
+
+**Exhaust your current data before pivoting**: When the <Code content="/user" /> endpoint returned a full dump including real names, the right move was to derive usernames from that data — not jump straight to brute forcing. I wasted time on <Code content="Hydra" /> for something that was already solved.
+
+<br />
+
+**Check resolv.conf for internal network hints**: The Docker host's gateway IP was sitting in <Code content="resolv.conf" /> the whole time. Internal IPs in network config files can point directly to services that aren't externally exposed.
+
+<br />
+
+**Unauthenticated Docker API is an immediate escape**: If port <Code content="2375" /> is reachable, the game is over. No credentials needed — you can create containers, mount the host filesystem, and read anything. Always probe the Docker daemon when you find yourself in a container.
+
+<br />
+
+**printf over text editors**: In stripped environments with no <Code content="vim" />, <Code content="nano" />, or <Code content="echo" /> quirks, <Code content="printf" /> is the most reliable way to write files to disk. Kept me unblocked multiple times throughout this machine.
+
+<br />
+
+**LinPeas flags matter more than colors**: Yellow is noise. The percentage indicators — especially <Code content="99%" /> and <Code content="95%" /> — are what deserve immediate attention. Grep for those first, then go back to the red findings.

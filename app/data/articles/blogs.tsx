@@ -6,6 +6,7 @@ import Kobold from "@/app/data/articles/markdown/kobold.mdx";
 import WingData from "@/app/data/articles/markdown/wingdata.mdx";
 import VariaType from "@/app/data/articles/markdown/variatype.mdx";
 import Interpreter from "@/app/data/articles/markdown/interpreter.mdx";
+import MoniorsFour from "@/app/data/articles/markdown/monitorsfour.mdx";
 
 interface Blog {
   ident: string;
@@ -22,6 +23,21 @@ interface Blog {
 }
 
 export const blogs: Blog[] = [
+  {
+    ident: "MonitorsFour",
+    thumbnail:
+      "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/monitorsfour.png",
+    width: 300,
+    height: 300,
+    title: "MonitorsFour",
+    date: new Date("2026-04-02"),
+    description:
+      "This is a writeup of MonitorsFour, an easy windows machine by Hack the Box. This machine worked with a vulnerable version of Cacti, weak credentials and a Docker escape.",
+    system: "Windows",
+    difficulty: "Easy",
+    keywords: ["cacti", "docker", "escape"],
+    content: <MoniorsFour />,
+  },
   {
     ident: "Kobold",
     thumbnail:
