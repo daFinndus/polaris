@@ -2,8 +2,6 @@
 
 import { useEffect } from "react";
 
-import Head from "next/head";
-
 import { About } from "@/app/home/about";
 
 import { Blogs } from "@/app/home/blogs";
@@ -31,7 +29,11 @@ const Unsupported = () => {
 const Supported = () => {
   return (
     <div className={"notebook:my-8 m-4 flex justify-center"}>
-      <div className={"notebook:fixed notebook:flex top-4 right-4 hidden flex-col gap-y-2"}>
+      <div
+        className={
+          "notebook:fixed notebook:flex top-4 right-4 hidden flex-col gap-y-2"
+        }
+      >
         <ColorModeButton />
         <ImprintPageButton />
         <ClockPageButton />
@@ -48,7 +50,9 @@ const Supported = () => {
           <Blogs />
         </div>
       </div>
-      <div className={"laptop:grid laptop:grid-cols-2 desktop:hidden hidden gap-4"}>
+      <div
+        className={"laptop:grid laptop:grid-cols-2 desktop:hidden hidden gap-4"}
+      >
         <div className={"space-y-4"}>
           <About />
           <Application />
