@@ -8,7 +8,9 @@ Starting off with a <Code content="nmap" /> scan reveals four open ports:
 
 <Block
   language="Bash"
-  content={"22 - SSH\n80 - HTTP\n443 - HTTPS\n6661 - HTTP (Mirth Connect)"}
+  content={
+    "22\t\t- SSH\n80\t\t- HTTP\n443\t\t- HTTPS\n6661\t- HTTP (Mirth Connect)"
+  }
 />
 
 Browsing to port <Code content="80" /> reveals a login dashboard for Mirth Connect. To use the login form, I need to go to port <Code content="443" />. The page also provides a client download and a launcher file (<Code content="webstart.jnlp" />).

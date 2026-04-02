@@ -8,7 +8,7 @@ Starting off with a <Code content="nmap" /> scan. At first I only scanned the to
 
 <Block
   language="Bash"
-  content={"22  - SSH\n80  - HTTP\n443 - HTTPS\n3552 - taserver"}
+  content={"22\t\t- SSH\n80\t\t- HTTP\n443\t\t- HTTPS\n3552\t- taserver"}
 />
 
 Port <Code content="80" /> and <Code content="443" /> serve a pretty much useless static webpage. Nothing interesting there. Port <Code content="3552" /> is where things get interesting. It runs <Code content="Arcane 1.13.0" />, which is visible both on the login page footer and confirmed via the <Code content="/api/version" /> endpoint.

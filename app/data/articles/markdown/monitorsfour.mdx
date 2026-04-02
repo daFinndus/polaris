@@ -8,7 +8,7 @@ Starting off with a <Code content="nmap" /> scan against MonitorsFour. Two servi
 
 <Block
   language="Bash"
-  content={"80   - HTTP\n5985 - WinRM (Windows Remote Management)"}
+  content={"80\t\t- HTTP\n5985\t- WinRM (Windows Remote Management)"}
 />
 
 Since WinRM requires valid credentials, it was set aside for later. The web application on port <Code content="80" /> became the focus.
@@ -131,7 +131,7 @@ In this machine I learned a lot and reinforced some things I already knew. Here 
 
 <br />
 
-**Exhaust your current data before pivoting**: When the <Code content="/user" /> endpoint returned a full dump including real names, the right move was to derive usernames from that data — not jump straight to brute forcing. I wasted time on <Code content="Hydra" /> for something that was already solved.
+**Exhaust your current data before pivoting**: When the <Code content="/user" /> endpoint returned a full dump including real names, the right move was to derive usernames from that data instead of brute forcing with it. I wasted time on <Code content="Hydra" /> for something that was already solved.
 
 <br />
 
@@ -139,7 +139,7 @@ In this machine I learned a lot and reinforced some things I already knew. Here 
 
 <br />
 
-**Unauthenticated Docker API is an immediate escape**: If port <Code content="2375" /> is reachable, the game is over. No credentials needed — you can create containers, mount the host filesystem, and read anything. Always probe the Docker daemon when you find yourself in a container.
+**Unauthenticated Docker API is an immediate escape**: If port <Code content="2375" /> is reachable, the game is over. No credentials needed, I can create containers, mount the host filesystem, and read anything. From now on I am always checking the Docker daemon when I find myself in a container.
 
 <br />
 
@@ -147,4 +147,4 @@ In this machine I learned a lot and reinforced some things I already knew. Here 
 
 <br />
 
-**LinPeas flags matter more than colors**: Yellow is noise. The percentage indicators — especially <Code content="99%" /> and <Code content="95%" /> — are what deserve immediate attention. Grep for those first, then go back to the red findings.
+**LinPeas flags matter more than colors**: Yellow is noise. The percentage indicators, especially <Code content="99%" /> and <Code content="95%" />, are what deserve immediate attention.

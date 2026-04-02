@@ -3,6 +3,7 @@ import React from "react";
 import CCTV from "@/app/data/articles/markdown/cctv.mdx";
 import Facts from "@/app/data/articles/markdown/facts.mdx";
 import Kobold from "@/app/data/articles/markdown/kobold.mdx";
+import DevArea from "@/app/data/articles/markdown/devarea.mdx";
 import WingData from "@/app/data/articles/markdown/wingdata.mdx";
 import VariaType from "@/app/data/articles/markdown/variatype.mdx";
 import Interpreter from "@/app/data/articles/markdown/interpreter.mdx";
@@ -24,13 +25,28 @@ interface Blog {
 
 export const blogs: Blog[] = [
   {
+    ident: "DevArea",
+    thumbnail:
+      "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/devarea.png",
+    width: 300,
+    height: 300,
+    title: "DevArea",
+    date: new Date("2026-04-02"),
+    description:
+      "This is a writeup of DevArea, a medium linux machine by Hack the Box. This machine worked with a vulnerability in SOAP and Hoverfly.",
+    system: "Linux",
+    difficulty: "Medium",
+    keywords: ["soap", "hoverfly", "misconfiguration"],
+    content: <DevArea />,
+  },
+  {
     ident: "MonitorsFour",
     thumbnail:
       "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/monitorsfour.png",
     width: 300,
     height: 300,
     title: "MonitorsFour",
-    date: new Date("2026-04-02"),
+    date: new Date("2026-03-30"),
     description:
       "This is a writeup of MonitorsFour, an easy windows machine by Hack the Box. This machine worked with a vulnerable version of Cacti, weak credentials and a Docker escape.",
     system: "Windows",
