@@ -1,0 +1,103 @@
+import { Code, Block, Marker, Bild } from "../components.tsx";
+
+**Disclaimer**: The steps for this writeup are based on my notes and memory, so they might not be 100% accurate. Additionally, I have changed the flags for this writeup, so they won't match the ones on the machine.
+
+<br />
+
+Starting off with a <Code content="nmap" /> scan. Two ports came back open:
+
+<Block language="Bash" content={"22\t\t- SSH\n80\t\t- HTTP"} />
+
+Port <Code content="80" /> serves a static website with basically nothing interesting on it. Since SSH requires credentials, the web application became the focus. I ran the usual enumeration: directory fuzzing, subdomain enumeration, and VHost fuzzing.
+
+<br />
+
+VHost enumeration uncovered <Code content="staging.silentium.htb" />, running a <Code content="Flowise" /> instance. Added that to the hosts file and poked around.
+
+<Bild
+  src="https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/silentium-flowise.png"
+  alt="The Flowise login page of staging.silentium.htb."
+  width={797}
+  height={439}
+/>
+
+Checking <Code content="/api/v1/version" /> revealed version <Code content="3.0.5" />, which is vulnerable to a two-stage exploit chain via <Marker content="CVE-2025-58434 and CVE-2025-59528" link="https://github.com/AzureADTrent/CVE-2025-58434-59528" />. CVE-2025-58434 is an unauthenticated password reset, and CVE-2025-59528 is an authenticated RCE. Both are covered by the same public PoC.
+
+<br />
+
+The exploit requires a valid email address to trigger the password reset against. I went back to the main page and found a team section leaking three names: Marcus Thorne, Ben, and Elena Rossi. I manually tried <Code content="marcus@silentium.htb" /> first, which didn't work. <Code content="ben@silentium.htb" /> did:
+
+<Block
+  language="Bash"
+  content={
+    "# main.py is from the public PoC\npython main.py -t http://staging.silentium.htb -e ben@silentium.htb"
+  }
+/>
+
+The script reset ben's password via CVE-2025-58434, after which I logged in manually, retrieved a valid API key from <Code content="/apikey" />, copied it into the script, set up a listener, and got a reverse shell via CVE-2025-59528. <Code content="id" /> showed root, but inside a container with nothing of interest on it.
+
+<br />
+
+Enumeration of the container revealed a <Code content=".flowise" /> directory under root's home. Inside was <Code content="database.sqlite" />. I first listed all tables, then all values inside the user table. Then I dumped the most interesting looking ones:
+
+<Block
+  language="Bash"
+  content={
+    'sqlite3 database.sqlite "SELECT name, email, credential FROM user;"\nadmin|ben@silentium.htb|$2a$05$6o1ngPjXiRj.EbTK33PhyuzNBn2CLo8.b0lyys3Uht9Bfuos2pWhG'
+  }
+/>
+
+The hash is bcrypt, mode <Code content="3200" /> for hashcat. Rockyou didn't crack it. Also present in the directory was an <Code content="encryption.key" /> file, suggesting Flowise encrypts its stored credentials, so the hash was likely a dead end regardless.
+
+<br />
+
+Running <Code content="env" /> inside the container turned out to be far more useful:
+
+<Block
+  language="Bash"
+  content={"FLOWISE_PASSWORD=F1l3_d0ck3r\nSMTP_PASSWORD=r04D!!_R4ge"}
+/>
+
+I tried both against SSH on port <Code content="22" /> for the users I already knew. <Code content="r04D!!_R4ge" /> from <Code content="SMTP_PASSWORD" /> worked for <Code content="ben" />. The container escape was just credential reuse, no technical breakout needed.
+
+<br />
+
+With a shell as <Code content="ben" /> on the host, I ran <Code content="ss -tlnp" /> to check for internally running services. Port <Code content="3001" /> came back as <Marker content="Gogs" link="https://github.com/zAbuQasem/gogs-CVE-2025-8110" />. I tunnelled it locally:
+
+<Block
+  language="Bash"
+  content={"ssh -L 3001:127.0.0.1:3001 ben@silentium.htb"}
+/>
+
+<Bild
+  src="https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/silentium-gogs.png"
+  alt="The Gogs login page on port 3001."
+  width={1020}
+  height={929}
+/>
+
+I just prayed there would be a public PoC for Gogs, which is kind of recent. Found <Marker content="CVE-2025-8110" link="https://github.com/zAbuQasem/gogs-CVE-2025-8110" /> is a remote code execution vulnerability in Gogs.
+
+<br />
+
+At first the public PoC didn't work, returned a failure in authorization. Looked at the script, registered manually, replaced the login credentials, worked like a charm and produced a root shell. The root flag was at <Code content="/root/root.txt" />.
+
+<br />
+
+Here are the main takeaways from this machine:
+
+<br />
+
+**Go back to the main page**: The email I needed was sitting in the team section of the main site the whole time. I found it pretty quickly here, but it's a good reminder that static pages aren't always useless.
+
+<br />
+
+**Always dump env inside a container**: I spent time trying to crack a bcrypt hash that ultimately went nowhere. <Code content="env" /> had the credentials in plaintext the whole time. That should've been one of my first checks.
+
+<br />
+
+**Credential reuse via SSH is a classic easy box escape**: Not every container breakout is a technical exploit. If you have credentials, try them against SSH immediately. It's the simplest path and easy machines love it.
+
+<br />
+
+**Listening ports reveal the full internal attack surface**: Once on the host as a low-privilege user, internal services are the natural next step. <Code content="ss -tlnp" /> showed Gogs running on <Code content="3001" /> which wasn't exposed externally at all.

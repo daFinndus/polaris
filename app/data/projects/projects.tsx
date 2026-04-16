@@ -33,9 +33,7 @@ export const projects: Project[] = [
     width: 1920,
     height: 1032,
     description:
-      "Reconnoisseur is a reconnaissance automation tool built in Bash to support the early phases of penetration testing." +
-      "It currently does automated port scanning and service detection of hosts and subnets." +
-      "Soon it will also support web enumeration and vulnerability scanning.",
+      "Reconnoisseur is a reconnaissance automation tool built in Bash to support the early phases of penetration testing. It currently does automated port scanning and service detection of hosts and subnets. Soon it will also support web enumeration and vulnerability scanning.",
     personal: true,
     url: "https://github.com/daFinndus/reconnoisseur",
     skills: [
@@ -52,8 +50,7 @@ export const projects: Project[] = [
     width: 819,
     height: 614,
     description:
-      "This internship project focused on building an IT, OT, and IoT environment with connected sensors and devices. " +
-      "Using Python and Bash, the project demonstrated the importance of segmentation and security controls in interconnected operational environments.",
+      "This internship project focused on building an IT, OT, and IoT environment with connected sensors and devices. Using Python and Bash, the project demonstrated the importance of segmentation and security controls in interconnected operational environments.",
     personal: false,
     skills: [
       map.get("IoT")!,
