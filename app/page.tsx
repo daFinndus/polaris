@@ -14,7 +14,6 @@ import { checkScreenValidity } from "@/app/hooks/checkScreenValidity";
 import { ColorModeButton } from "@/components/color-mode-button";
 import { ErrorPageButton } from "@/components/error-page-button";
 import { ClockPageButton } from "@/components/clock-page-button";
-import { ImprintPageButton } from "@/components/imprint-page-button";
 
 const Unsupported = () => {
   return (
@@ -35,7 +34,6 @@ const Supported = () => {
         }
       >
         <ColorModeButton />
-        <ImprintPageButton />
         <ClockPageButton />
         <ErrorPageButton />
       </div>
