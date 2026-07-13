@@ -2,7 +2,9 @@ import React from "react";
 
 import CCTV from "@/app/data/articles/markdown/cctv.mdx";
 import Facts from "@/app/data/articles/markdown/facts.mdx";
+import Enigma from "@/app/data/articles/markdown/enigma.mdx";
 import Kobold from "@/app/data/articles/markdown/kobold.mdx";
+import DevHub from "@/app/data/articles/markdown/devhub.mdx";
 import DevArea from "@/app/data/articles/markdown/devarea.mdx";
 import WingData from "@/app/data/articles/markdown/wingdata.mdx";
 import Silentium from "@/app/data/articles/markdown/silentium.mdx";
@@ -25,6 +27,36 @@ interface Blog {
 }
 
 export const blogs: Blog[] = [
+  {
+    ident: "Enigma",
+    thumbnail:
+      "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/enigma.png",
+    width: 300,
+    height: 300,
+    title: "Enigma",
+    date: new Date("2026-06-29"),
+    description:
+      "Enigma is an easy Linux machine focusing on company NFS shares, password re-use and OliveTin.",
+    system: "Linux",
+    difficulty: "Easy",
+    keywords: ["nfs", "share", "olivetin", "password"],
+    content: <Enigma />,
+  },
+  {
+    ident: "DevHub",
+    thumbnail:
+      "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/devhub.png",
+    width: 300,
+    height: 300,
+    title: "DevHub",
+    date: new Date("2026-06-04"),
+    description:
+      "DevHub is a medium Linux machine, that I totally forgot to make a writeup about.",
+    system: "Linux",
+    difficulty: "Medium",
+    keywords: [""],
+    content: <DevHub />,
+  },
   {
     ident: "Silentium",
     thumbnail:

