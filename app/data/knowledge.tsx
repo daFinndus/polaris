@@ -19,13 +19,6 @@ export interface Stack {
 
 export const Engineering: Stack[] = [
   {
-    Icon: GiClick,
-    name: "Click me",
-    content: "For a detailed description",
-    description:
-      "This is just a dummy. I really didn't know how to fit a explanation for the stacks into this grid component. You can also click the other stacks and the stacks in the toolkit section.",
-  },
-  {
     Icon: MdDeveloperMode,
     name: "Web Development",
     content: "React and Tailwind CSS",

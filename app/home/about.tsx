@@ -115,8 +115,8 @@ export const About = () => {
         <Tag Icon={MdOutlineLocationOn} name={"Kiel"} />
         <Tag Icon={IoGlobe} name={"UTC+1"} />
         <Tag Icon={BsBriefcase} name={"Student"} />
-        <Tag Icon={GiGuitarHead} name={"Learns guitar"} />
-        <Tag Icon={IoLogoGameControllerB} name={"Likes videogames"} />
+        <Tag Icon={GiGuitarHead} name={"Guitar"} />
+        <Tag Icon={IoLogoGameControllerB} name={"Videogames"} />
       </div>
       <div className={"mt-4 flex w-full flex-row justify-center space-x-2"}>
         <Link

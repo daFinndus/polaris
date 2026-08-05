@@ -8,8 +8,9 @@ import {
   TbDeviceDesktopCode,
 } from "react-icons/tb";
 import { LuNetwork, LuBrainCircuit } from "react-icons/lu";
-import { GiFishingNet, GiCctvCamera } from "react-icons/gi";
+import { GiFishingNet, GiCctvCamera, GiIdea } from "react-icons/gi";
 import { BiChip } from "react-icons/bi";
+import { SiBlueprint } from "react-icons/si";
 
 export interface Skill {
   name: string;
@@ -19,6 +20,18 @@ export interface Skill {
 }
 
 export const skills: Skill[] = [
+  {
+    name: "Prototyping",
+    background: "bg-green-300",
+    icon: GiIdea,
+    color: "text-black"
+  },
+  {
+    name: "3D Printing",
+    background: "bg-blue-400",
+    icon: SiBlueprint,
+    color: "text-white"
+  },
   {
     name: "Reconnaissance",
     background: "bg-emerald-800",
