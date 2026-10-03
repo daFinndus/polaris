@@ -33,12 +33,10 @@ export const projects: Project[] = [
     alt: "This is a picture out of my bachelor thesis lab.",
     width: 565,
     height: 840,
-    description: "My bachelor thesis topic was the mitigation of MITRE ATT&CK techniques through Zero Trust security principles, where I basically compared perimeter based and Zero Trust architectures. I used different attacks to show how boths environments react and where their weaknesses are.",
+    description:
+      "My bachelor thesis topic was the mitigation of MITRE ATT&CK techniques through Zero Trust security principles, where I basically compared perimeter based and Zero Trust architectures. I used different attacks to show how boths environments react and where their weaknesses are.",
     personal: false,
-    skills: [
-      map.get("Offensive Security")!,
-      map.get("Network Security")!,
-    ],
+    skills: [map.get("Offensive Security")!, map.get("Network Security")!],
   },
   {
     name: "Rapid Prototyping",
@@ -47,7 +45,8 @@ export const projects: Project[] = [
     alt: "This is a video about a self-made coin sorting machine.",
     width: 1920,
     height: 1080,
-    description: "In a university course I've build a coin sorting machine with my friends. We've 3D printed every component, worked a lot with Fusion, made it compatible with a stepper motor and the raspi, tried different approaches, the idea behind the course Rapid Prototyping.",
+    description:
+      "In a university course I've build a coin sorting machine with my friends. We've 3D printed every component, worked a lot with Fusion, made it compatible with a stepper motor and the raspi, tried different approaches, the idea behind the course Rapid Prototyping.",
     personal: false,
     skills: [
       map.get("3D Printing")!,
@@ -79,12 +78,10 @@ export const projects: Project[] = [
     alt: "A bmax mini computer and an external SSD",
     width: 2048,
     height: 2048,
-    description: "This is the BMAX mini computer and an external SSD. These two components are basically my homelab, featuring proxmox running a pi-hole, duplicati, nextcloud and a wireguard container for external access. In this project I primarily strengthened my Linux knowledge.",
+    description:
+      "This is the BMAX mini computer and an external SSD. These two components are basically my homelab, featuring proxmox running a pi-hole, duplicati, nextcloud and a wireguard container for external access. In this project I primarily strengthened my Linux knowledge.",
     personal: true,
-    skills: [
-      map.get("Network Security")!,
-      map.get("IoT")!,
-    ],
+    skills: [map.get("Network Security")!, map.get("IoT")!],
   },
   {
     name: "IoT Smart Farm",
@@ -180,6 +177,19 @@ export const projects: Project[] = [
       map.get("Threat Monitoring")!,
       map.get("Network Security")!,
     ],
+  },
+  {
+    name: "Arch and Hyprland Ricing",
+    date: new Date("2025-04-24"),
+    src: "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Projects/quattro.png",
+    alt: "This is my hyprland main theme.",
+    width: 1920,
+    height: 1080,
+    description:
+      "While using hyprland I've created a theming system with quickshell, including multiple widgets, application configuration overrides to stay uniform with the theme, a wallpaper menu and several helpful features. I've worked a lot with bash, qml, and python, improved my knowledge about linux and efficient coding.",
+    personal: true,
+    url: "https://github.com/daFinndus/chezmoi",
+    skills: [map.get("Linux")!, map.get("Automation")!],
   },
   {
     name: "Working with Furhat",

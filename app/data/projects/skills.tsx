@@ -1,7 +1,7 @@
 import { IconType } from "react-icons";
 
 import { MdOutlineSecurity, MdOutlinePhoneIphone } from "react-icons/md";
-import { FaRobot, FaVrCardboard } from "react-icons/fa6";
+import { FaLinux, FaRobot, FaVrCardboard } from "react-icons/fa6";
 import {
   TbWorldSearch,
   TbTopologyStar3,
@@ -24,13 +24,13 @@ export const skills: Skill[] = [
     name: "Prototyping",
     background: "bg-green-300",
     icon: GiIdea,
-    color: "text-black"
+    color: "text-black",
   },
   {
     name: "3D Printing",
     background: "bg-blue-400",
     icon: SiBlueprint,
-    color: "text-white"
+    color: "text-white",
   },
   {
     name: "Reconnaissance",
@@ -121,5 +121,11 @@ export const skills: Skill[] = [
     background: "bg-blue-700",
     icon: MdOutlinePhoneIphone,
     color: "text-blue-100",
+  },
+  {
+    name: "Linux",
+    background: "bg-yellow-500",
+    icon: FaLinux,
+    color: "text-black",
   },
 ];
