@@ -1,6 +1,7 @@
 import React from "react";
 
 import CCTV from "@/app/data/articles/markdown/cctv.mdx";
+import Touch from "@/app/data/articles/markdown/touch.mdx";
 import Facts from "@/app/data/articles/markdown/facts.mdx";
 import Enigma from "@/app/data/articles/markdown/enigma.mdx";
 import Kobold from "@/app/data/articles/markdown/kobold.mdx";
@@ -27,6 +28,21 @@ interface Blog {
 }
 
 export const blogs: Blog[] = [
+  {
+    ident: "Touch",
+    thumbnail:
+      "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/touch.png",
+    width: 300,
+    height: 300,
+    title: "Touch",
+    date: new Date("2026-10-10"),
+    description:
+      "Touch is an easy Windows machine using a lot of logical combination and MySQL exploiting.",
+    system: "Windows",
+    difficulty: "Easy",
+    keywords: ["mysql", "database", "sandbox", "outbreak"],
+    content: <Touch />,
+  },
   {
     ident: "Enigma",
     thumbnail:

