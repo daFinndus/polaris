@@ -40,7 +40,11 @@ const Preview = () => {
               </p>
             </div>
           </div>
-          <p className={"text-primary-dark mt-2 text-justify text-sm whitespace-pre-line"}>
+          <p
+            className={
+              "text-primary-dark mt-2 text-justify text-sm whitespace-pre-line"
+            }
+          >
             {blog.description}
           </p>
         </div>

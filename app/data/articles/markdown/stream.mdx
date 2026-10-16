@@ -1,0 +1,162 @@
+import { Bild, Code, Block, Marker } from "../components.tsx";
+
+**Disclaimer**: The steps for this writeup are based on my notes and memory, so they might not be 100% accurate. Additionally, I have changed the flags for this writeup, so they won't match the ones on the machine.
+
+<br />
+
+Starting off with an <Code content="nmap" /> scan reveals two open ports:
+
+<Block language="Bash" content={"22\t\t- SSH\n8081\t- HTTP"} />
+
+After adding <Code content="stream.htb" /> to <Code content="/etc/hosts" />, I browsed to the web server on port 8081 and discovered an AIDX flight-leg ingestion endpoint at <Code content="/feeds/aidx" />. The endpoint accepts XML documents and returns a list of required elements when the submitted document is incomplete.
+
+<Block
+  language="Bash"
+  content={
+    "curl -i -X POST\n-H 'Content-Type: application/xml'\n--data-binary @feed.xml\nhttp://stream.htb:8081/feeds/aidx"
+  }
+/>
+
+After supplying a minimal XML document containing the required elements, the endpoint responds with <Code content="202 Accepted" /> and identifies the Kafka topic <Code content="aidx.flightleg.raw.v1" />.
+
+<br />
+
+The next step was investigating how the application processes the submitted XML. The endpoint was vulnerable to XML External Entity (XXE) injection, which allows an XML parser to resolve an external entity referencing a local file. By submitting a document containing such an entity, I was able to make the application read local configuration files.
+
+<br />
+
+However, the file contents were not returned directly in the HTTP response. Instead, the XML data continued through the application's processing pipeline. Incoming messages were sent through Kafka and subsequently stored in ClickHouse, meaning that the database could be used to retrieve the output of the XXE payload.
+
+<br />
+
+The issue was, I was not able to execute SQL queries without the credentials for ClickHouse. So I fuzzed again <Code content="http://stream.htb" />, the page it was redirecting to <Code content="http://api.htb-airport.htb" />, and <Code content="http://db.htb-airport.htb" />. Except the API sub-URL nothing interesting returned in the fuzzing.
+
+<br />
+
+What I found through the fuzzing was: <Code content="http://api.htb-airport.de/actuator" /> which also contains a heapdump file.
+
+<br />
+
+I analyzed that heapdump file in Memory Analyzer (MAT) and searched for passwords, configurations, and so on. Finally I found good looking credentials for ClickHouse.
+
+<Bild
+  src={
+    "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/stream-mat.png"
+  }
+  alt={"ClickHouse checking out the String class"}
+  width={1920}
+  height={1080}
+/>
+
+So I was able to execute SQL queries.
+
+<Block
+  language="SQL"
+  content={"SELECT event FROM flightleg_json_mv ORDER BY ingested DESC;"}
+/>
+
+Inspecting the resulting events revealed the resolved entity contents. This confirmed that the XXE output could be recovered through the downstream database, even though it was not visible in the original HTTP response.
+
+<Bild
+  src={
+    "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/stream-clickhouse-dashboard.png"
+  }
+  alt={"ClickHouse dashboard"}
+  width={1920}
+  height={1080}
+/>
+
+I then used the same technique to read the Kafka broker configuration at <Code content="/opt/kafka_2.13-4.3.1/config/server.properties" />. The configuration revealed that Kafka supports SASL/PLAIN authentication and contained credentials for the <Code content="svc-infra" /> principal. The broker listeners were bound to loopback addresses, which was important when determining how the service could be accessed.
+
+<br />
+
+After recovering the relevant credentials, I investigated SSH access to the target. Initially, port 22 refused connections despite having been open during the earlier scan. Restarting the HTB machine restored SSH access, allowing me to log in as <Code content="svc-infra" /> and continue enumerating the system.
+
+<br />
+
+During process enumeration, one service stood out:
+
+<Block
+  language="Bash"
+  content={"/opt/sysmon/sysmon -i /opt/sysmon/config.xml -service"}
+/>
+
+I also inspected the systemd timers. The <Code content="aidx-dlq-drainer.timer" /> runs the <Code content="aidx-dlq-drainer.service" /> every two minutes. Its service definition revealed that it executes a Python script as root:
+
+<Block
+  language="INI"
+  content={
+    "[Service]\nType=oneshot\nUser=root\nExecStart=/usr/bin/python3 /opt/ops/dlq_drainer.py"
+  }
+/>
+
+The script, located at <Code content="/opt/ops/dlq_drainer.py" />, consumes messages from the Kafka dead-letter queue, <Code content="aidx.flightleg.dlq.v1" />. For each message, it writes the raw data to a quarantine file, invokes a formatter, and records information about the failed ingestion in ClickHouse.
+
+<br />
+
+The formatter path was particularly interesting:
+
+<Block
+  language="Python"
+  content={
+    'FORMATTER = os.environ.get(\n    "AIDX_FORMATTER",\n    "/var/lib/clickhouse/user_files/aidx_quarantine.py"\n)\n\np = subprocess.run(\n    ["python3", FORMATTER],\n    input=raw,\n    capture_output=True,\n    check=False\n)'
+  }
+/>
+
+Since the scheduled service runs as root, the formatter is executed within that root process context. If the formatter could be modified, the scheduled job could potentially be abused to obtain elevated privileges.
+
+<br />
+
+Directly reading the formatter was not possible because <Code content="/var/lib/clickhouse" /> is owned by the ClickHouse account and has restrictive permissions. The ClickHouse password file at <Code content="/etc/partner-sync/ch.pw" /> was also protected by root-only permissions. I therefore investigated how the scheduled script obtained its database credentials and invoked the ClickHouse client.
+
+<br />
+
+The relevant code reads the password from the protected file and passes it to <Code content="clickhouse-client" /> as a command-line argument:
+
+<Block
+  language="Python"
+  content={
+    'subprocess.run([\n    "clickhouse-client",\n    "--user", "default",\n    "--password", _pw(),\n    "-q", q\n], check=False)'
+  }
+/>
+
+This led me to use <Code content="pspy" /> to monitor process activity. Unlike a one-time snapshot from <Code content="ps aux" />, process-monitoring tools can reveal short-lived processes and their arguments when they are observable. Following the approach described in the writeup I used, I triggered the relevant processing path and monitored the resulting ClickHouse client invocation. This exposed the password passed to the client, giving me the credentials required to authenticate to ClickHouse as <Code content="default" />.
+
+<br />
+
+With database access established, I inspected the privileges of the <Code content="default" /> user using <Code content="SHOW GRANTS" />. The output revealed extensive permissions, including access to server-side files through the <Code content="FILE" /> privilege, user and role management, and access to a wide range of data sources.
+
+<Bild
+  src={
+    "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/stream-clickhouse-query.png"
+  }
+  alt={"ClickHouse query results"}
+  width={1920}
+  height={1080}
+/>
+
+These privileges provided the missing link in the privilege-escalation chain. Although I could not directly modify the formatter using my SSH account, ClickHouse offered a way to interact with files in its configured user-files directory. The formatter was located in that directory, and the root-owned timer executed it periodically.
+
+<br />
+
+Following the remaining steps from the writeup, I used the available ClickHouse file-writing functionality to modify the formatter. When the scheduled drainer subsequently executed the modified script as root, it provided the route to elevated privileges. I used the resulting root access to retrieve the flag at <Code content="/root/root.txt" />.
+
+<br />
+
+This box was a good reminder that enumeration and chaining are everything. The XXE vulnerability alone was not the end goal, and obtaining ClickHouse access alone did not immediately provide root. The important connections were the XML ingestion pipeline, Kafka, the downstream ClickHouse database, the password exposed through process arguments, and the root-owned scheduled service.
+
+<br />
+
+**XXE becomes more powerful when combined with a data pipeline**: The file contents were not returned in the HTTP response, but they became accessible through the downstream database. Knowing where application data ends up can be just as important as finding the original vulnerability.
+
+<br />
+
+**Heap dumps can contain sensitive configuration**: Inspecting process memory can expose application objects and credentials that are not otherwise directly accessible. In this case, the heap dump and Eclipse Memory Analyzer Tool (MAT) provided another avenue for investigating database access.
+
+<br />
+
+**Scheduled root services deserve attention**: The drainer was easy to overlook among the running processes, but its timer, root execution context, and subprocess calls made it a significant finding.
+
+<br />
+
+**Secrets can leak through process arguments**: The ClickHouse password was stored in a protected file, but the application passed the value to a child process as an argument. Tools such as <Code content="pspy" /> can help reveal these execution details when process visibility and timing permit it.

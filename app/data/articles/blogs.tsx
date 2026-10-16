@@ -3,6 +3,7 @@ import React from "react";
 import CCTV from "@/app/data/articles/markdown/cctv.mdx";
 import Touch from "@/app/data/articles/markdown/touch.mdx";
 import Facts from "@/app/data/articles/markdown/facts.mdx";
+import Stream from "@/app/data/articles/markdown/stream.mdx";
 import Enigma from "@/app/data/articles/markdown/enigma.mdx";
 import Kobold from "@/app/data/articles/markdown/kobold.mdx";
 import DevHub from "@/app/data/articles/markdown/devhub.mdx";
@@ -28,6 +29,30 @@ interface Blog {
 }
 
 export const blogs: Blog[] = [
+  {
+    ident: "Stream",
+    thumbnail:
+      "https://s8lcpnzirhyz4bbt.public.blob.vercel-storage.com/Blogs/stream.png",
+    width: 300,
+    height: 300,
+    title: "Stream",
+    date: new Date("2026-10-16"),
+    description:
+      "Stream is a medium linux machine that focuses on directory fuzzing, memory analysis, and process injection.",
+    system: "Linux",
+    difficulty: "Medium",
+    keywords: [
+      "mysql",
+      "database",
+      "sandbox",
+      "outbreak",
+      "heapdump",
+      "eclipse",
+      "memory",
+      "analyzer",
+    ],
+    content: <Stream />,
+  },
   {
     ident: "Touch",
     thumbnail:

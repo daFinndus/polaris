@@ -71,80 +71,24 @@ The environment was immediately unusual: no <Code content="netstat" />, no <Code
 <br />
 
 <Code content="LinPeas" /> was uploaded to <Code content="/tmp" /> and executed.
-It flagged PID 1, which was <Code content="start.sh" />,
-<Code content="php-fpm" />, and
-<Code content="nginx" /> all running as root with a broad capability set:
-
-<Block
-  language="Bash"
-  content={
-    "cap_chown, cap_dac_override, cap_fowner, cap_fsetid, cap_kill,\ncap_setgid, cap_setuid, cap_setpcap, cap_net_bind_service,\ncap_net_raw, cap_sys_chroot, cap_mknod, cap_audit_write, cap_setfcap"
-  }
-/>
-
-SUID binaries were checked, <Code content="newgrp" /> was attempted to pivot into a more privileged group, but <Code content="www-data" /> had no useful group memberships and the attempts failed.
-
-<br />
-
-Credential harvesting from within the container proved more fruitful. Cacti's <Code content="include/config.php" /> contained database credentials:
-
-<Block
-  language="PHP"
-  content={
-    "$database_hostname = 'mariadb';\n$database_username = 'cactidbuser';\n$database_password = '7pyrf6ly8qx4';"
-  }
-/>
-
-A direct query against the <Code content="user_auth" /> table returned three accounts: Administrator, Guest, and Marcus Haynes. The guest hash cracked to <Code content="admin" /> and Marcus Haynes's bcrypt hash cracked to <Code content="wonderful1" />. All recovered passwords were tried against WinRM as <Code content="marcus" />. All failed.
-
-<br />
-
-While reviewing the container's network configuration, <Code content="resolv.conf" /> revealed a nameserver at <Code content="192.168.65.7" />, which is the Docker host's internal gateway. The Docker daemon's default unauthenticated port was probed on a hunch:
-
-<Block language="Bash" content={"curl 192.168.65.7:2375/version"} />
-
-This returned a full Docker Engine version response. The daemon was completely unauthenticated and exposed to the container. This was the escape vector.
-
-<br />
-
-Available images were queried and <Code content="alpine:latest" /> was present on the host. A container was created via the API with the host root filesystem mounted at <Code content="/mnt/root" />, running <Code content="sleep infinity" /> to keep it alive:
-
-<Block
-  language="Bash"
-  content={
-    'curl -s -X POST 192.168.65.7:2375/containers/create \\\n  -H "Content-Type: application/json" \\\n  -d \'{"Image":"alpine:latest","Cmd":["sleep","infinity"],"HostConfig":{"Binds":["/:/mnt/root"]},"Tty":true,"OpenStdin":true}\''
-  }
-/>
-
-The exec API was used to run commands inside the container. A <Code content="find" /> command located the root flag at:
-
-<Block
-  language="Bash"
-  content={"/mnt/root/mnt/host/c/Users/Administrator/Desktop/root.txt"}
-/>
-
-A final exec call catted the file and captured the root flag.
-
-<br />
-
-In this machine I learned a lot and reinforced some things I already knew. Here are the main takeaways:
-
-<br />
-
-**Exhaust your current data before pivoting**: When the <Code content="/user" /> endpoint returned a full dump including real names, the right move was to derive usernames from that data instead of brute forcing with it. I wasted time on <Code content="Hydra" /> for something that was already solved.
-
-<br />
-
-**Check resolv.conf for internal network hints**: The Docker host's gateway IP was sitting in <Code content="resolv.conf" /> the whole time. Internal IPs in network config files can point directly to services that aren't externally exposed.
-
-<br />
-
-**Unauthenticated Docker API is an immediate escape**: If port <Code content="2375" /> is reachable, the game is over. No credentials needed, I can create containers, mount the host filesystem, and read anything. From now on I am always checking the Docker daemon when I find myself in a container.
-
-<br />
-
-**printf over text editors**: In stripped environments with no <Code content="vim" />, <Code content="nano" />, or <Code content="echo" /> quirks, <Code content="printf" /> is the most reliable way to write files to disk. Kept me unblocked multiple times throughout this machine.
-
-<br />
-
-**LinPeas flags matter more than colors**: Yellow is noise. The percentage indicators, especially <Code content="99%" /> and <Code content="95%" />, are what deserve immediate attention.
+  It flagged PID 1, which was <Code content="start.sh" />,
+  <Code content="php-fpm" />, and
+    <Code content="nginx" /> all running as root with a broad capability set:<Block
+      language="Bash"
+      content={
+      "cap_chown, cap_dac_override, cap_fowner, cap_fsetid, cap_kill,\ncap_setgid, cap_setuid, cap_setpcap, cap_net_bind_service,\ncap_net_raw, cap_sys_chroot, cap_mknod, cap_audit_write, cap_setfcap"
+      }
+      />SUID binaries were checked, <Code content="newgrp" /> was attempted to pivot into a more privileged group, but <Code content="www-data" /> had no useful group memberships and the attempts failed.<br />Credential harvesting from within the container proved more fruitful. Cacti's <Code content="include/config.php" /> contained database credentials:<Block
+      language="PHP"
+      content={
+      "$database_hostname = 'mariadb';\n$database_username = 'cactidbuser';\n$database_password = '7pyrf6ly8qx4';"
+      }
+      />A direct query against the <Code content="user_auth" /> table returned three accounts: Administrator, Guest, and Marcus Haynes. The guest hash cracked to <Code content="admin" /> and Marcus Haynes's bcrypt hash cracked to <Code content="wonderful1" />. All recovered passwords were tried against WinRM as <Code content="marcus" />. All failed.<br />While reviewing the container's network configuration, <Code content="resolv.conf" /> revealed a nameserver at <Code content="192.168.65.7" />, which is the Docker host's internal gateway. The Docker daemon's default unauthenticated port was probed on a hunch:<Block language="Bash" content={"curl 192.168.65.7:2375/version"} />This returned a full Docker Engine version response. The daemon was completely unauthenticated and exposed to the container. This was the escape vector.<br />Available images were queried and <Code content="alpine:latest" /> was present on the host. A container was created via the API with the host root filesystem mounted at <Code content="/mnt/root" />, running <Code content="sleep infinity" /> to keep it alive:<Block
+      language="Bash"
+      content={
+      'curl -s -X POST 192.168.65.7:2375/containers/create \\\n  -H "Content-Type: application/json" \\\n  -d \'{"Image":"alpine:latest","Cmd":["sleep","infinity"],"HostConfig":{"Binds":["/:/mnt/root"]},"Tty":true,"OpenStdin":true}\''
+      }
+      />The exec API was used to run commands inside the container. A <Code content="find" /> command located the root flag at:<Block
+      language="Bash"
+      content={"/mnt/root/mnt/host/c/Users/Administrator/Desktop/root.txt"}
+      />A final exec call catted the file and captured the root flag.<br />In this machine I learned a lot and reinforced some things I already knew. Here are the main takeaways:<br />**Exhaust your current data before pivoting**: When the <Code content="/user" /> endpoint returned a full dump including real names, the right move was to derive usernames from that data instead of brute forcing with it. I wasted time on <Code content="Hydra" /> for something that was already solved.<br />**Check resolv.conf for internal network hints**: The Docker host's gateway IP was sitting in <Code content="resolv.conf" /> the whole time. Internal IPs in network config files can point directly to services that aren't externally exposed.<br />**Unauthenticated Docker API is an immediate escape**: If port <Code content="2375" /> is reachable, the game is over. No credentials needed, I can create containers, mount the host filesystem, and read anything. From now on I am always checking the Docker daemon when I find myself in a container.<br />**printf over text editors**: In stripped environments with no <Code content="vim" />, <Code content="nano" />, or <Code content="echo" /> quirks, <Code content="printf" /> is the most reliable way to write files to disk. Kept me unblocked multiple times throughout this machine.<br />**LinPeas flags matter more than colors**: Yellow is noise. The percentage indicators, especially <Code content="99%" /> and <Code content="95%" />, are what deserve immediate attention.

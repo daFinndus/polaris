@@ -60,14 +60,18 @@ const Entry = ({
   return (
     <div
       id={ident}
+      onClick={() => toggleContent(!showContent)}
       className={
         "border-background-lighter bg-background-light tablet:w-160 relative flex flex-col rounded-xl border-2 p-6"
       }
     >
       <button
-        onClick={handleShare}
         title={"Share blog"}
         className={"absolute top-4 right-4 cursor-pointer font-mono text-xs"}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleShare();
+        }}
       >
         {shared ? (
           <div className={"flex items-center gap-1.5 text-green-400"}>
@@ -107,7 +111,10 @@ const Entry = ({
           asChild
           variant={"secondary"}
           className={"mt-8 w-full cursor-default"}
-          onClick={() => toggleContent(!showContent)}
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleContent(!showContent);
+          }}
         >
           <p>{showContent ? "Hide" : "Show"} content</p>
         </Button>
