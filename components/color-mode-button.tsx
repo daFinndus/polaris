@@ -20,8 +20,6 @@ export const ColorModeButton = () => {
   const [bright, setBright] = useState(getColorMode());
 
   const changeMode = () => {
-    setBright(!bright);
-
     if (!bright) {
       document.documentElement.classList.remove("dark");
       setCookie("bright", "Website is now in light mode.");
@@ -29,6 +27,8 @@ export const ColorModeButton = () => {
       document.documentElement.classList.add("dark");
       deleteCookie("bright");
     }
+
+    setBright(!bright);
   };
 
   return (
