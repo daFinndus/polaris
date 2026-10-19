@@ -8,12 +8,12 @@ import { getCookie } from "cookies-next/client";
  * @returns A boolean value that represents the color mode. True if dark, false if light.
  */
 export const getColorMode = (): boolean => {
-  const isDark =
-    getCookie("dark") === "Your website is currently in dark mode.";
+  const isBright =
+    getCookie("bright") === "Your website is currently in light mode.";
 
-  if (isDark) {
+  if (!isBright) {
     document.documentElement.classList.add("dark");
   }
 
-  return isDark;
+  return isBright;
 };
