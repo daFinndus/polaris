@@ -22,7 +22,7 @@ export const ColorModeButton = () => {
   const changeMode = () => {
     if (!bright) {
       document.documentElement.classList.remove("dark");
-      setCookie("bright", "Website is now in light mode.");
+      setCookie("bright", "Your website is currently in light mode.");
     } else {
       document.documentElement.classList.add("dark");
       deleteCookie("bright");
