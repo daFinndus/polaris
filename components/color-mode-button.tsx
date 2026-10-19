@@ -22,12 +22,11 @@ export const ColorModeButton = () => {
   const changeMode = () => {
     setBright(!bright);
 
-    if (bright) {
-      document.documentElement.classList.remove("bright");
-      deleteCookie("bright");
+    if (!bright) {
+      document.documentElement.classList.remove("dark");
+      setCookie("bright", "Website is now in light mode.");
     } else {
-      document.documentElement.classList.add("bright");
-      setCookie("bright", "Your website is now in light mode.");
+      document.documentElement.classList.add("dark");
     }
   };
 
