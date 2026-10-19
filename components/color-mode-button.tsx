@@ -17,17 +17,17 @@ import { getColorMode } from "@/app/hooks/getColorMode";
  * @constructor
  */
 export const ColorModeButton = () => {
-  const [dark, setDark] = useState(getColorMode());
+  const [bright, setBright] = useState(getColorMode());
 
   const changeMode = () => {
-    setDark(!dark);
+    setBright(!bright);
 
-    if (dark) {
-      document.documentElement.classList.remove("dark");
-      deleteCookie("dark");
+    if (bright) {
+      document.documentElement.classList.remove("bright");
+      deleteCookie("bright");
     } else {
-      document.documentElement.classList.add("dark");
-      setCookie("dark", "Your website is currently in dark mode.");
+      document.documentElement.classList.add("bright");
+      setCookie("bright", "Your website is now in light mode.");
     }
   };
 
@@ -38,7 +38,7 @@ export const ColorModeButton = () => {
       aria-label={"Change the color mode of the website"}
       className={"notebook:w-12 flex h-12 w-1/2 min-w-12 items-center"}
     >
-      {dark ? <MdLightMode /> : <MdDarkMode />}
+      {bright ? <MdDarkMode /> : <MdLightMode />}
     </Button>
   );
 };
