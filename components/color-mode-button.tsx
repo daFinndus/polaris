@@ -27,6 +27,7 @@ export const ColorModeButton = () => {
       setCookie("bright", "Website is now in light mode.");
     } else {
       document.documentElement.classList.add("dark");
+      deleteCookie("bright");
     }
   };
 
